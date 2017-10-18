@@ -160,8 +160,11 @@ if($request)
 			
 			} else {
 
+				$conveniovalor=DB::table('convenio as c')
+				->where('c.idcliente','=',$request->get('cliente'))
+				->where('c.estadoconvenio','=','0')
+				->first();
 				
-				#CODE
 			}
 			
 		    
