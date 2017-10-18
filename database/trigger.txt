@@ -1,0 +1,41 @@
+CREATE TRIGGER `eliminar_producto_notacredito` BEFORE DELETE ON `detallenotacredito`
+ FOR EACH ROW BEGIN 
+UPDATE producto SET stock=stock+old.cantidad
+WHERE producto.idproducto=OLD.idproducto;
+END
+
+CREATE TRIGGER `ELIMINAR_DETALLEVENTA` BEFORE DELETE ON `detalleventa`
+ FOR EACH ROW BEGIN 
+UPDATE producto SET stock=stock + OLD.cantidad
+where producto.idproducto=OLD.idproducto;
+END
+
+CREATE TRIGGER `Salida_producto_detalle_compra` AFTER INSERT ON `detallecompra`
+ FOR EACH ROW BEGIN
+UPDATE producto SET stock = stock + new.cantidad
+WHERE producto.idproducto=NEW.idproducto;
+
+
+END
+
+CREATE TRIGGER `Salida_producto_detalle_venta` AFTER INSERT ON `detalleventa`
+ FOR EACH ROW BEGIN
+UPDATE producto SET stock=stock - new.cantidad
+where producto.idproducto=NEW.idproducto;
+END
+
+CREATE TRIGGER `salida_producto_nota_credito` AFTER INSERT ON `detallenotacredito`
+ FOR EACH ROW BEGIN
+UPDATE producto SET stock=stock-new.cantidad
+WHERE producto.idproducto=NEW.idproducto;
+END
+
+CREATE TRIGGER `eliminar_producto_detalle_compra` BEFORE DELETE ON `detallecompra`
+ FOR EACH ROW BEGIN
+UPDATE producto SET stock= stock - OLD.cantidad
+WHERE producto.idproducto = OLD.idproducto;
+
+
+
+
+END
