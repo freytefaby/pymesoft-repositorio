@@ -1,1 +1,1 @@
-# pymesoft-repositorio confirmado equipo de oficinas
+# pymesoft-repositorio confirmado equipo de oficinas, CONFIRMADO
