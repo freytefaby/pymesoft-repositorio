@@ -159,11 +159,27 @@ if($request)
 				
 			
 			} else {
-
-				$conveniovalor=DB::table('convenio as c')
+    
+				$validar=DB::table('convenio as c')
 				->where('c.idcliente','=',$request->get('cliente'))
 				->where('c.estadoconvenio','=','0')
 				->first();
+   
+				if(sizeof($validar)>1)
+				{
+					
+				}
+				else
+				{
+					$convenio1=new Convenio;
+					$convenio1->idcliente=$request->get('cliente');
+					$convenio1->valorconvenio=$request->get('abono');
+					$convenio1->fechaconvenio=$request->get('fecha_convenio');
+					$convenio1->estadoconvenio='0';
+					$convenio1->save();
+
+				}
+				
 				
 			}
 			
