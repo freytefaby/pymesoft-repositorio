@@ -4,20 +4,19 @@ namespace hhfarm;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Convenio extends Model
+class Abono extends Model
 {
-    protected $table='convenio';
+    protected $table='detalle_abono';
 	
-	protected $primaryKey='idconvenio';
+	protected $primaryKey='iddetalleabono';
 	
 	public $timestamps=false;
 	
 	protected $fillable=[
+	'valorabono',
+	'fecha_abono',
 	'idcliente',
-	'valorconvenio',
-	'fechaconvenio',
-	'estadoconvenio',
-	'abono'
+	'idconvenio'
 	
 	
 	

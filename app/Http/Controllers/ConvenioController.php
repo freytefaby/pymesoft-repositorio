@@ -12,6 +12,7 @@ use hhfarm\Http\Requests\VentaForRequest;
 use hhfarm\Ventas;
 use hhfarm\DetalleVentas;
 use hhfarm\Convenio;
+use hhfarm\Abono;
 use hhfarm\DetalleConvenio;
 use DB;
 
@@ -94,7 +95,12 @@ if($request)
 					   ->where('v.idcliente','=',$query)
 					   ->orderby('v.fecha','desc')
 					   ->get();
-			return view('peticion.convenio.create',["convenio"=>$convenio,"cliente"=>$request->get('id')]);
+			$abonos=DB::table('convenio as c')
+			->where('c.idcliente','=',$query)
+			->where('c.estadoconvenio','=',0)
+			->first();
+
+			return view('peticion.convenio.create',["convenio"=>$convenio,"cliente"=>$request->get('id'),"abonos"=>$abonos]);
 			
 		}
 
@@ -128,55 +134,154 @@ if($request)
 
 if($request)
 		{
-			if ($request->get('valorconvenio')==$request->get('abono')) {
-				$convenio=new Convenio;
-				$convenio->idcliente=$request->get('cliente');
-				$convenio->valorconvenio=$request->get('valorconvenio');
-				$convenio->fechaconvenio=$request->get('fecha_convenio');
-				$convenio->estadoconvenio='1';
-				$convenio->save();
+			$valor=$request->get('abono')+$request->get('convenios');
+			//print_r($valor); exit;
+
+
+
+			if ($request->get('valorconvenio')==$valor) {
+
+				$validar=DB::table('convenio as c')
+				->where('c.idcliente','=',$request->get('cliente'))
+				->where('c.estadoconvenio','=','0')
+				->first();
+				if (count($validar)==1) 
+				{
+					$actualizar=Convenio::findOrFail($validar->idconvenio);
+					$actualizar->abono=$request->get('abono')+$validar->abono;
+					$actualizar->estadoconvenio='1';
+					$actualizar->update();
+
+					$conveniovalor=DB::table('venta as v')
+					->join('clientes as c','v.idcliente','=','c.idcliente')
+					->join('usuarios as u','u.idusuario','=','v.idusuario')
+					->join('cupo as cu','cu.idcliente','=','c.idcliente')
+					->select('v.valorventa','c.nombrecliente','cu.max_credito','v.fecha','cu.dias_credito','c.idcliente','V.idtipoventa','v.idventa')
+					->where('v.idtipoventa','=',5)
+					->where('v.convenio','=',1)
+					->where('v.idcliente','=',$request->get('cliente'))
+					->orderby('v.fecha','desc')
+					->get();
+					$cont=0;
+					
+					//print_r(sizeof($conveniovalor)); exit;
+					foreach ($conveniovalor as $con ) {
+						$detalleconvenio=new DetalleConvenio;
+						$detalleconvenio->idconvenio=$validar->idconvenio;
+						$detalleconvenio->facturascadena="HHF-005".$con->idventa;
+						$detalleconvenio->valorconvenio=$con->valorventa;
+						$detalleconvenio->save();
+				
+						$detalleconvenio=Ventas::findOrFail($con->idventa);
+						$detalleconvenio->convenio='0';
+						$detalleconvenio->update();
+					}
+					
+				
+					$abono=new Abono;
+					$abono->valorabono=$request->get('abono');
+					$mytime= Carbon::now('America/Bogota');
+					$abono->fecha_abono=$mytime->toDateTimeString();
+					$abono->idcliente=$request->get('cliente');
+					$abono->idconvenio=$validar->idconvenio;
+					$abono->save();
+					
+				} else {
+					$convenio=new Convenio;
+					$convenio->idcliente=$request->get('cliente');
+					$convenio->valorconvenio=$request->get('valorconvenio');
+					$convenio->fechaconvenio=$request->get('fecha_convenio');
+					$convenio->estadoconvenio='1';
+					$convenio->abono=$request->get('abono');
+					$convenio->save();
+
+
+					
+					$abono=new Abono;
+					$abono->valorabono=$request->get('abono');
+					$mytime= Carbon::now('America/Bogota');
+					$abono->fecha_abono=$mytime->toDateTimeString();
+					$abono->idcliente=$request->get('cliente');
+					$abono->idconvenio=$convenio->idconvenio;
+					$abono->save();
+
+					$cont=0;
+					$conveniovalor=DB::table('venta as v')
+					->join('clientes as c','v.idcliente','=','c.idcliente')
+					->join('usuarios as u','u.idusuario','=','v.idusuario')
+					->join('cupo as cu','cu.idcliente','=','c.idcliente')
+					->select('v.valorventa','c.nombrecliente','cu.max_credito','v.fecha','cu.dias_credito','c.idcliente','V.idtipoventa','v.idventa')
+					->where('v.idtipoventa','=',5)
+					->where('v.convenio','=',1)
+					->where('v.idcliente','=',$request->get('cliente'))
+					->orderby('v.fecha','desc')
+					->get();
+					//print_r(sizeof($conveniovalor)); exit;
+					foreach ($conveniovalor as $con ) {
+						$detalleconvenio=new DetalleConvenio;
+						$detalleconvenio->idconvenio=$convenio->idconvenio;
+						$detalleconvenio->facturascadena="HHF-005".$con->idventa;
+						$detalleconvenio->valorconvenio=$con->valorventa;
+						$detalleconvenio->save();
+				
+						$detalleconvenio=Ventas::findOrFail($con->idventa);
+						$detalleconvenio->convenio='0';
+						$detalleconvenio->update();
+					}
+				}
+				
+				
+
 	
-	                        $conveniovalor=DB::table('venta as v')
-						   ->join('clientes as c','v.idcliente','=','c.idcliente')
-						   ->join('usuarios as u','u.idusuario','=','v.idusuario')
-						   ->join('cupo as cu','cu.idcliente','=','c.idcliente')
-						   ->select('v.valorventa','c.nombrecliente','cu.max_credito','v.fecha','cu.dias_credito','c.idcliente','V.idtipoventa','v.idventa')
-						   ->where('v.idtipoventa','=',5)
-						   ->where('v.convenio','=',1)
-						   ->where('v.idcliente','=',$request->get('cliente'))
-						   ->orderby('v.fecha','desc')
-						   ->get();
-	$cont=0;
-	//print_r(sizeof($conveniovalor)); exit;
-	foreach ($conveniovalor as $con ) {
-		$detalleconvenio=new DetalleConvenio;
-		$detalleconvenio->idconvenio=$convenio->idconvenio;
-		$detalleconvenio->facturascadena="HHF-005".$con->idventa;
-		$detalleconvenio->valorconvenio=$con->valorventa;
-		$detalleconvenio->save();
-	}
+	                       
+	
 					
 				
 			
-			} else {
+			} 
+			
+			else {
     
 				$validar=DB::table('convenio as c')
 				->where('c.idcliente','=',$request->get('cliente'))
 				->where('c.estadoconvenio','=','0')
 				->first();
    
-				if(sizeof($validar)>1)
+				if(count($validar)==1)
 				{
-					
+					$actualizar=Convenio::findOrFail($validar->idconvenio);
+					$actualizar->abono=$request->get('abono')+$validar->abono;
+					$actualizar->update();
+
+
+					$abono=new Abono;
+					$abono->valorabono=$request->get('abono');
+					$mytime= Carbon::now('America/Bogota');
+					$abono->fecha_abono=$mytime->toDateTimeString();
+					$abono->idcliente=$request->get('cliente');
+					$abono->idconvenio=$validar->idconvenio;
+					$abono->save();
+
 				}
 				else
 				{
 					$convenio1=new Convenio;
 					$convenio1->idcliente=$request->get('cliente');
-					$convenio1->valorconvenio=$request->get('abono');
+					$convenio1->valorconvenio=$request->get('valorconvenio');
 					$convenio1->fechaconvenio=$request->get('fecha_convenio');
 					$convenio1->estadoconvenio='0';
+					$convenio1->abono=$request->get('abono');
 					$convenio1->save();
+
+					$abono=new Abono;
+					$abono->valorabono=$request->get('abono');
+					$mytime= Carbon::now('America/Bogota');
+					$abono->fecha_abono=$mytime->toDateTimeString();
+					$abono->idcliente=$request->get('cliente');
+					$abono->idconvenio=$convenio1->idconvenio;
+					$abono->save();
+
+					
 
 				}
 				

@@ -115,7 +115,7 @@
 									<th>Nombre cliente</th>
 									<th>Valor de convenio</th>
 								    <th>Facturas</th>
-									<th>Fecha Limite</th>
+									<th>Fecha</th>
 									
 									
 									</tr>
@@ -171,7 +171,7 @@
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 
-                            <div class="col-xs-12">
+                            <div class="col-xs-4">
                             <div class="alert alert-block alert-success">
 											<button type="button" class="close" data-dismiss="alert">
 												<i class="ace-icon fa fa-times"></i>
@@ -186,6 +186,7 @@
                                                 {!!Form::open(array('url'=>'peticion/convenio','method'=>'POST','autocomplete'=>'off','role'=>'form'))!!}
 					{{Form::token()}}
                                                 Valor Convenio: {{number_format($sumcon)}}<br>
+												Abonos del cliente: @if (count($abonos)==1){{number_format($abonos->abono)}}@else 0 @endif<br>
                                                 Cupo maximo para convenio: {{number_format($con->max_credito)}}<br>
                                                 Fecha Limite de pago: <?php $a=fecha_credito($con->fecha,$con->dias_credito); echo fecha($a)?><br>
                                                 Fecha Creacion Convenio: {{fecha($con->fecha)}}<br>
@@ -194,6 +195,7 @@
 
 											<p>
                                             <input type="number" name="abono" >
+											<input type="hidden" name="convenios" value="@if(count($abonos)==1){{$abonos->abono}}@endif">
 											<input type="hidden" name="cliente" value="{{$cliente}}">
 											<input type="hidden" name="valorconvenio" value="{{$sumcon}}">
 											<input type="hidden" name="fecha_convenio" value="{{$con->fecha}}">
