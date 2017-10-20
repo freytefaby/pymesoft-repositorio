@@ -295,6 +295,12 @@ $infoempresa=DB::table('infoempresa')
 			}		
 				if(sizeof($convenio->ventas)==0)
 				{
+					$valor= $request->get('valorventa');
+					if ( $valor > $cupo->max_credito  ) {
+						return response()->json(["mensaje"=>"Excedio cupo maximo"." ".number_format($cupo->max_credito)."<br> Valor de convenio"." ".number_format($convenio->ventas + $request->get('valorventa'))]);
+					}
+					
+						
 				$venta=Ventas::findOrFail($id);
 				$venta->valorventa=$request->get('valorventa');
 				$venta->idcliente=$request->get('cliente');
@@ -335,8 +341,8 @@ $infoempresa=DB::table('infoempresa')
 		   }
 			else
 		   {
-
-			if ($cupo->max_credito < $convenio->ventas + $request->get('valorventa') ) {
+                $valor=$convenio->ventas + $request->get('valorventa');
+			if ( $valor > $cupo->max_credito  ) {
 				return response()->json(["mensaje"=>"Excedio cupo maximo"." ".number_format($cupo->max_credito)."<br> Valor de convenio"." ".number_format($convenio->ventas + $request->get('valorventa'))]);
 			} else {
 

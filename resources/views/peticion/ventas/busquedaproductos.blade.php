@@ -23,7 +23,7 @@
 													<td class="hidden-xs hidden-sm">{{$med->stock}}</td>
 												  
 												</tr>
-                                        <tr c><td class="hidden-md hidden-lg" ><a href="{{URL('peticion/ventas/create?p='.$med->codigobarra1)}}">{{$med->descripcionproducto}} </a> <br> {{$med->nombreproveedor}} <br>  {{$med->codigobarra1}} <br> Stock {{$med->stock}} </td></tr>
+                                        <tr ><td class="hidden-md hidden-lg" ><a href="{{URL('peticion/ventas/create?p='.$med->codigobarra1)}}">{{$med->descripcionproducto}} </a> <br> {{$med->nombreproveedor}} <br>  {{$med->codigobarra1}} <br> Stock {{$med->stock}} </td></tr>
 												@endforeach
 												
 												

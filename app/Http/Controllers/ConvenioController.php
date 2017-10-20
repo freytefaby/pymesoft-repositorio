@@ -99,8 +99,13 @@ if($request)
 			->where('c.idcliente','=',$query)
 			->where('c.estadoconvenio','=',0)
 			->first();
+		  $detalle_abono=DB::table('detalle_abono as db')
+		  ->join('convenio as c','c.idconvenio','=','db.idconvenio')
+		  ->where('c.estadoconvenio','=',0)
+		  ->where('c.idcliente','=',$query)
+		  ->get();
 
-			return view('peticion.convenio.create',["convenio"=>$convenio,"cliente"=>$request->get('id'),"abonos"=>$abonos]);
+			return view('peticion.convenio.create',["convenio"=>$convenio,"cliente"=>$request->get('id'),"abonos"=>$abonos,"detalle_abono"=>$detalle_abono]);
 			
 		}
 
@@ -134,9 +139,16 @@ if($request)
 
 if($request)
 		{
+
+
+
+
 			$valor=$request->get('abono')+$request->get('convenios');
 			//print_r($valor); exit;
-
+			if($valor>$request->get('valorconvenio'))
+			{
+				return Redirect::to('peticion/convenio/create?id='.$request->get('cliente'))->with('mensaje','Error el valor del abono es superior al convenio');
+			}
 
 
 			if ($request->get('valorconvenio')==$valor) {

@@ -158,20 +158,7 @@
 								
 
 								<div class="hr hr-18 dotted hr-double"></div>
-
-								
-
-							
-							
-							
-
-							
-						
-
-								<!-- PAGE CONTENT ENDS -->
-							</div><!-- /.col -->
-
-                            <div class="col-xs-4">
+								<div class="col-xs-12 col-md-4">
                             <div class="alert alert-block alert-success">
 											<button type="button" class="close" data-dismiss="alert">
 												<i class="ace-icon fa fa-times"></i>
@@ -183,7 +170,7 @@
 												Finalizar Convenio o pago de abono
 												</strong>
 												<br>
-                                                {!!Form::open(array('url'=>'peticion/convenio','method'=>'POST','autocomplete'=>'off','role'=>'form'))!!}
+                                                {!!Form::open(array('url'=>'peticion/convenio','method'=>'POST','autocomplete'=>'off','role'=>'form','id'=>'formulario','onsubmit'=>'return checkSubmit();'))!!}
 					{{Form::token()}}
                                                 Valor Convenio: {{number_format($sumcon)}}<br>
 												Abonos del cliente: @if (count($abonos)==1){{number_format($abonos->abono)}}@else 0 @endif<br>
@@ -199,7 +186,7 @@
 											<input type="hidden" name="cliente" value="{{$cliente}}">
 											<input type="hidden" name="valorconvenio" value="{{$sumcon}}">
 											<input type="hidden" name="fecha_convenio" value="{{$con->fecha}}">
-												<button class="btn btn-sm btn-success" type="submit">Enviar</button>
+												<input class="btn btn-sm btn-success" type="submit" id="agregar" value="Enviar" />
 											
 											</p>
 										</div>
@@ -208,6 +195,63 @@
                             
                             
                             </div>
+								
+
+							
+							
+							<div class="col-md-8">
+							
+							<H1>Plan pagos de abonos de clientes</h1>
+							<table id="dynamic-table" class="table table-striped table-bordered table-hover">
+									<thead>
+									<tr>
+									<th>#</th>
+									<th>Fecha de abono</th>
+									<th>Valor de abono</th>
+								   
+									
+									
+									</tr>
+									
+									</thead>
+									<?php $cont2=0; $sumcon2=0;?>
+                                    <tbody>
+									@foreach($detalle_abono as $det)
+									<?php $cont2=$cont2+1; $sumcon2=$sumcon2 + $det->valorabono; ?>
+									
+									
+									<tr>
+									<td><?php echo $cont2 ?></td>
+									<td>{{fecha($det->fecha_abono)}}</td>
+									<td>{{number_format($det->valorabono)}}</td>
+									
+									
+									
+									</tr>
+									
+								
+									
+									@endforeach
+                                    </tbody>
+									<tfoot>
+									<tr>
+									<th></th>
+									<th></th>
+									<th>{{number_format($sumcon2)}}</th>
+									
+									
+									</tr>	
+									</tfoot>
+									</table>
+							</div>
+
+							
+						
+
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+                            
+                            
 						</div><!-- /.row -->
 					</div><!-- /.page-content -->
 				</div>
@@ -221,6 +265,17 @@
 	
 
 	<script src="{{asset('public/js/jquery-2.1.4.min.js')}}"></script>
+
+	<script>
+	
+	function checkSubmit() {
+		document.getElementById("agregar").value = "Enviando...";
+		document.getElementById("agregar").disabled = true;
+		return true;
+	}
+	
+	
+	</script>
 		
 			<!--<script>
 		$("#buscar").keypress(function(e){
