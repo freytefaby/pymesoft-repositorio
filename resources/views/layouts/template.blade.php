@@ -168,8 +168,8 @@
 								<ul class="submenu">
 									<li class="">
 										<a href="{{URL('peticion/convenio')}}">
-											<i class="menu-icon fa fa-caret-right"></i>
-											Convenios
+											
+											Abonos
 										</a>
 
 										<b class="arrow"></b>
