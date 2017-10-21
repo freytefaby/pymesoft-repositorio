@@ -175,6 +175,16 @@
 										<b class="arrow"></b>
 									</li>
 									</ul>
+										<ul class="submenu">
+									<li class="">
+										<a href="{{URL('peticion/conveniopagos')}}">
+											
+										Pagos
+										</a>
+
+										<b class="arrow"></b>
+									</li>
+									</ul>
 							</li>
 							<li class="">
 								<a href="{{URL('peticion/graficos')}}">
