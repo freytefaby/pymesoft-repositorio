@@ -328,33 +328,16 @@ if($request)
  
 
 
- public function cargausuarioconvenio(Request $request, $id)
+ public function verconvenios()
  {
 	 
-	 $cliente=DB::table('venta as v')
-	                   ->join('clientes as c','v.idcliente','=','c.idcliente')
-					   ->join('usuarios as u','u.idusuario','=','v.idusuario')
-	                   ->where('c.cedulacliente','=',$id)
-					   ->where('v.idtipoventa','=',5)
-					   ->where('v.convenio','=',1)
+	 $convenios=DB::table('convenio as v')
+					   ->join('clientes as c','v.idcliente','=','c.idcliente')
+					   ->where('estadoconvenio','=','1')
 					   ->get();
-	return view('peticion.convenio.tabladetalle',["cliente"=>$cliente]);
+	return view('peticion.convenio.pagos',["convenios"=>$convenios]);
  }
- public function agregar(Request $request)
- {
-	 $cont=0;
 
-	 
-	  while($cont < count($_GET["convenio"]))
-	   {  
-	    DB::update('update venta set convenio = ? where idventa = ?',['0',$_GET["convenio"][$cont]]);
-		$cont=$cont+1;
-		   
-	   }
- }
- public function show()
- {
-	 return "hola";
- }
+ 
 
  }

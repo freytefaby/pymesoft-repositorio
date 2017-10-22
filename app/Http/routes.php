@@ -160,42 +160,164 @@ route::resource('peticion/proveedores','ProveedoresController');
 */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+|--------------------------------------------------------------------------
+|Ruta USUARIOS
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/usuarios','UsuariosController');
 route::get('peticion/restablecer/{id}','UsuariosController@restablecer');
 route::post('peticion/updatecontrasena/{id}','UsuariosController@updatecontrasena');
+route::get('peticion/restablecer/{id}','UsuariosController@restablecer');
+route::post('peticion/updatecontrasena/{id}','UsuariosController@updatecontrasena');
+/*
+| FIN USUARIOS
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta COMPRAS
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/compras','ComprasController');
 route::resource('peticion/compras/detalle_compra','DetalleCompraController');
+/*
+| FIN COMPRAS
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta DEVOLUCIONES
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/devoluciones','DevolucionesController');
 route::resource('peticion/devoluciones/detalle_devolucion','DetalleDevolucionesController');
 route::get('peticion/devolucioncliente/{id}','DevolucionesController@mostrar');
 route::resource('peticion/devolucionescompras','DevolucionesComprasController');
 route::resource('peticion/devoluciones/detalle_devolucioncompra','DetalleDevolucionesCompraController');
 route::get('peticion/devolucioncompra/{id}','DevolucionesComprasController@mostrar');
+/*
+| FIN DEVOLUCIONES
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta GASTOS
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/gasto','GastoController');
+/*
+| FIN GASTOS
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta BASE
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/base','BaseController');
+/*
+| FIN BASE
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta CIERRE
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/cierrediario','CierreController');
+/*
+| FIN CIERRE
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta INVENTARIO
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/inventarioproductolaboratorio','InventarioProductoLaboratorioController');
+
+/*
+| FIN INVENTARIO
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta REPORTES MES
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/reportemes','ReporteMesController');
+/*
+| FIN REPORTES MES
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta INGRESOS
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/ingreso','IngresoController');
+/*
+| FIN INGRESOS
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta MOVIMIENTOS
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/movimientos','MovimientoController');
+/*
+| FIN MOVIVIMIENTOS
+*/
+
+/*
+|--------------------------------------------------------------------------
+|Ruta GRAFICOS
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/graficos','GraficosController');
+/*
+| FIN GRAFICOS
+*/
 
-
-
+/*
+|--------------------------------------------------------------------------
+|Ruta CONVENIOS
+|--------------------------------------------------------------------------
+*/
 route::resource('peticion/convenio','ConvenioController');
+route::get('peticion/conveniopagos','ConvenioController@verconvenios');
+/*
+| FIN CONVENIOS
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
