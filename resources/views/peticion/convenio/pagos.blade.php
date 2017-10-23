@@ -117,7 +117,6 @@
                                     <th>No.convenio</th>
 									<th>Valor de convenio</th>
 									<th>Fecha</th>
-									<th>Abonos</th>
                                     <th>Accion</th>
 									
 									</tr>
@@ -134,8 +133,32 @@
                                     <td>HHCO-00{{$con->idconvenio}}</td>
                                     <Td>{{number_format($con->valorconvenio)}}</td>
                                     <td>{{fecha($con->fechaconvenio)}}</td>
-                                    <Td>{{number_format($con->abono)}}</td>
-                                    <td></td>
+                                    <td>
+									
+												
+														<div class=" btn-group hidden-xs hidden-sm">
+														
+
+															<a href="{{URL('pdf/convenio/factura/'.$con->idconvenio)}}"><button class="btn btn-xs btn-success "  title="Imprimir documento">
+															<i class="ace-icon fa fa-file-pdf-o bigger-120"></i>
+															</button></a>
+														
+																<a href="{{URL::action('VentaController@show',$con->idconvenio)}}" target="_blank"><button class="btn btn-xs btn-info" title="Ver factura">
+																<i class="ace-icon fa fa-eye bigger-120"></i>
+										
+															</button></a>
+															
+
+															
+
+															
+														</div>
+														
+
+														
+													
+									
+									</td>
 									</tr>
 									
 									
@@ -213,7 +236,7 @@
 					bAutoWidth: false,
 					"aoColumns": [
 					  { "bSortable": false },
-					  null, null,null,null,null,
+					  null, null,null,null,
 					  { "bSortable": false }
 					],
 					"aaSorting": [],

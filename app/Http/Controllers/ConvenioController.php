@@ -334,6 +334,7 @@ if($request)
 	 $convenios=DB::table('convenio as v')
 					   ->join('clientes as c','v.idcliente','=','c.idcliente')
 					   ->where('estadoconvenio','=','1')
+					   ->orderby('v.fechaconvenio','desc')
 					   ->get();
 	return view('peticion.convenio.pagos',["convenios"=>$convenios]);
  }

@@ -3,9 +3,7 @@
 <html lang="es">
 
 <head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>@foreach($ventas as $vent)
-HHF-00{{$vent->idtipoventa}}{{$vent->idventa}}
-@endforeach</title>
+<title>Convenio HHCO-00{{$id}}</title>
 
 
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -34,18 +32,21 @@ body {
    Nit: {{$infoempresa->nitempresa}}<br>
    Ciudad: {{$infoempresa->ciudadempresa}}<br>
 	  Factura simplificada<br>
-	  {{fecha($vent->fecha)}}
-	  @foreach($ventas as $vent)
+	  {{fecha($convenio->fechaconvenio)}}
+
+
+
+	
 	  <p>============================================
-	  Fac: HHF-00{{$vent->idtipoventa}}{{$vent->idventa}}
+	  Fac: HHFCO-00{{$convenio->idconvenio}}
 	  ============================================</p>
 	  </font>
-	  @endforeach
+	
 	  </div>
 	  <div  style="width:240px; margin: 0mm 0mm 0mm 0mm;" align="left" >
 <p>
-@foreach($detalleventa as $detail)
-{{mb_strtolower(substr($detail->descripcionproducto,0,20))}} ({{$detail->cantidad}}) ${{number_format($detail->subtotal)}}<br>
+@foreach($consulta as $conv)
+{{$conv->facturascadena}} {{$conv->valorconvenio}}<br>
   
 @endforeach
 </p>
@@ -57,7 +58,6 @@ body {
 	  
 	  </div>
 <div style="width:200px" align="right">
-No. productos: {{$sumarray->detalle}}<br>
 @foreach($ventas as $vent)
 Recargo Iva:{{number_format($vent->valorventa-$vent->subtotal)}} <br>
 Subtotal: {{number_format($vent->subtotal)}}<br>

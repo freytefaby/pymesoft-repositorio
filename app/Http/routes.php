@@ -79,6 +79,7 @@ route::get('pdf/devolucionescompras/factura/{id}','Pdf_DevolucionesComprasContro
 route::get('pdf/cierre/print_cierre/{id}','Pdf_CierreDiarioController@show');
 route::get('pdf/pdf_inventarioproductolaboratorio','Pdf_inventariolaboratorioproductoController@show');
 route::get('pdf/pdf_reportemes','Pdf_ReporteMesController@show');
+route::get('pdf/convenio/factura/{id}','Pdf_ConvenioController@show');
 /*
 | FIN PDF'S
 */
