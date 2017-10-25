@@ -31,7 +31,7 @@ body {
    Tel: {{$infoempresa->telefonoempresa}}<br>
    Nit: {{$infoempresa->nitempresa}}<br>
    Ciudad: {{$infoempresa->ciudadempresa}}<br>
-	  Factura simplificada<br>
+	 Convenios<br>
 	  {{fecha($convenio->fechaconvenio)}}
 
 
@@ -46,7 +46,7 @@ body {
 	  <div  style="width:240px; margin: 0mm 0mm 0mm 0mm;" align="left" >
 <p>
 @foreach($consulta as $conv)
-{{$conv->facturascadena}} {{$conv->valorconvenio}}<br>
+{{$conv->facturascadena}}   {{number_format($conv->valorconvenio)}}<br>
   
 @endforeach
 </p>
@@ -58,13 +58,7 @@ body {
 	  
 	  </div>
 <div style="width:200px" align="right">
-@foreach($ventas as $vent)
-Recargo Iva:{{number_format($vent->valorventa-$vent->subtotal)}} <br>
-Subtotal: {{number_format($vent->subtotal)}}<br>
-Total a pagar: {{number_format($vent->valorventa)}}<br>
-Recibido: {{number_format($vent->importeventa)}}<br>
-Cambio: {{number_format($vent->importeventa-$vent->valorventa)}}
-@endforeach
+
 </div>
 
 <div style="width:200px" align="center">
@@ -75,10 +69,7 @@ Cambio: {{number_format($vent->importeventa-$vent->valorventa)}}
 	  </div>
 
 	  <div style="width:200px" align="center">
-@foreach($ventas as $vent)
-Vendedor:{{$vent->nombreusuario}} <br>
-Cliente:{{$vent->nombrecliente}}
-@endforeach
+
 ============================================<br>
 MUCHAS GRACIAS POR TU COMPRA, TE ESPERAMOS NUEVAMENTE!!
 <br>
