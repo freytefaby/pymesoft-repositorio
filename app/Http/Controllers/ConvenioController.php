@@ -331,7 +331,7 @@ if($request)
  public function verconvenios()
  {
 	 
-	 $convenios=DB::table('detalle_convenio as v')
+	 $convenios=DB::table('convenio as v')
 					   ->join('clientes as c','v.idcliente','=','c.idcliente')
 					   ->where('estadoconvenio','=','1')
 					   ->orderby('v.fechaconvenio','desc')

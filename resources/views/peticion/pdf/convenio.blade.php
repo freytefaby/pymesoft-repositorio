@@ -31,24 +31,28 @@ body {
    Tel: {{$infoempresa->telefonoempresa}}<br>
    Nit: {{$infoempresa->nitempresa}}<br>
    Ciudad: {{$infoempresa->ciudadempresa}}<br>
-	 Convenios<br>
+	  Factura simplificada<br>
 	  {{fecha($convenio->fechaconvenio)}}
 
 
 
 	
 	  <p>============================================
-	  Fac: HHFCO-00{{$convenio->idconvenio}}
+	Convenio: HHFCO-00{{$convenio->idconvenio}}
 	  ============================================</p>
 	  </font>
 	
 	  </div>
-	  <div  style="width:240px; margin: 0mm 0mm 0mm 0mm;" align="left" >
+<div  style="width:240px; margin: 0mm 0mm 0mm 0mm;" align="left" >
+	  <P ALIGN="center">Facturas que se genero convenios</p>
 <p>
+<?php $cont=0; ?>
 @foreach($consulta as $conv)
-{{$conv->facturascadena}}   {{number_format($conv->valorconvenio)}}<br>
+<?php $cont=$conv->valorconvenio + $cont; ?>
+({{$conv->facturascadena}}) {{number_format($conv->valorconvenio)}}<br>
   
 @endforeach
+<b>Total: <?php echo number_format($cont); ?> </b>
 </p>
 </div>
 <div style="width:200px" align="center">
@@ -58,6 +62,7 @@ body {
 	  
 	  </div>
 <div style="width:200px" align="right">
+
 
 </div>
 
