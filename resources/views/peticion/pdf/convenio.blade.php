@@ -57,16 +57,18 @@ body {
 </div>
 <div style="width:200px" align="center">
 <!--<h3><img src="{{asset('public/images/logo/4_Grayscale_logo_on_transparent_127x74.png')}}" width="100px"></h3>-->
-  
+ 
 	  <p>============================================</p>
 	  
 	  </div>
-<div style="width:200px" align="right">
+
+<div style="width:200px" align="left">
+<P ALIGN="center">Abonos</p>
 
 
 </div>
 
-<div style="width:200px" align="center">
+<div style="width:200px " align="center">
 <!--<h3><img src="{{asset('public/images/logo/4_Grayscale_logo_on_transparent_127x74.png')}}" width="100px"></h3>-->
   
 	  <p>============================================</p>
