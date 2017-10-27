@@ -64,7 +64,12 @@ body {
 
 <div style="width:200px" align="left">
 <P ALIGN="center">Abonos</p>
-
+<?php $cont1=0; ?>
+@foreach($abonos as $ab)
+<?php $cont=$conv->valorconvenio + $cont; ?>
+({{fecha($ab->fecha_abono)}}) {{number_format($ab->valorabono)}}<br>
+  
+@endforeach
 
 </div>
 

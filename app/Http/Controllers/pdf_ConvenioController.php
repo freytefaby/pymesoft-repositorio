@@ -41,16 +41,19 @@ $infoempresa=DB::table('infoempresa')
                 ->where('dc.idconvenio','=',$id)
                 ->first();
 
-                $consulta=DB::table('detalle_convenio as dc')
+$consulta=DB::table('detalle_convenio as dc')
                 ->select('dc.valorconvenio','dc.facturascadena')
                 ->join('convenio as c','c.idconvenio','=','dc.idconvenio')
                 ->where('dc.idconvenio','=',$id)
                 ->get();
-
+                $abonos=DB::table('detalle_abono as da')
+                ->join('convenio as c','c.idconvenio','=','da.idconvenio')
+                ->where('da.idconvenio','=',$id)
+                ->get();
 
 
  
-        $view =  \View::make('peticion.pdf.convenio', compact('infoempresa','id','convenio','consulta'))->render();
+        $view =  \View::make('peticion.pdf.convenio', compact('infoempresa','id','convenio','consulta','abonos'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
         return $pdf->stream('invoice');
