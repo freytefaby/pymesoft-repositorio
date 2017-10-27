@@ -76,184 +76,113 @@
 
 						<div class="page-header">
 							<h1>
-								Convenios
+								Cupos para convenios
 								<small>
 									<i class="ace-icon fa fa-angle-double-right"></i>
-								Crud mantenimiento Convenios a cliente.
+								Crud mantenimiento Cupos.
 								</small>
 							</h1>
 							
 						</div><!-- /.page-header -->
-                           
-								 @if(Session::has('mensaje'))
-                                           <div class="alert alert-warning">
-                <button type="button" class="close" data-dismiss="alert">x</button>
-               <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{Session::get('mensaje')}}.
-            </div>
-                                     @endif
-									 @if(Session::has('mensaje1'))
-                                           <div class="alert alert-success">
-                <button type="button" class="close" data-dismiss="alert">x</button>
-            </i> {{Session::get('mensaje1')}}.
-            </div>
-                                     @endif
+                           @if(Session::has('mensaje'))
+								<div class="row">
+								<div class="col-md-12" >
+								<div class="alert alert-success">
+								 {{Session::get('mensaje')}}
+								</div>
+								</div>
+								</div>
+								@endif 
 						<div class="row">
 						
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
-							
-							
+								<div class="row">
+									<div class="col-xs-12">
+									<a href="gasto/create"><button class="btn btn-primary">
+												<i class="ace-icon glyphicon glyphicon-plus"></i>
+												Abrir cupo a cliente
+											</button></a><br><br>
+									<div class="table-responsive">
 									
 									
-							
-									
+                                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th class="center">
+														#
+													</th>
+													<th>Cliente</th>
+													<th>Maximo cupo de credito</th>
+													<th>Maximo plazo credito</th>
+													<th>Fehca de apertura</th>
+                                                    <th>Acciones</th>
+													
+													
+												</tr>
+											</thead>
+
+											<tbody>
+                                            <?php $cont=0; ?>
+                                            @foreach($cupo as $c)
+                                            <?php $cont=$cont+1; ?>
+											<tr>
+                                            <td>{{$cont}}</td>
+                                            <td>{{$c->nombrecliente}}</td>
+                                            <td>{{number_format($c->max_credito)}}</td>
+                                            <td>{{$c->dias_credito}}</td>
+                                            <td>{{fecha($c->fecha_creacion_convenio)}}</td>
+                                            <td>
+                                            
+															<div class="inline pos-rel">
+																<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
+																	<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+																</button>
+
+																<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+																	
+
+																	<li>
+																		<a href="{{URL::action('CupoController@edit',$c->idconvenio)}}" class="tooltip-warning" data-rel="tooltip" title="Edit">
+																			<span class="green">
+																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+																			</span>
+																		</a>
+																	</li>
+
+																	
+																</ul>
+															</div>
+														
+                                            
+                                            </td>
+                                            </tr>
+                                            
+												@endforeach
+												
+
+								      </tbody>
+										</table>
+									</div><!-- /.span -->
+								
+								
 										
-									
-									<table id="dynamic-table" class="table table-striped table-bordered table-hover">
-									<thead>
-									<tr>
-									<th>Nombre cliente</th>
-									<th>Valor de convenio</th>
-								    <th>Facturas</th>
-									<th>Fecha</th>
-									
-									
-									</tr>
-									
-									</thead>
-									<?php $cont=0; $sumcon=0; $cupo=0;?>
-                                    <tbody>
-									@foreach($convenio as $con)
-									<?php $cont=$cont+1; $sumcon=$sumcon + $con->valorventa; $cupo=$cupo+$con->max_credito; ?>
-									
-									
-									<tr>
-									<td>{{$con->nombrecliente}}</td>
-									<td>{{number_format($con->valorventa)}}</td>
-									<td>HHF-00{{$con->idtipoventa}}{{$con->idventa}}</td>
-									<td>{{fecha($con->fecha)}}</td>
-									
-									
-									</tr>
-									
-								
-									
-									@endforeach
-                                    </tbody>
-									<tfoot>
-									<tr>
-									<th>{{$cont}}</th>
-									<th>{{number_format($sumcon)}}</th>
-									<th></th>
-									<th></th>
-									</tr>	
-									</tfoot>
-									</table>
-													  
-									
-							
-								
-										
-							
-								
+								</div><!-- /.row -->
+								</div>
 
 								<div class="hr hr-18 dotted hr-double"></div>
-								<div class="col-xs-12 col-md-4">
-                            <div class="alert alert-block alert-success">
-											<button type="button" class="close" data-dismiss="alert">
-												<i class="ace-icon fa fa-times"></i>
-											</button>
 
-											<p>
-												<strong>
-													<i class="ace-icon fa fa-check"></i>
-												Finalizar Convenio o pago de abono
-												</strong>
-												<br>
-                                                {!!Form::open(array('url'=>'peticion/convenio','method'=>'POST','autocomplete'=>'off','role'=>'form','id'=>'formulario','onsubmit'=>'return checkSubmit();'))!!}
-					{{Form::token()}}
-                                                Valor Convenio: {{number_format($sumcon)}}<br>
-												Abonos del cliente: @if (count($abonos)==1){{number_format($abonos->abono)}}@else 0 @endif<br>
-                                                Cupo maximo para convenio: {{number_format($con->max_credito)}}<br>
-                                                Fecha Limite de pago: <?php $a=fecha_credito($con->fecha,$con->dias_credito); echo fecha($a)?><br>
-                                                Fecha Creacion Convenio: {{fecha($con->fecha)}}<br>
-                                                Dias para credito: {{$con->dias_credito}}
-											</p>
-
-											<p>
-                                            <input type="number" name="abono" >
-											<input type="hidden" name="convenios" value="@if(count($abonos)==1){{$abonos->abono}}@endif">
-											<input type="hidden" name="cliente" value="{{$cliente}}">
-											<input type="hidden" name="valorconvenio" value="{{$sumcon}}">
-											<input type="hidden" name="fecha_convenio" value="{{$con->fecha}}">
-											<input type="hidden" name="cupo" value="{{$con->dias_credito}}">
-											<input type="hidden" name="valor_cupo" value="{{$con->max_credito}}">
-												<input class="btn btn-sm btn-success" type="submit" id="agregar" value="Enviar" />
-											
-											</p>
-										</div>
-                                        {!!Form::close()!!}
-                            
-                            
-                            
-                            </div>
 								
 
 							
+
 							
-							<div class="col-md-8">
-							
-							<H1>Plan pagos de abonos de clientes</h1>
-							<table id="dynamic-table" class="table table-striped table-bordered table-hover">
-									<thead>
-									<tr>
-									<th>#</th>
-									<th>Fecha de abono</th>
-									<th>Valor de abono</th>
-								   
-									
-									
-									</tr>
-									
-									</thead>
-									<?php $cont2=0; $sumcon2=0;?>
-                                    <tbody>
-									@foreach($detalle_abono as $det)
-									<?php $cont2=$cont2+1; $sumcon2=$sumcon2 + $det->valorabono; ?>
-									
-									
-									<tr>
-									<td><?php echo $cont2 ?></td>
-									<td>{{fecha($det->fecha_abono)}}</td>
-									<td>{{number_format($det->valorabono)}}</td>
-									
-									
-									
-									</tr>
-									
-								
-									
-									@endforeach
-                                    </tbody>
-									<tfoot>
-									<tr>
-									<th></th>
-									<th></th>
-									<th>{{number_format($sumcon2)}}</th>
-									
-									
-									</tr>	
-									</tfoot>
-									</table>
-							</div>
 
 							
 						
 
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
-                            
-                            
 						</div><!-- /.row -->
 					</div><!-- /.page-content -->
 				</div>
@@ -266,43 +195,7 @@
 
 	
 
-	<script src="{{asset('public/js/jquery-2.1.4.min.js')}}"></script>
-
-	<script>
-	
-	function checkSubmit() {
-		document.getElementById("agregar").value = "Enviando...";
-		document.getElementById("agregar").disabled = true;
-		return true;
-	}
-	
-	
-	</script>
-		
-			<!--<script>
-		$("#buscar").keypress(function(e){
-			
-			if(e.which == 13){
-				$("#loader").css("display","block");
-				var busqueda = $("#buscar").val();
-				$.get("convenio/busqueda_cliente_convenio/"+busqueda,function(datos){
-					
-					$("#resultado").html(datos);
-					 
-					$("#loader").css("display","none");
-					
-				});
-				
-				 $("#buscar").val('');
-				 $("#und").focus();
-			}
-			
-		
-         
-			
-		});
-		
-		</script>
+		<script src="{{asset('public/js/jquery-2.1.4.min.js')}}"></script>
 
 		<!-- <![endif]-->
 
@@ -339,7 +232,7 @@
 					bAutoWidth: false,
 					"aoColumns": [
 					  { "bSortable": false },
-					  null, null,
+					  null, null,null, null,
 					  { "bSortable": false }
 					],
 					"aaSorting": [],
@@ -404,7 +297,7 @@
 						"text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>Print</span>",
 						"className": "btn btn-white btn-primary btn-bold",
 						autoPrint: false,
-						message: 'Producido por PYMESOFT.LTE'
+						message: 'This print was produced using the Print button for DataTables'
 					  }		  
 					]
 				} );
@@ -563,4 +456,11 @@
 			
 			})
 		</script>
+	
+		<script type="text/javascript">
+    $(window).load(function(){
+        $('#modal').modal('show');
+    });
+    </script>
+	
 @endsection

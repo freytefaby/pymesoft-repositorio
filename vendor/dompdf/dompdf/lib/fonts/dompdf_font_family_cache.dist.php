@@ -55,7 +55,8 @@ return array(
             'normal' => $distFontDir . 'Times-Roman',
             'bold' => $distFontDir . 'Times-Bold',
             'italic' => $distFontDir . 'Times-Italic',
-            'bold_italic' => $distFontDir . 'Times-BoldItalic'
+            'bold_italic' => $distFontDir . 'Times-BoldItalic',
+			
         ),
     'monospace' =>
         array(

@@ -17,7 +17,9 @@ class Convenio extends Model
 	'valorconvenio',
 	'fechaconvenio',
 	'estadoconvenio',
-	'abono'
+	'abono',
+	'dias_cupo',
+	'valor_maximo'
 	
 	
 	

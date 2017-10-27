@@ -205,6 +205,8 @@ if($request)
 					$convenio->fechaconvenio=$request->get('fecha_convenio');
 					$convenio->estadoconvenio='1';
 					$convenio->abono=$request->get('abono');
+					$convenio->dias_cupo=$request->get('cupo');
+					$convenio->valor_maximo=$request->get('valor_cupo');
 					$convenio->save();
 
 
@@ -283,6 +285,8 @@ if($request)
 					$convenio1->fechaconvenio=$request->get('fecha_convenio');
 					$convenio1->estadoconvenio='0';
 					$convenio1->abono=$request->get('abono');
+					$convenio1->dias_cupo=$request->get('cupo');
+					$convenio1->valor_maximo=$request->get('valor_cupo');
 					$convenio1->save();
 
 					$abono=new Abono;
@@ -339,6 +343,63 @@ if($request)
 	return view('peticion.convenio.pagos',["convenios"=>$convenios]);
  }
 
+
+ public function show(Request $request, $id)
+ {
+	if($request->session()->has('id'))
+	{
+	  
+ if($request->session()->get('perfil')==1 or $request->session()->get('perfil')==2  )
+			  {
+
+if($request)
+	   {
+		  
+		   
+		   $infoempresa=DB::table('infoempresa')
+		   ->select('nombrecomercialempresa','direccionempresa','telefonoempresa','nitempresa','ciudadempresa')
+		   ->first();
+	
+ $convenio=DB::table('detalle_convenio as dc')
+			   ->join('convenio as c','c.idconvenio','=','dc.idconvenio')
+			   ->join('clientes as cl','cl.idcliente','=','c.idcliente')
+			   ->where('dc.idconvenio','=',$id)
+			   ->first();
+
+$consulta=DB::table('detalle_convenio as dc')
+			   ->select('dc.valorconvenio','dc.facturascadena','cl.nombrecliente','dc.valorconvenio','dc.facturascadena')
+			   ->join('convenio as c','c.idconvenio','=','dc.idconvenio')
+			   ->join('clientes as cl','cl.idcliente','=','c.idcliente')
+			   ->where('dc.idconvenio','=',$id)
+			   ->ORDERBY('dc.facturascadena','asc')
+			   ->get();
+			   $abonos=DB::table('detalle_abono as da')
+			   ->join('convenio as c','c.idconvenio','=','da.idconvenio')
+			   ->where('da.idconvenio','=',$id)
+			   ->get();
+		 
+		   return view('peticion.convenio.show',["convenio"=>$convenio,"abonos"=>$abonos,"consulta"=>$consulta]);
+		   
+	   }
+
+									}   
+			  Else
+{
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+				  
+			  }
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
+
+
+
+ }
  
 
  }

@@ -111,34 +111,35 @@
 									
 									<table id="dynamic-table" class="table table-striped table-bordered table-hover">
 									<thead>
+                                    
 									<tr>
 									<th>Nombre cliente</th>
 									<th>Valor de convenio</th>
 								    <th>Facturas</th>
-									<th>Fecha</th>
+									
 									
 									
 									</tr>
 									
 									</thead>
-									<?php $cont=0; $sumcon=0; $cupo=0;?>
-                                    <tbody>
-									@foreach($convenio as $con)
-									<?php $cont=$cont+1; $sumcon=$sumcon + $con->valorventa; $cupo=$cupo+$con->max_credito; ?>
 									
+                                    <tbody>
+								
+									<?php $cont=0; $sumcon=0; $cupo=0;?>
+									@foreach($consulta as $con)
+									<?php $cont=$cont+1; $sumcon=$sumcon+$con->valorconvenio;?>
 									
 									<tr>
 									<td>{{$con->nombrecliente}}</td>
-									<td>{{number_format($con->valorventa)}}</td>
-									<td>HHF-00{{$con->idtipoventa}}{{$con->idventa}}</td>
-									<td>{{fecha($con->fecha)}}</td>
+                                    <td>{{number_format($con->valorconvenio)}}</td>
+                                    <td>{{$con->facturascadena}}</td>
 									
 									
 									</tr>
-									
+									@endforeach
 								
 									
-									@endforeach
+								
                                     </tbody>
 									<tfoot>
 									<tr>
@@ -170,29 +171,18 @@
 												Finalizar Convenio o pago de abono
 												</strong>
 												<br>
-                                                {!!Form::open(array('url'=>'peticion/convenio','method'=>'POST','autocomplete'=>'off','role'=>'form','id'=>'formulario','onsubmit'=>'return checkSubmit();'))!!}
-					{{Form::token()}}
-                                                Valor Convenio: {{number_format($sumcon)}}<br>
-												Abonos del cliente: @if (count($abonos)==1){{number_format($abonos->abono)}}@else 0 @endif<br>
-                                                Cupo maximo para convenio: {{number_format($con->max_credito)}}<br>
-                                                Fecha Limite de pago: <?php $a=fecha_credito($con->fecha,$con->dias_credito); echo fecha($a)?><br>
-                                                Fecha Creacion Convenio: {{fecha($con->fecha)}}<br>
-                                                Dias para credito: {{$con->dias_credito}}
+                                               
+                                                Valor Convenio: {{number_format($convenio->valorconvenio)}}<br>
+												Abonos del cliente: {{count($abonos)}}<br>
+                                                Cupo maximo para convenio: {{number_format($convenio->valor_maximo)}}<br>
+                                                Fecha Limite de pago: <?php $a=fecha_credito($convenio->fechaconvenio,$convenio->dias_cupo); echo fecha($a)?><br>
+                                                Fecha Creacion Convenio: {{fecha($convenio->fechaconvenio)}}<br>
+                                                Dias para credito: {{$convenio->dias_cupo}}
 											</p>
 
-											<p>
-                                            <input type="number" name="abono" >
-											<input type="hidden" name="convenios" value="@if(count($abonos)==1){{$abonos->abono}}@endif">
-											<input type="hidden" name="cliente" value="{{$cliente}}">
-											<input type="hidden" name="valorconvenio" value="{{$sumcon}}">
-											<input type="hidden" name="fecha_convenio" value="{{$con->fecha}}">
-											<input type="hidden" name="cupo" value="{{$con->dias_credito}}">
-											<input type="hidden" name="valor_cupo" value="{{$con->max_credito}}">
-												<input class="btn btn-sm btn-success" type="submit" id="agregar" value="Enviar" />
 											
-											</p>
 										</div>
-                                        {!!Form::close()!!}
+                                       
                             
                             
                             
@@ -218,7 +208,7 @@
 									</thead>
 									<?php $cont2=0; $sumcon2=0;?>
                                     <tbody>
-									@foreach($detalle_abono as $det)
+									@foreach($abonos as $det)
 									<?php $cont2=$cont2+1; $sumcon2=$sumcon2 + $det->valorabono; ?>
 									
 									
@@ -339,7 +329,7 @@
 					bAutoWidth: false,
 					"aoColumns": [
 					  { "bSortable": false },
-					  null, null,
+					  null, 
 					  { "bSortable": false }
 					],
 					"aaSorting": [],

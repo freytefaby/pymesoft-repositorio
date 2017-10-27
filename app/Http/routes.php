@@ -293,6 +293,16 @@ route::get('peticion/conveniopagos','ConvenioController@verconvenios');
 | FIN CONVENIOS
 */
 
+/*
+|--------------------------------------------------------------------------
+|Ruta CUPOS
+|--------------------------------------------------------------------------
+*/
+route::resource('peticion/cupo','CupoController');
+/*
+| FIN CUPOS
+*/
+
 
 
 

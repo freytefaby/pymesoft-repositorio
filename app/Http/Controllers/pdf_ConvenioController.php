@@ -38,6 +38,7 @@ $infoempresa=DB::table('infoempresa')
 	 
   $convenio=DB::table('detalle_convenio as dc')
                 ->join('convenio as c','c.idconvenio','=','dc.idconvenio')
+                ->join('clientes as cl','cl.idcliente','=','c.idcliente')
                 ->where('dc.idconvenio','=',$id)
                 ->first();
 
@@ -45,6 +46,7 @@ $consulta=DB::table('detalle_convenio as dc')
                 ->select('dc.valorconvenio','dc.facturascadena')
                 ->join('convenio as c','c.idconvenio','=','dc.idconvenio')
                 ->where('dc.idconvenio','=',$id)
+                ->ORDERBY('dc.facturascadena','asc')
                 ->get();
                 $abonos=DB::table('detalle_abono as da')
                 ->join('convenio as c','c.idconvenio','=','da.idconvenio')
