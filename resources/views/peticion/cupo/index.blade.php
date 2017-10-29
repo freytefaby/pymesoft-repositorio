@@ -134,26 +134,18 @@
                                             <td>{{fecha($c->fecha_creacion_convenio)}}</td>
                                             <td>
                                             
-															<div class="inline pos-rel">
-																<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-																	<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-																</button>
+											<div class="hidden-sm hidden-xs btn-group">
+															
 
-																<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-																	
+															<a href="{{URL::action('CupoController@edit',$c->idconvenio)}}"><button class="btn btn-xs btn-info" title="Editar">
+																<i class="ace-icon fa fa-pencil bigger-120"></i>
+															</button></a>
 
-																	<li>
-																		<a href="{{URL::action('CupoController@edit',$c->idconvenio)}}" class="tooltip-warning" data-rel="tooltip" title="Edit">
-																			<span class="green">
-																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																			</span>
-																		</a>
-																	</li>
+															
 
-																	
-																</ul>
-															</div>
-														
+															
+														</div>
+
                                             
                                             </td>
                                             </tr>
