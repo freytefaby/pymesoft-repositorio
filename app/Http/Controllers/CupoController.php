@@ -5,9 +5,9 @@ namespace hhfarm\Http\Controllers;
 use Illuminate\Http\Request;
 
 use hhfarm\Http\Requests;
-use hhfarm\Gasto;
+use hhfarm\Cupo;
 use Illuminate\Support\Facades\Redirect;
-use hhfarm\Http\Requests\GastoFormRequest;
+use hhfarm\Http\Requests\CupoFormRequest;
 use DB;
 use Session;
 use Carbon\Carbon;
@@ -121,7 +121,11 @@ class CupoController extends Controller
   if($request->session()->get('perfil')==1  )
 			   {
 		
-
+				$cupo=DB::table('cupo as cu')
+				->join('clientes as c','c.idcliente','=','cu.idcliente')
+				->where('cu.idconvenio','=',$id)
+				->first();
+				return view('peticion.cupo.edit',["cupo"=>$cupo]);		
 // return view("peticion.gasto.edit",["gasto"=>Gasto::findOrFail($id)]);  
 
                                      }   
@@ -141,7 +145,7 @@ class CupoController extends Controller
 	  
    }
    
-     public function update(GastoFormRequest $request,$id)
+     public function update(CupoFormRequest $request,$id)
 	 
    {
 	   if($request->session()->has('id'))
@@ -149,9 +153,15 @@ class CupoController extends Controller
 	   
   if($request->session()->get('perfil')==1  )
 			   {
-
-       
-	   //return Redirect::to('peticion/gasto')->with('mensaje','Gasto fue actualizado correctamente');
+				$valcupo=DB::table('cupo as cu')
+				->join('clientes as c','c.idcliente','=','cu.idcliente')
+				->where('cu.idconvenio','=',$id)
+				->first();
+				$cupo=Cupo::findOrFail($id);
+				$cupo->max_credito=$request->get('valor');
+				$cupo->dias_credito=$request->get('dias');
+				$cupo->update();
+	   return Redirect::to('peticion/cupo')->with('mensaje','El usuario'.' '.$valcupo->nombrecliente.' '.$valcupo->apellidocliente.' '.'Se han modificado los siguientes valores <br> Valor del cupo:'.' '.number_format($request->get('valor')).'<br>'.'Dias de credito:'.' '.$request->get('dias'));
 
                                      }   
 			   Else

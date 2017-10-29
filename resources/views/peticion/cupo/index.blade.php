@@ -88,7 +88,7 @@
 								<div class="row">
 								<div class="col-md-12" >
 								<div class="alert alert-success">
-								 {{Session::get('mensaje')}}
+								 {!!Session::get('mensaje')!!}
 								</div>
 								</div>
 								</div>

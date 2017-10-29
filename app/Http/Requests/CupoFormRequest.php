@@ -4,7 +4,7 @@ namespace hhfarm\Http\Requests;
 
 use hhfarm\Http\Requests\Request;
 
-class VentaForRequest extends Request
+class CupoFormRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class VentaForRequest extends Request
     public function rules()
     {
         return [
-			'cliente'=>'required',
-			'tipoventa'=>'required|numeric',
-			'valor'=>'required_unless:tipoventa,5|numeric',
-			'descuento'=>'numeric',
+            'valor'=>'required|numeric',
+            'dias'=>'required|numeric|min:1',
 			
 			
         ];
