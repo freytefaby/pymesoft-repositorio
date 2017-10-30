@@ -99,7 +99,7 @@
 								<!-- PAGE CONTENT BEGINS -->
 								<div class="row">
 									<div class="col-xs-12">
-									<a href="gasto/create"><button class="btn btn-primary">
+									<a href="cupo/create"><button class="btn btn-primary">
 												<i class="ace-icon glyphicon glyphicon-plus"></i>
 												Abrir cupo a cliente
 											</button></a><br><br>

@@ -8,6 +8,7 @@ use hhfarm\Http\Requests;
 use hhfarm\Cupo;
 use Illuminate\Support\Facades\Redirect;
 use hhfarm\Http\Requests\CupoFormRequest;
+use hhfarm\Http\Requests\CupoFormRequestCreate;
 use DB;
 use Session;
 use Carbon\Carbon;
@@ -63,7 +64,7 @@ class CupoController extends Controller
      {
 	    if($request->session()->get('perfil')==1  )
 		{		   
-	 return view("peticion.gasto.create");
+	 return view("peticion.cupo.create");
 		} 
                      else
 
@@ -84,7 +85,7 @@ class CupoController extends Controller
 	  
 	   
    }
-     public function store(GastoFormRequest $request)
+     public function store(CupoFormRequestCreate $request)
    {
 	   if($request->session()->has('id'))
 	 {

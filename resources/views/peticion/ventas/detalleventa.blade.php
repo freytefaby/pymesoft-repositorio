@@ -5,7 +5,7 @@
 															<input type="number" id="cliente" class="form-control"> <div id="cedulacliente"  style="display:none;"><strong id="nombrecliente"></strong></div>
 														</div>
 
-														<hr />
+														</hr >
 														<div>
 															<label for="form-field-select-3">Tipo venta:</label>
 
@@ -27,7 +27,7 @@
 																
 															</select>
 														</div>
-														<hr/>
+														</hr>
 														<div>
 														<div class="infobox infobox-green">
 											<div class="infobox-icon">
@@ -147,7 +147,7 @@
 		    var token=$("#token2").val();
 			if(busqueda.lenght <= 0 )
 			{
-				alert("Es necesario digitar un numero de cedula o identifiación para arrojar datos");
+				alert("Es necesario digitar un numero de cedula o identifiaciï¿½n para arrojar datos");
 				
 			};
 			var route="clientes/"+busqueda+"";
