@@ -198,6 +198,26 @@
 														</tfoot>
 														
 														</table>
+														<?php $valnotacredito=0; ?>
+														@foreach($notacredito as $not )
+														<?php $valnotacredito=$valnotacredito + $not->valornotacredito; ?>
+														@endforeach
+														<h3>Detalles de ventas</h3>
+														<table class="table">
+														<thead>
+														<tr>
+														<td>General ventas: {{number_format($sumarray->valorventa)}} - <?php echo number_format($valnotacredito); ?> <b>(Notas a credito)</b>  </td>
+														
+														</tr>
+														<tr>
+														<td>Sub total ventas {{number_format($sumarray->subtotal)}}</td>
+														</tr>
+														<tr>
+														<td>Utilidad por ventas: {{number_format($sumarray->utilidades)}} - {{number_format($sumarray->descuentos)}}<b>(Descuentos)</b> - {{number_format($sumarray->com)}}<b>(Comisiones)</b> = {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com)}} </td>
+														</tr>
+														</thead>
+
+														</table>
 														</div>
 														
 
@@ -337,7 +357,7 @@
 														<th><i class="fa fa-money" aria-hidden="true"></i> Valor</th>
 														
 														</tr>
-														
+													
 														@foreach($notacredito as $not )
 														
 														</tr>
