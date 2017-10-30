@@ -97,7 +97,15 @@
 								</div>
 								</div>
 								@endif
-				
+								@if(Session::has('mensaje'))
+								<div class="row">
+								<div class="col-md-12" >
+								<div class="alert alert-warning">
+								 {!!Session::get('mensaje')!!}
+								</div>
+								</div>
+								</div>
+								@endif 
 				
                                 {!!Form::open(array('url'=>'peticion/cupo','method'=>'POST','autocomplete'=>'off','role'=>'form','class'=>'form-horizontal'))!!}
 				
@@ -113,7 +121,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Credito maximo </label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1-1" placeholder="Credito maximo" class="col-xs-10 col-sm-5" name="valor" value="" />
+											<input type="text" id="form-field-1-1" placeholder="Credito maximo" class="col-xs-10 col-sm-5" name="valor" value="{{old('valor')}}" />
 										</div>
 									</div>
 
@@ -121,7 +129,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Maximo plazo de pago en dias  </label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1-1" placeholder="Plazo en dias" class="col-xs-10 col-sm-5" name="dias" value="" />
+											<input type="text" id="form-field-1-1" placeholder="Plazo en dias" class="col-xs-10 col-sm-5" name="dias" value="{{old('dias')}}" />
 										</div>
 									</div>
 									

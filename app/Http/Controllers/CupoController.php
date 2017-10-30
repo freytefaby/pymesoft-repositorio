@@ -92,7 +92,30 @@ class CupoController extends Controller
 	   
   if($request->session()->get('perfil')==1  )
 			   {
+				$cupo=DB::table('cupo as cu')
+				->join('clientes as c','c.idcliente','=','cu.idcliente')
+				->where('cu.idcliente','=',$request->get('cliente'))
+				->first();
+		if(sizeof($cupo)==0)
+		{
+			$valcupo=DB::table('clientes as c')
+			->where('c.idcliente','=',$request->get('cliente'))
+			->first();
+			$cupo=new Cupo;
+			$cupo->idcliente=$request->get('cliente');
+			$cupo->max_credito=$request->get('valor');
+			$mytime= Carbon::now('America/Bogota');
+			$cupo->fecha_creacion_convenio=$mytime->toDateTimeString();
+			$cupo->dias_credito=$request->get('dias');
+			$cupo->save();
+			return Redirect::to('peticion/cupo')->with('mensaje','El usuario'.' '.$valcupo->nombrecliente.' '.$valcupo->apellidocliente.' '.'Se le ha asignado un nuevo cupo para convenios  <br> Valor del cupo:'.' '.number_format($request->get('valor')).'<br>'.'Dias de credito:'.' '.$request->get('dias'));
 
+		}
+		else
+		{
+			  return Redirect::to('peticion/cupo/create')->with('mensaje','Cliente ya tiene un convenio existente.');
+			  
+		}
 	   //return Redirect::to('peticion/gasto')->with('mensaje','Gasto ingresado correctamente');
 
                                      }   
