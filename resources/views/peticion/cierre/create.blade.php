@@ -213,7 +213,7 @@
 														
 														</tr>
 														<tr>
-														<td>Sub total ventas {{number_format($sumarray->subtotal)}}</td>
+														<td>Sub total ventas {{number_format($sumarray->subtotal)}} - {{number_format($sumadev->subdev)}} <b>(Devoluciones)</b> = {{number_format($sumarray->subtotal - $sumadev->subdev)}}</td>
 														</tr>
 														<tr>
 														<td>Utilidad por ventas: {{number_format($sumarray->utilidades)}} - {{number_format($sumarray->descuentos)}}<b>(Descuentos)</b> - {{number_format($sumarray->com)}}<b>(Comisiones)</b>  - {{number_format($valnotacredito)}} <B>(Nota credito)</b> - {{number_format($sumadev->utilidadsuma)}} <b>(Devoluciones)</b> + {{number_format($sumadev->com_dev)}} <b>(comisiones devolucion)</b> = {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com - $valnotacredito - $sumadev->utilidadsuma + $sumadev->com_dev)}} </td>
