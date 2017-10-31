@@ -198,22 +198,25 @@
 														</tfoot>
 														
 														</table>
-														<?php $valnotacredito=0; ?>
+														<?php $valnotacredito=0; $totaldevolucion=0; ?>
 														@foreach($notacredito as $not )
 														<?php $valnotacredito=$valnotacredito + $not->valornotacredito; ?>
+														@endforeach
+														@foreach($devoluciones as $dev )
+                                                        <?php $totaldevolucion=$totaldevolucion + $dev->valordevolucion ?>
 														@endforeach
 														<h3>Detalles de ventas</h3>
 														<table class="table">
 														<thead>
 														<tr>
-														<td>General ventas: {{number_format($sumarray->valorventa)}} - <?php echo number_format($valnotacredito); ?> <b>(Notas a credito)</b>  </td>
+														<td>General ventas: {{number_format($sumarray->valorventa)}} - {{$sumarray->descuentos}} <b>(Descuentos)</b> - {{number_format($totaldevolucion)}} <b>(Devoluciones)</b> = {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion)}}  </td>
 														
 														</tr>
 														<tr>
 														<td>Sub total ventas {{number_format($sumarray->subtotal)}}</td>
 														</tr>
 														<tr>
-														<td>Utilidad por ventas: {{number_format($sumarray->utilidades)}} - {{number_format($sumarray->descuentos)}}<b>(Descuentos)</b> - {{number_format($sumarray->com)}}<b>(Comisiones)</b> = {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com)}} </td>
+														<td>Utilidad por ventas: {{number_format($sumarray->utilidades)}} - {{number_format($sumarray->descuentos)}}<b>(Descuentos)</b> - {{number_format($sumarray->com)}}<b>(Comisiones)</b>  - {{number_format($valnotacredito)}} <B>(Nota credito)</b> - {{number_format($sumadev->utilidadsuma)}} <b>(Devoluciones)</b> + {{number_format($sumadev->com_dev)}} <b>(comisiones devolucion)</b> = {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com - $valnotacredito - $sumadev->utilidadsuma + $sumadev->com_dev)}} </td>
 														</tr>
 														</thead>
 
