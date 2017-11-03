@@ -313,7 +313,7 @@ $infoempresa=DB::table('infoempresa')
 				$venta->idtipoventa=$request->get('tipoventa');
 				$venta->descuento=$request->get('descuento');
 				$venta->comision=$request->get('comis');
-				if($request->get('tipoventa')==5)
+              if($request->get('tipoventa')==5)
 				{
 					$venta->convenio='1';
 				}
@@ -366,6 +366,7 @@ $infoempresa=DB::table('infoempresa')
 				{
 					$venta->convenio='0';
 				}
+
 				$venta->update();
 				Session::flash('venta_creada', 'HHF-00'.$request->get('tipoventa').$id);
 				Session::flash('valorventa', number_format($request->get('valorventa')));
@@ -405,6 +406,8 @@ $infoempresa=DB::table('infoempresa')
 					   $venta->convenio='0';
 				   }
 				   $venta->update();
+
+				  
 				   Session::flash('venta_creada', 'HHF-00'.$request->get('tipoventa').$id);
 				   Session::flash('valorventa', number_format($request->get('valorventa')));
 				   Session::flash('efectivo', number_format($request->get('valor')));

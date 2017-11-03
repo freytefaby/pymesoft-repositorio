@@ -89,7 +89,7 @@ if($request)
 	                   ->join('clientes as c','v.idcliente','=','c.idcliente')
 					   ->join('usuarios as u','u.idusuario','=','v.idusuario')
 					   ->join('cupo as cu','cu.idcliente','=','c.idcliente')
-					   ->select('v.valorventa','c.nombrecliente','cu.max_credito','v.fecha','cu.dias_credito','c.idcliente','V.idtipoventa','v.idventa')
+					   ->select('v.valorventa','c.nombrecliente','cu.max_credito','v.fecha','cu.dias_credito','c.idcliente','V.idtipoventa','v.idventa','v.utilidades')
 					   ->where('v.idtipoventa','=',5)
 					   ->where('v.convenio','=',1)
 					   ->where('v.idcliente','=',$query)
@@ -160,8 +160,10 @@ if($request)
 				if (count($validar)==1) 
 				{
 					$actualizar=Convenio::findOrFail($validar->idconvenio);
+					$actualizar->valorconvenio=$request->get('valorconvenio');
 					$actualizar->abono=$request->get('abono')+$validar->abono;
 					$actualizar->estadoconvenio='1';
+					$actualizar->utilidad_convenio=$request->get('utilidad');
 					$actualizar->update();
 
 					$conveniovalor=DB::table('venta as v')
@@ -207,6 +209,7 @@ if($request)
 					$convenio->abono=$request->get('abono');
 					$convenio->dias_cupo=$request->get('cupo');
 					$convenio->valor_maximo=$request->get('valor_cupo');
+					$convenio->utilidad_convenio=$request->get('utilidad');
 					$convenio->save();
 
 
@@ -264,6 +267,8 @@ if($request)
 				if(count($validar)==1)
 				{
 					$actualizar=Convenio::findOrFail($validar->idconvenio);
+					$actualizar->valorconvenio=$request->get('valorconvenio');
+					$actualizar->utilidad_convenio=$request->get('utilidad');
 					$actualizar->abono=$request->get('abono')+$validar->abono;
 					$actualizar->update();
 
@@ -287,6 +292,7 @@ if($request)
 					$convenio1->abono=$request->get('abono');
 					$convenio1->dias_cupo=$request->get('cupo');
 					$convenio1->valor_maximo=$request->get('valor_cupo');
+					$convenio1->utilidad_convenio=$request->get('utilidad');
 					$convenio1->save();
 
 					$abono=new Abono;

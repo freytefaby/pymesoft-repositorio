@@ -121,10 +121,10 @@
 									</tr>
 									
 									</thead>
-									<?php $cont=0; $sumcon=0; $cupo=0;?>
+									<?php $cont=0; $sumcon=0; $cupo=0; $util=0;?>
                                     <tbody>
 									@foreach($convenio as $con)
-									<?php $cont=$cont+1; $sumcon=$sumcon + $con->valorventa; $cupo=$cupo+$con->max_credito; ?>
+									<?php $cont=$cont+1; $sumcon=$sumcon + $con->valorventa; $cupo=$cupo+$con->max_credito; $util=$util+$con->utilidades; ?>
 									
 									
 									<tr>
@@ -187,6 +187,7 @@
 											<input type="hidden" name="valorconvenio" value="{{$sumcon}}">
 											<input type="hidden" name="fecha_convenio" value="{{$con->fecha}}">
 											<input type="hidden" name="cupo" value="{{$con->dias_credito}}">
+											<input type="hidden" name="utilidad" value="{{$util}}">
 											<input type="hidden" name="valor_cupo" value="{{$con->max_credito}}">
 												<input class="btn btn-sm btn-success" type="submit" id="agregar" value="Enviar" />
 											

@@ -134,6 +134,18 @@ $ultimocierre=DB::table('cierre_diario as c')
 			                     ->groupBy('t.idtipoventa')
 								 ->where('v.fecha','LIKE','%'.$query.'%')
 								 ->get();
+		    $convenios=DB::table('venta as v')
+		                        ->join('usuarios as u','u.idusuario','=','v.idusuario')
+								 ->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
+			                     ->select(DB::raw('sum(v.valorventa) as valorventa'),DB::raw('count(v.idventa) as numventas'),DB::raw('sum(v.subtotal) as subtotal'),DB::raw('sum(v.utilidades) as utilidades'),DB::raw('sum(v.importeventa) as importe'),'t.desctipoventa')
+								 ->where('v.fecha','LIKE','%'.$query.'%')
+								 ->where('v.idtipoventa','=',5)
+								 ->first();
+
+	//	$abonos=DB::table('detalle_abono as da')
+	//	->join('convenio as c','c.idconvenio','=','da.idconvenio')
+	//	->select(DB::raw(''))
+		     
 			$ventausuarios=DB::table('venta as v')
 			                     ->join('usuarios as u','u.idusuario','=','v.idusuario')
 								 ->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
@@ -199,7 +211,7 @@ $ultimocierre=DB::table('cierre_diario as c')
 								 ->groupBy('p.idproducto')
 								 ->get();
 			
-					return view("peticion.cierre.create",["ventas"=>$ventas,"sumarray"=>$sumarray,"tiposventa"=>$tiposventa,"ventausuarios"=>$ventausuarios,"ultimocierre"=>$ultimocierre,"query"=>$query,"devoluciones"=>$devoluciones,"gasto"=>$gasto,"sumagasto"=>$sumagasto,"base"=>$base,"sumadev"=>$sumadev,"ingreso"=>$ingreso,"sumaingreso"=>$sumaingreso,"notacredito"=>$notacredito,"sumanota"=>$sumanota,"compra"=>$compra,"salida_productos"=>$salida_productos]);
+					return view("peticion.cierre.create",["ventas"=>$ventas,"sumarray"=>$sumarray,"tiposventa"=>$tiposventa,"ventausuarios"=>$ventausuarios,"ultimocierre"=>$ultimocierre,"query"=>$query,"devoluciones"=>$devoluciones,"gasto"=>$gasto,"sumagasto"=>$sumagasto,"base"=>$base,"sumadev"=>$sumadev,"ingreso"=>$ingreso,"sumaingreso"=>$sumaingreso,"notacredito"=>$notacredito,"sumanota"=>$sumanota,"compra"=>$compra,"salida_productos"=>$salida_productos,"convenios"=>$convenios]);
 							
 		            
 					}

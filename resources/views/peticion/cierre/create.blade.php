@@ -198,25 +198,29 @@
 														</tfoot>
 														
 														</table>
-														<?php $valnotacredito=0; $totaldevolucion=0; ?>
+														<?php $valnotacredito=0; $totaldevolucion=0; $valingreso=0; $utilingreso=0; ?>
 														@foreach($notacredito as $not )
 														<?php $valnotacredito=$valnotacredito + $not->valornotacredito; ?>
 														@endforeach
 														@foreach($devoluciones as $dev )
                                                         <?php $totaldevolucion=$totaldevolucion + $dev->valordevolucion ?>
 														@endforeach
+														@foreach($ingreso as $g )
+														<?php $valingreso= $valingreso+$g->valoringreso;  $utilingreso=$utilingreso+$g->utilidadingreso; ?>
+														@endforeach
+						
 														<h3>Detalles de ventas</h3>
 														<table class="table">
 														<thead>
 														<tr>
-														<td>General ventas: {{number_format($sumarray->valorventa)}} - {{$sumarray->descuentos}} <b>(Descuentos)</b> - {{number_format($totaldevolucion)}} <b>(Devoluciones)</b> = {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion)}}  </td>
+														<td>General ventas: {{number_format($sumarray->valorventa)}} - {{$sumarray->descuentos}} <b>(Descuentos)</b> - {{number_format($totaldevolucion)}} <b>(Devoluciones)</b> - {{number_format($convenios->valorventa)}} <b>(Convenios)</b> + {{number_format($valingreso)}} <b>(Ingresos)</b> = {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion - $convenios->valorventa + $valingreso)}}  </td>
 														
 														</tr>
 														<tr>
-														<td>Sub total ventas {{number_format($sumarray->subtotal)}} - {{number_format($sumadev->subdev)}} <b>(Devoluciones)</b> = {{number_format($sumarray->subtotal - $sumadev->subdev)}}</td>
+														<td>Sub total ventas {{number_format($sumarray->subtotal)}} - {{number_format($sumadev->subdev)}} <b>(Devoluciones)</b> - {{number_format($convenios->subtotal)}} <b>(Convenios)</b> = {{number_format($sumarray->subtotal - $sumadev->subdev - $convenios->subtotal)}}</td>
 														</tr>
 														<tr>
-														<td>Utilidad por ventas: {{number_format($sumarray->utilidades)}} - {{number_format($sumarray->descuentos)}}<b>(Descuentos)</b> - {{number_format($sumarray->com)}}<b>(Comisiones)</b> - {{number_format($sumadev->utilidadsuma)}} <b>(Devoluciones)</b> + {{number_format($sumadev->com_dev)}} <b>(comisiones devolucion)</b> = {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma + $sumadev->com_dev)}} </td>
+														<td>Utilidad por ventas: {{number_format($sumarray->utilidades)}} - {{number_format($sumarray->descuentos)}}<b>(Descuentos)</b> - {{number_format($sumarray->com)}}<b>(Comisiones)</b> - {{number_format($sumadev->utilidadsuma)}} <b>(Devoluciones)</b> - {{number_format($convenios->utilidades)}} <b>(Convenios)</b> + {{number_format($sumadev->com_dev)}} <b>(comisiones devolucion)</b> + {{number_format($utilingreso)}} <b>(Otros ingresos)</b> = {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma - $convenios->utilidades + $sumadev->com_dev + $utilingreso)}} </td>
 														</tr>
 														</thead>
 
