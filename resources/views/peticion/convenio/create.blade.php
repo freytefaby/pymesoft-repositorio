@@ -189,7 +189,8 @@
 											<input type="hidden" name="cupo" value="{{$con->dias_credito}}">
 											<input type="hidden" name="utilidad" value="{{$util}}">
 											<input type="hidden" name="valor_cupo" value="{{$con->max_credito}}">
-												<input class="btn btn-sm btn-success" type="submit" id="agregar" value="Enviar" />
+											<input type="hidden" name="anterior" value="@if(count($detalle_abono_anterior)==1){{$detalle_abono_anterior->utilidad_abono}}@endif">
+											<input class="btn btn-sm btn-success" type="submit" id="agregar" value="Enviar" />
 											
 											</p>
 										</div>

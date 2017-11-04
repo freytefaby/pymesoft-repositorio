@@ -104,8 +104,14 @@ if($request)
 		  ->where('c.estadoconvenio','=',0)
 		  ->where('c.idcliente','=',$query)
 		  ->get();
+		  $detalle_abono_anterior=DB::table('detalle_abono as db')
+		  ->join('convenio as c','c.idconvenio','=','db.idconvenio')
+		  ->where('c.estadoconvenio','=',0)
+		  ->where('c.idcliente','=',$query)
+		  ->orderby('iddetalleabono','desc')
+		  ->first();
 
-			return view('peticion.convenio.create',["convenio"=>$convenio,"cliente"=>$request->get('id'),"abonos"=>$abonos,"detalle_abono"=>$detalle_abono]);
+			return view('peticion.convenio.create',["convenio"=>$convenio,"cliente"=>$request->get('id'),"abonos"=>$abonos,"detalle_abono"=>$detalle_abono,"detalle_abono_anterior"=>$detalle_abono_anterior]);
 			
 		}
 
@@ -191,13 +197,18 @@ if($request)
 						$detalleconvenio->update();
 					}
 					
-				
+					$c=$request->get('valorconvenio') - $request->get('convenios');
+					$utilidad=$request->get('utilidad')  / $c;
+					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
+
+					
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
 					$mytime= Carbon::now('America/Bogota');
 					$abono->fecha_abono=$mytime->toDateTimeString();
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$validar->idconvenio;
+					$abono->utilidad_abono=$valor;
 					$abono->save();
 					
 				} else {
@@ -213,13 +224,18 @@ if($request)
 					$convenio->save();
 
 
-					
+					$c=$request->get('valorconvenio') - $request->get('convenios');
+					$utilidad=$request->get('utilidad')  / $c;
+					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
+
+
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
 					$mytime= Carbon::now('America/Bogota');
 					$abono->fecha_abono=$mytime->toDateTimeString();
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$convenio->idconvenio;
+					$abono->utilidad_abono=$valor;
 					$abono->save();
 
 					$cont=0;
@@ -272,6 +288,9 @@ if($request)
 					$actualizar->abono=$request->get('abono')+$validar->abono;
 					$actualizar->update();
 
+					$c=$request->get('valorconvenio') - $request->get('convenios');
+					$utilidad=$request->get('utilidad')  / $c;
+					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
 
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
@@ -279,6 +298,7 @@ if($request)
 					$abono->fecha_abono=$mytime->toDateTimeString();
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$validar->idconvenio;
+					$abono->utilidad_abono=$valor;
 					$abono->save();
 
 				}
@@ -295,12 +315,17 @@ if($request)
 					$convenio1->utilidad_convenio=$request->get('utilidad');
 					$convenio1->save();
 
+                    $c=$request->get('valorconvenio') - $request->get('convenios');
+					$utilidad=$request->get('utilidad')  / $c;
+					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
+					
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
 					$mytime= Carbon::now('America/Bogota');
 					$abono->fecha_abono=$mytime->toDateTimeString();
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$convenio1->idconvenio;
+					$abono->utilidad_abono=$valor;
 					$abono->save();
 
 					

@@ -16,7 +16,8 @@ class Abono extends Model
 	'valorabono',
 	'fecha_abono',
 	'idcliente',
-	'idconvenio'
+	'idconvenio',
+	'utilidad_abono'
 	
 	
 	
