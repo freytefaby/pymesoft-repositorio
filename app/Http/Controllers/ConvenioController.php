@@ -197,9 +197,10 @@ if($request)
 						$detalleconvenio->update();
 					}
 					
-					$c=$request->get('valorconvenio') - $request->get('convenios');
-					$utilidad=$request->get('utilidad')  / $c;
-					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
+					$c=$request->get('valorconvenio');
+					$utilidad=$request->get('utilidad');
+					$res=$utilidad / $c;
+					$valor=$request->get('abono') * $res   ;
 
 					
 					$abono=new Abono;
@@ -224,9 +225,10 @@ if($request)
 					$convenio->save();
 
 
-					$c=$request->get('valorconvenio') - $request->get('convenios');
-					$utilidad=$request->get('utilidad')  / $c;
-					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
+					$c=$request->get('valorconvenio');
+					$utilidad=$request->get('utilidad');
+					$res=$utilidad / $c;
+					$valor=$request->get('abono') * $res   ;
 
 
 					$abono=new Abono;
@@ -289,8 +291,9 @@ if($request)
 					$actualizar->update();
 
 					$c=$request->get('valorconvenio') - $request->get('convenios');
-					$utilidad=$request->get('utilidad')  / $c;
-					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
+					$utilidad=$request->get('utilidad') - $request->get('anterior');
+					$res=$utilidad / $c;
+					$valor=$request->get('abono') * $res   ;
 
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
@@ -315,9 +318,10 @@ if($request)
 					$convenio1->utilidad_convenio=$request->get('utilidad');
 					$convenio1->save();
 
-                    $c=$request->get('valorconvenio') - $request->get('convenios');
-					$utilidad=$request->get('utilidad')  / $c;
-					$valor=$request->get('abono') * $utilidad - $request->get('anterior')  ;
+					$c=$request->get('valorconvenio') - $request->get('convenios');
+					$utilidad=$request->get('utilidad') - $request->get('anterior');
+					$res=$utilidad / $c;
+					$valor=$request->get('abono') * $res   ;
 					
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
