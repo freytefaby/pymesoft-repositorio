@@ -156,13 +156,14 @@ if($request)
 				return Redirect::to('peticion/convenio/create?id='.$request->get('cliente'))->with('mensaje','Error el valor del abono es superior al convenio');
 			}
 
-
+                   //SE COMPARA QUE EL VALOR DEL CONVENIO SEA IGUAL AL ABONO COMPLETO.
 			if ($request->get('valorconvenio')==$valor) {
 
 				$validar=DB::table('convenio as c')
 				->where('c.idcliente','=',$request->get('cliente'))
 				->where('c.estadoconvenio','=','0')
 				->first();
+				//SE VALIDA SI EXISTE EL CONVENIO 
 				if (count($validar)==1) 
 				{
 					$actualizar=Convenio::findOrFail($validar->idconvenio);
@@ -196,12 +197,11 @@ if($request)
 						$detalleconvenio->convenio='0';
 						$detalleconvenio->update();
 					}
-					
-					$c=$request->get('valorconvenio');
-					$utilidad=$request->get('utilidad');
+				
+					$c=$request->get('valorconvenio') - $request->get('convenios');
+					$utilidad=$request->get('utilidad') - $request->get('anterior');
 					$res=$utilidad / $c;
 					$valor=$request->get('abono') * $res   ;
-
 					
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
@@ -210,9 +210,12 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$validar->idconvenio;
 					$abono->utilidad_abono=$valor;
+					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 					
-				} else {
+				} 
+				/// ES LA PRIMERA VEZ QUE VA A REALIZAR UN ABONO PERO COMPLETO.
+				else {
 					$convenio=new Convenio;
 					$convenio->idcliente=$request->get('cliente');
 					$convenio->valorconvenio=$request->get('valorconvenio');
@@ -238,6 +241,7 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$convenio->idconvenio;
 					$abono->utilidad_abono=$valor;
+					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 
 					$cont=0;
@@ -274,7 +278,7 @@ if($request)
 				
 			
 			} 
-			
+			// SE VALIDA SI VAMOS A REALIZAR ABONOS A LA DEUDA Y NO SON COMPLETOS
 			else {
     
 				$validar=DB::table('convenio as c')
@@ -302,6 +306,7 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$validar->idconvenio;
 					$abono->utilidad_abono=$valor;
+					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 
 				}
@@ -330,6 +335,7 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$convenio1->idconvenio;
 					$abono->utilidad_abono=$valor;
+					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 
 					

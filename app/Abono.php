@@ -17,7 +17,8 @@ class Abono extends Model
 	'fecha_abono',
 	'idcliente',
 	'idconvenio',
-	'utilidad_abono'
+	'utilidad_abono',
+	'porcentaje'
 	
 	
 	

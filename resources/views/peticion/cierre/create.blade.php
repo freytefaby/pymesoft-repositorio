@@ -409,18 +409,18 @@
 														<table class="table table-bordered table-striped table-condensed">
 														<tr>
 														<th><i class="fa fa-user" aria-hidden="true"></i> Usuarios</th>
-														<th><i class="fa fa-check" aria-hidden="true"></i> Compra</th>
-														<th><i class="fa fa-money" aria-hidden="true"></i> Valor</th>
+														<th><i class="fa fa-check" aria-hidden="true"></i> Abono</th>
+														<th><i class="fa fa-money" aria-hidden="true"></i> Utilidad</th>
 														
 														</tr>
 														
-														@foreach($compra as $c )
+														@foreach($abonos as $abonados )
 														
 														</tr>
 														
-														<td>{{$c->user}}</td>
-														<td>HHFC-000{{$c->idcompra}}</td>
-														<td>{{number_format($c->valorcompra)}}</td>
+														<td>{{$abonados->idconvenio}}</td>
+														<td>{{$abonados->valorabono}}</td>
+														<td>{{$abonados->utilidad_convenio / $abonados->valorconvenio * $abonados->valorabono}}</td>
 														
 														
 														@endforeach
