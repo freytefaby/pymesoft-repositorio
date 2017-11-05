@@ -198,8 +198,8 @@ if($request)
 						$detalleconvenio->update();
 					}
 				
-					$c=$request->get('valorconvenio') - $request->get('convenios');
-					$utilidad=$request->get('utilidad') - $request->get('anterior');
+					$c=$request->get('valorconvenio');
+					$utilidad=$request->get('utilidad');
 					$res=$utilidad / $c;
 					$valor=$request->get('abono') * $res   ;
 					
@@ -210,7 +210,6 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$validar->idconvenio;
 					$abono->utilidad_abono=$valor;
-					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 					
 				} 
@@ -241,7 +240,6 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$convenio->idconvenio;
 					$abono->utilidad_abono=$valor;
-					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 
 					$cont=0;
@@ -294,8 +292,8 @@ if($request)
 					$actualizar->abono=$request->get('abono')+$validar->abono;
 					$actualizar->update();
 
-					$c=$request->get('valorconvenio') - $request->get('convenios');
-					$utilidad=$request->get('utilidad') - $request->get('anterior');
+					$c=$request->get('valorconvenio');
+					$utilidad=$request->get('utilidad');
 					$res=$utilidad / $c;
 					$valor=$request->get('abono') * $res   ;
 
@@ -306,7 +304,6 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$validar->idconvenio;
 					$abono->utilidad_abono=$valor;
-					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 
 				}
@@ -323,8 +320,8 @@ if($request)
 					$convenio1->utilidad_convenio=$request->get('utilidad');
 					$convenio1->save();
 
-					$c=$request->get('valorconvenio') - $request->get('convenios');
-					$utilidad=$request->get('utilidad') - $request->get('anterior');
+					$c=$request->get('valorconvenio');
+					$utilidad=$request->get('utilidad');
 					$res=$utilidad / $c;
 					$valor=$request->get('abono') * $res   ;
 					
@@ -335,7 +332,6 @@ if($request)
 					$abono->idcliente=$request->get('cliente');
 					$abono->idconvenio=$convenio1->idconvenio;
 					$abono->utilidad_abono=$valor;
-					$abono->porcentaje=$request->get('valorconvenio');
 					$abono->save();
 
 					
