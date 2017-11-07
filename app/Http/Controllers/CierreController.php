@@ -144,8 +144,8 @@ $ultimocierre=DB::table('cierre_diario as c')
 
 		$abonos=DB::table('detalle_abono as da')
 			   ->join('convenio as c','c.idconvenio','=','da.idconvenio')
+			   ->join('clientes as cl','cl.idcliente','=','da.idcliente')
 			   ->where('da.fecha_abono','LIKE','%'.$query.'%')
-			   ->groupby ('c.idconvenio')
 			   ->get();
 		     
 			$ventausuarios=DB::table('venta as v')

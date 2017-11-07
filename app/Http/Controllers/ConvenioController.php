@@ -140,7 +140,7 @@ if($request)
 
 	
 
-		$validar=DB::table('convenio as c')
+		/*$validar=DB::table('convenio as c')
 		->where('c.idcliente','=',$request->get('cliente'))
 		->where('c.estadoconvenio','=','0')
 		->first(); 
@@ -150,16 +150,34 @@ if($request)
 
 		if($validar->valorconvenio == $request->get('valorconvenio') )
 		{
-			$c=$request->get('valorconvenio');
-			$utilidad=$request->get('utilidad');
-			$res=$utilidad / $c;
-			$valor=$request->get('abono') * $res   ;
-			echo "ENTRO EN LA PRIMERA CONDICION <BR>";
-			echo "Ventas:"." ".$c."<br>";
-			echo "Utilidad:"." ".$utilidad."<br>";
-			echo "Porcentaje:"." ".$res."<br>";
-			echo "Abono:"." ".$request->get('abono')."<br>";
-			echo "Utilidad del abono:"." ".$valor."<br>";
+			if( $validar->utilidad_convenio == $validar->cambio_ganancia   )
+			{
+				$c=$request->get('valorconvenio') ;
+				$utilidad=$request->get('utilidad');
+				$res=$utilidad / $c;
+				$valor=$request->get('abono') * $res   ;
+				echo "ENTRO EN LA PRIMERA CONDICION <BR>";
+				echo "Ventas:"." ".$c."<br>";
+				echo "Utilidad:"." ".$utilidad."<br>";
+				echo "Porcentaje:"." ".$res."<br>";
+				echo "Abono:"." ".$request->get('abono')."<br>";
+				echo "Utilidad del abono:"." ".$valor."<br>";
+
+			}
+			else
+			{
+				$c=$request->get('valorconvenio') - $validar->porcentaje;
+				$utilidad=$request->get('utilidad') - $validar->cambio_ganancia;
+				$res=$utilidad / $c;
+				$valor=$request->get('abono') * $res   ;
+				echo "ENTRO EN LA PRIMERA CONDICION <BR>";
+				echo "Ventas:"." ".$c."<br>";
+				echo "Utilidad:"." ".$utilidad."<br>";
+				echo "Porcentaje:"." ".$res."<br>";
+				echo "Abono:"." ".$request->get('abono')."<br>";
+				echo "Utilidad del abono:"." ".$valor."<br>";
+			}
+			
 			
 		}
 		else
@@ -174,6 +192,8 @@ if($request)
 			echo "Porcentaje:"." ".$res."<br>";
 			echo "Abono:"." ".$request->get('abono')."<br>";
 			echo "Utilidad del abono:"." ".$valor."<br>";
+			echo "Primer valor a actualizar:"." ".$request->get('convenios')."<br>";
+			echo "Segundo valor a actualizar:"." ".$request->get('anterior')."<br>";
 		}
 	}
 	$c=$request->get('valorconvenio');
@@ -185,8 +205,9 @@ if($request)
 	echo "Utilidad:"." ".$utilidad."<br>";
 	echo "Porcentaje:"." ".$res."<br>";
 	echo "Abono:"." ".$request->get('abono')."<br>";
-	echo "Utilidad del abono:"." ".$valor."<br>";
-		EXIT;
+	echo "Utilidad del abono:"." ".$request->get('convenios')."<br>";
+	
+		EXIT;*/
 	
 		
 		if($request->session()->has('id'))
@@ -218,12 +239,27 @@ if($request)
 				//SE VALIDA SI EXISTE EL CONVENIO 
 
 
-				if($validar->valorconvenio == $request->get('valorconvenio') )
+			
+				if (count($validar)==1) 
+				{
+					if($validar->valorconvenio == $request->get('valorconvenio') )
 					{
-						$c=$request->get('valorconvenio');
-						$utilidad=$request->get('utilidad');
-						$res=$utilidad / $c;
-						$valor=$request->get('abono') * $res   ;
+						if( $validar->utilidad_convenio == $validar->cambio_ganancia   )
+						{
+							$c=$request->get('valorconvenio') ;
+							$utilidad=$request->get('utilidad');
+							$res=$utilidad / $c;
+							$valor=$request->get('abono') * $res   ;
+						}
+							  else
+							  {
+								$c=$request->get('valorconvenio') - $validar->porcentaje;
+								$utilidad=$request->get('utilidad') - $validar->cambio_ganancia;
+								$res=$utilidad / $c;
+								$valor=$request->get('abono') * $res   ;
+
+							  }
+						
 					}
 					else
 					{
@@ -233,8 +269,6 @@ if($request)
 						$valor=$request->get('abono') * $res   ; /// X 5000 = 1802
 	
 					}
-				if (count($validar)==1) 
-				{
 					$actualizar=Convenio::findOrFail($validar->idconvenio);
 					$actualizar->valorconvenio=$request->get('valorconvenio');
 					$actualizar->abono=$request->get('abono')+$validar->abono;
@@ -242,8 +276,8 @@ if($request)
 					$actualizar->utilidad_convenio=$request->get('utilidad');
 					if($validar->valorconvenio <> $request->get('valorconvenio') )
 					{
-					$actualizar->porcentaje=$request->get('abono');
-				   $actualizar->cambio_ganancia=$request->get('utilidad');
+				   $actualizar->porcentaje=$request->get('convenios');
+				   $actualizar->cambio_ganancia=$request->get('anterior');
 			
 					}
 					$actualizar->update();
@@ -274,10 +308,21 @@ if($request)
 					}
 				if($validar->valorconvenio == $request->get('valorconvenio') )
 				{
-					$c=$request->get('valorconvenio');
-					$utilidad=$request->get('utilidad');
-					$res=$utilidad / $c;
-					$valor=$request->get('abono') * $res   ;
+					if( $validar->utilidad_convenio == $validar->cambio_ganancia   )
+					{
+						$c=$request->get('valorconvenio') ;
+						$utilidad=$request->get('utilidad');
+						$res=$utilidad / $c;
+						$valor=$request->get('abono') * $res   ;
+					}
+						  else
+						  {
+							$c=$request->get('valorconvenio') - $validar->porcentaje;
+							$utilidad=$request->get('utilidad') - $validar->cambio_ganancia;
+							$res=$utilidad / $c;
+							$valor=$request->get('abono') * $res   ;
+
+						  }
 				}
 				else
 				{
@@ -315,21 +360,10 @@ if($request)
 					$convenio->save();
 
 
-					if($validar->valorconvenio == $request->get('valorconvenio') )
-					{
-						$c=$request->get('valorconvenio');
-						$utilidad=$request->get('utilidad');
-						$res=$utilidad / $c;
-						$valor=$request->get('abono') * $res   ;
-					}
-					else
-					{
-						$c=$request->get('valorconvenio') - $request->get('convenios'); // 14.500
-						$utilidad=$request->get('utilidad') - $request->get('anterior'); // 5.227
-						$res=$utilidad / $c;    // 0.36 %
-						$valor=$request->get('abono') * $res   ; /// X 5000 = 1802
-	
-					}
+					$c=$request->get('valorconvenio') ;
+					$utilidad=$request->get('utilidad');
+					$res=$utilidad / $c;
+					$valor=$request->get('abono') * $res   ;
 
 
 					$abono=new Abono;
@@ -391,18 +425,29 @@ if($request)
 					$actualizar->abono=$request->get('abono')+$validar->abono;
 					if($validar->valorconvenio <> $request->get('valorconvenio') )
 					{
-					$actualizar->porcentaje=$request->get('abono');
-					$actualizar->cambio_ganancia=$request->get('utilidad');
+						$actualizar->porcentaje=$request->get('convenios');
+						$actualizar->cambio_ganancia=$request->get('anterior');
 			
 					}
 					$actualizar->update();
 
 					if($validar->valorconvenio == $request->get('valorconvenio') )
 					{
-						$c=$request->get('valorconvenio');
-						$utilidad=$request->get('utilidad');
-						$res=$utilidad / $c;
-						$valor=$request->get('abono') * $res   ;
+						if( $validar->utilidad_convenio == $validar->cambio_ganancia   )
+						{
+							$c=$request->get('valorconvenio') ;
+							$utilidad=$request->get('utilidad');
+							$res=$utilidad / $c;
+							$valor=$request->get('abono') * $res   ;
+						}
+							  else
+							  {
+								$c=$request->get('valorconvenio') - $validar->porcentaje;
+								$utilidad=$request->get('utilidad') - $validar->cambio_ganancia;
+								$res=$utilidad / $c;
+								$valor=$request->get('abono') * $res   ;
+
+							  }
 					}
 					else
 					{
