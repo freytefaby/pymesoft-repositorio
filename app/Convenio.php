@@ -20,7 +20,9 @@ class Convenio extends Model
 	'abono',
 	'dias_cupo',
 	'valor_maximo',
-	'utilidad_convenio'
+	'utilidad_convenio',
+	'porcentaje',
+	'cambio_ganancia'
 	
 	
 	

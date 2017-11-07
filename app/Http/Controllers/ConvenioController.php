@@ -106,6 +106,7 @@ if($request)
 		  ->get();
 		  $detalle_abono_anterior=DB::table('detalle_abono as db')
 		  ->join('convenio as c','c.idconvenio','=','db.idconvenio')
+		  ->select(DB::raw('sum(utilidad_abono) as abono'))
 		  ->where('c.estadoconvenio','=',0)
 		  ->where('c.idcliente','=',$query)
 		  ->orderby('iddetalleabono','desc')
@@ -136,6 +137,57 @@ if($request)
 
 	public function store(Request $request)
 	{
+
+	
+
+		$validar=DB::table('convenio as c')
+		->where('c.idcliente','=',$request->get('cliente'))
+		->where('c.estadoconvenio','=','0')
+		->first(); 
+	
+	 if(sizeof($validar)>0)
+	 {
+
+		if($validar->valorconvenio == $request->get('valorconvenio') )
+		{
+			$c=$request->get('valorconvenio');
+			$utilidad=$request->get('utilidad');
+			$res=$utilidad / $c;
+			$valor=$request->get('abono') * $res   ;
+			echo "ENTRO EN LA PRIMERA CONDICION <BR>";
+			echo "Ventas:"." ".$c."<br>";
+			echo "Utilidad:"." ".$utilidad."<br>";
+			echo "Porcentaje:"." ".$res."<br>";
+			echo "Abono:"." ".$request->get('abono')."<br>";
+			echo "Utilidad del abono:"." ".$valor."<br>";
+			
+		}
+		else
+		{
+			$c=$request->get('valorconvenio') - $request->get('convenios'); // 14.500
+			$utilidad=$request->get('utilidad') - $request->get('anterior'); // 5.227
+			$res=$utilidad / $c;    // 0.36 %
+			$valor=$request->get('abono') * $res   ; /// X 5000 = 1802
+			echo "ENTRO EN LA SEGUNDA CONDICION <BR>";
+			echo "Ventas:"." ".$c."<br>";
+			echo "Utilidad:"." ".$utilidad."<br>";
+			echo "Porcentaje:"." ".$res."<br>";
+			echo "Abono:"." ".$request->get('abono')."<br>";
+			echo "Utilidad del abono:"." ".$valor."<br>";
+		}
+	}
+	$c=$request->get('valorconvenio');
+	$utilidad=$request->get('utilidad');
+	$res=$utilidad / $c;
+	$valor=$request->get('abono') * $res   ;
+	echo "SI NO EXISTE NINGUN CONVENIO <BR>";
+	echo "Ventas:"." ".$c."<br>";
+	echo "Utilidad:"." ".$utilidad."<br>";
+	echo "Porcentaje:"." ".$res."<br>";
+	echo "Abono:"." ".$request->get('abono')."<br>";
+	echo "Utilidad del abono:"." ".$valor."<br>";
+		EXIT;
+	
 		
 		if($request->session()->has('id'))
 	 {
@@ -164,6 +216,23 @@ if($request)
 				->where('c.estadoconvenio','=','0')
 				->first();
 				//SE VALIDA SI EXISTE EL CONVENIO 
+
+
+				if($validar->valorconvenio == $request->get('valorconvenio') )
+					{
+						$c=$request->get('valorconvenio');
+						$utilidad=$request->get('utilidad');
+						$res=$utilidad / $c;
+						$valor=$request->get('abono') * $res   ;
+					}
+					else
+					{
+						$c=$request->get('valorconvenio') - $request->get('convenios'); // 14.500
+						$utilidad=$request->get('utilidad') - $request->get('anterior'); // 5.227
+						$res=$utilidad / $c;    // 0.36 %
+						$valor=$request->get('abono') * $res   ; /// X 5000 = 1802
+	
+					}
 				if (count($validar)==1) 
 				{
 					$actualizar=Convenio::findOrFail($validar->idconvenio);
@@ -171,6 +240,12 @@ if($request)
 					$actualizar->abono=$request->get('abono')+$validar->abono;
 					$actualizar->estadoconvenio='1';
 					$actualizar->utilidad_convenio=$request->get('utilidad');
+					if($validar->valorconvenio <> $request->get('valorconvenio') )
+					{
+					$actualizar->porcentaje=$request->get('abono');
+				   $actualizar->cambio_ganancia=$request->get('utilidad');
+			
+					}
 					$actualizar->update();
 
 					$conveniovalor=DB::table('venta as v')
@@ -197,11 +272,22 @@ if($request)
 						$detalleconvenio->convenio='0';
 						$detalleconvenio->update();
 					}
-				
+				if($validar->valorconvenio == $request->get('valorconvenio') )
+				{
 					$c=$request->get('valorconvenio');
 					$utilidad=$request->get('utilidad');
 					$res=$utilidad / $c;
 					$valor=$request->get('abono') * $res   ;
+				}
+				else
+				{
+					$c=$request->get('valorconvenio') - $request->get('convenios'); // 14.500
+					$utilidad=$request->get('utilidad') - $request->get('anterior'); // 5.227
+					$res=$utilidad / $c;    // 0.36 %
+					$valor=$request->get('abono') * $res   ; /// X 5000 = 1802
+
+				}
+					
 					
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
@@ -224,13 +310,26 @@ if($request)
 					$convenio->dias_cupo=$request->get('cupo');
 					$convenio->valor_maximo=$request->get('valor_cupo');
 					$convenio->utilidad_convenio=$request->get('utilidad');
+					$convenio->porcentaje=$request->get('abono');
+					$convenio->cambio_ganancia=$request->get('utilidad');
 					$convenio->save();
 
 
-					$c=$request->get('valorconvenio');
-					$utilidad=$request->get('utilidad');
-					$res=$utilidad / $c;
-					$valor=$request->get('abono') * $res   ;
+					if($validar->valorconvenio == $request->get('valorconvenio') )
+					{
+						$c=$request->get('valorconvenio');
+						$utilidad=$request->get('utilidad');
+						$res=$utilidad / $c;
+						$valor=$request->get('abono') * $res   ;
+					}
+					else
+					{
+						$c=$request->get('valorconvenio') - $request->get('convenios'); // 14.500
+						$utilidad=$request->get('utilidad') - $request->get('anterior'); // 5.227
+						$res=$utilidad / $c;    // 0.36 %
+						$valor=$request->get('abono') * $res   ; /// X 5000 = 1802
+	
+					}
 
 
 					$abono=new Abono;
@@ -290,12 +389,29 @@ if($request)
 					$actualizar->valorconvenio=$request->get('valorconvenio');
 					$actualizar->utilidad_convenio=$request->get('utilidad');
 					$actualizar->abono=$request->get('abono')+$validar->abono;
+					if($validar->valorconvenio <> $request->get('valorconvenio') )
+					{
+					$actualizar->porcentaje=$request->get('abono');
+					$actualizar->cambio_ganancia=$request->get('utilidad');
+			
+					}
 					$actualizar->update();
 
-					$c=$request->get('valorconvenio');
-					$utilidad=$request->get('utilidad');
-					$res=$utilidad / $c;
-					$valor=$request->get('abono') * $res   ;
+					if($validar->valorconvenio == $request->get('valorconvenio') )
+					{
+						$c=$request->get('valorconvenio');
+						$utilidad=$request->get('utilidad');
+						$res=$utilidad / $c;
+						$valor=$request->get('abono') * $res   ;
+					}
+					else
+					{
+						$c=$request->get('valorconvenio') - $request->get('convenios'); // 14.500
+						$utilidad=$request->get('utilidad') - $request->get('anterior'); // 5.227
+						$res=$utilidad / $c;    // 0.36 %
+						$valor=$request->get('abono') * $res   ; /// X 5000 = 1802
+	
+					}
 
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
@@ -318,12 +434,17 @@ if($request)
 					$convenio1->dias_cupo=$request->get('cupo');
 					$convenio1->valor_maximo=$request->get('valor_cupo');
 					$convenio1->utilidad_convenio=$request->get('utilidad');
+					$convenio1->porcentaje=$request->get('abono') ;
+					$convenio1->cambio_ganancia=$request->get('utilidad') ;
+					
 					$convenio1->save();
 
-					$c=$request->get('valorconvenio');
-					$utilidad=$request->get('utilidad');
-					$res=$utilidad / $c;
-					$valor=$request->get('abono') * $res   ;
+					
+						$c=$request->get('valorconvenio');  // 18.000
+						$utilidad=$request->get('utilidad'); // 6027
+						$res=$utilidad / $c;   // 0.33 %
+						$valor=$request->get('abono') * $res   ;  // X 3000 = 1004
+					
 					
 					$abono=new Abono;
 					$abono->valorabono=$request->get('abono');
@@ -341,7 +462,6 @@ if($request)
 				
 			}
 			
-		    
 			return Redirect::to('peticion/convenio');
 		}
 
