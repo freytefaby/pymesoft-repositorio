@@ -156,12 +156,14 @@
 														<th><i class="fa fa-money" aria-hidden="true"></i> Venta</th>
 														<th><i class="fa fa-money" aria-hidden="true"></i> Subtotal</th>
 														<th><i class="fa fa-money" aria-hidden="true"></i> utilidad</th>
+														<th><i class="fa fa-money" aria-hidden="true"></i> Descuentos</th>
+														<th><i class="fa fa-money" aria-hidden="true"></i> Comisiones</th>
 														<th><i class="fa fa-trash" aria-hidden="true"></i> Tipo</th>
 														</tr>
 														
 														@foreach($ventas as $v )
 														
-														</tr>
+														<tr>
 														
 														<td>HHF-00{{$v->idtipoventa}}{{$v->idventa}}</td>
 														<td>{{fecha($v->fecha)}}</td>
@@ -170,25 +172,43 @@
 														<td>{{number_format($v->valorventa)}}</td>
 														<td>{{number_format($v->subtotal)}}</td>
 														<td>{{number_format($v->utilidades)}}</td>
+														<td>{{number_format($v->descuento)}}</td>
+														<td>{{number_format($v->comision)}}</td>
 														<td>{{$v->desctipoventa}}</td>
-														
+														</tr>
 														@endforeach
 														<tfoot>
-												
 														
-														<tr>
-														<td>Ventas: {{$sumarray->numventas}} </td>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td>T: {{number_format($sumarray->valorventa)}} </td>
-														<td>T: {{number_format($sumarray->subtotal)}}</td>
-														<td>T: {{number_format($sumarray->utilidades)}}</td>
-														<td></td>
-														</tr>
-														</tfoot>
+																
+																<tr>
+																<td>Ventas: {{$sumarray->numventas}} </td>
+																<td></td>
+																<td></td>
+																<td></td>
+																<td>T: {{number_format($sumarray->valorventa)}} </td>
+																<td>T: {{number_format($sumarray->subtotal)}}</td>
+																<td>T: {{number_format($sumarray->utilidades)}}</td>
+																<td>T: {{number_format($sumarray->descuentos)}}</td>
+																<td>T: {{number_format($sumarray->com)}}</td>
+																<td></td>
+																</tr>
+																</tfoot>
 														
 														</table>
+														<?php $valnotacredito=0; $totaldevolucion=0; $valingreso=0; $utilingreso=0; ?>
+														@foreach($notacredito as $not )
+														<?php $valnotacredito=$valnotacredito + $not->valornotacredito; ?>
+														@endforeach
+														@foreach($devoluciones as $dev )
+                                                        <?php $totaldevolucion=$totaldevolucion + $dev->valordevolucion ?>
+														@endforeach
+														@foreach($ingreso as $g )
+														<?php $valingreso= $valingreso+$g->valoringreso;  $utilingreso=$utilingreso+$g->utilidadingreso; ?>
+														@endforeach
+														<?php $contabono=0; $totalabono=0; $utilidadabono=0; ?>
+														@foreach($abonos as $ab )
+														<?php $contabono=$contabono+1; $totalabono=$totalabono+$ab->valorabono; $utilidadabono=$utilidadabono+$ab->utilidad_abono ?>
+														@endforeach
 														</div>
 														
 
@@ -225,6 +245,7 @@
 														<th><i class="fa fa-user" aria-hidden="true"></i> Usuarios</th>
 														<th><i class="fa fa-check" aria-hidden="true"></i> No facturas</th>
 														<th><i class="fa fa-money" aria-hidden="true"></i> Ventas</th>
+														<th><i class="fa fa-money" aria-hidden="true"></i> Comisiones</th>
 														
 														</tr>
 														
@@ -234,7 +255,9 @@
 														
 														<td>{{$user->user}}</td>
 														<td>{{number_format($user->numventas)}}</td>
-														<td>{{number_format($user->valorventa)}}</td>
+														<td>{{number_format($user->valorventa - $user->dev)}}</td>
+														<td>{{number_format($user->comision - $user->devcomision)}}</td>
+														
 														
 														
 														@endforeach
@@ -561,6 +584,63 @@
 											
 											
 											</div>
+											<div class="col-md-6">
+											<div class="widget-box">
+												<div class="widget-header">
+													<h4 class="widget-title">Otros ingresos</h4>
+
+													<div class="widget-toolbar">
+														<a href="#" data-action="collapse">
+															<i class="ace-icon fa fa-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="ace-icon fa fa-times"></i>
+														</a>
+													</div>
+												</div>
+
+												<div class="widget-body">
+													<div class="widget-main">
+														<div >
+														<table class="table table-bordered table-striped table-condensed">
+														<tr>
+														<th>#</th>
+														<th><i class="fa fa-check" aria-hidden="true"></i>Cliente</th>
+														<th><i class="fa fa-money" aria-hidden="true"></i>Abono</th>
+														
+														</tr>
+											<?php $contabono1=0; $totalabono1=0; ?>
+														@foreach($abonos as $ab )
+														<?php $contabono1=$contabono1+1; $totalabono1=$totalabono1+$ab->valorabono ?>
+														</tr>
+														<td>{{$contabono1}}</td>
+														<td>{{$ab->nombrecliente}}</td>
+														<td>{{number_format($ab->valorabono)}}</td>
+													
+														
+														
+														@endforeach
+														<tr>
+														<td></td>
+														<td></td>
+														<td>Total ${{number_format($totalabono)}}</td>
+														</tr>
+														</table>
+														</div>
+														
+
+														
+														
+
+														
+													</div>
+												</div>
+											</div>
+											
+											
+											</div>
+										
 											</div>
 										</div><!-- /.span -->
 										<!-- FIN RECOGIDA DE PRODUCTOS -->
@@ -627,7 +707,7 @@
 
 											<div class="infobox-data">
 												<span class="infobox-data-number"></span>
-												<div class="infobox-content">Utilidades<br>{{number_format($sumarray->utilidades-$sumadev->utilidadsuma +  $sumaingreso->utilidad - $sumanota->utilidad )}}</div>
+												<div class="infobox-content">Utilidades<br>{{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}</div>
 											</div>
 
 											
@@ -643,7 +723,7 @@
 
 											<div class="infobox-data">
 												<span class="infobox-data-number"></span>
-												<div class="infobox-content">Ventas <br> {{number_format($sumarray->valorventa-$sumadev->devolucion + $sumaingreso->ingreso - $sumanota->valnota)}}</div>
+												<div class="infobox-content">Ventas <br> {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion  - $base->valorbase - $convenios->valorventa + $valingreso + $totalabono)}}</div>
 											</div>
 
 											

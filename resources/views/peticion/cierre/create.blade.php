@@ -166,7 +166,7 @@
 														
 														@foreach($ventas as $v )
 														
-														</tr>
+														<tr>
 														
 														<td>HHF-00{{$v->idtipoventa}}{{$v->idventa}}</td>
 														<td>{{fecha($v->fecha)}}</td>
@@ -178,7 +178,7 @@
 														<td>{{number_format($v->descuento)}}</td>
 														<td>{{number_format($v->comision)}}</td>
 														<td>{{$v->desctipoventa}}</td>
-														
+														</tr>
 														@endforeach
 														<tfoot>
 												
@@ -561,7 +561,7 @@
 														<a href="#" data-action="close">
 															<i class="ace-icon fa fa-times"></i>
 														</a>
-													</div>
+													</div> 
 												</div>
 
 												<div class="widget-body">
@@ -616,8 +616,8 @@
 														<a href="#" data-action="close">
 															<i class="ace-icon fa fa-times"></i>
 														</a>
-													</div>
-												</div>
+													</div><!-- /.widget-toolbar -->
+												</div><!-- /.widget-header -->
 
 												<div class="widget-body">
 													<div class="widget-main">
@@ -795,7 +795,7 @@
 										</div>
 														
 														</div>
-														<hr/>
+														</hr>
 														<div>
 															<label for="form-field-mask-2">
 																Recogidan (*La base de la caja ya ha sido calculada, haga la recogido tomando la base)

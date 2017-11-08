@@ -147,7 +147,6 @@
 														<th>Gastos</th>
 														<th>Base de caja</th>
 														<th>Recogida</th>
-														<th>Retiro</th>
 														<th>Utilidad</th>
 														<th>Estado</th>
 														<th>Acciones</th>
@@ -169,7 +168,6 @@
 													<td>{{number_format($c->gastos)}}</td>
 													<td>{{number_format($c->base)}}</td>
 													<td>{{number_format($c->recogida)}}</td>
-													<td>{{number_format($c->recogida-$c->base-$c->gastos)}}</td>
 													<td>{{number_format($c->utilidades)}}</td>
                                                     <td>@if($c->estado==1)
 													Auditado
@@ -283,7 +281,7 @@
 					bAutoWidth: false,
 					"aoColumns": [
 					  { "bSortable": false },
-					  null, null,null, null, null, null, null, null, null,
+					  null, null,null, null, null, null, null, null, 
 					  { "bSortable": false }
 					],
 					"aaSorting": [],
