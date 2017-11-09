@@ -47,9 +47,9 @@ class Pdf_ReporteMesController extends Controller
 			->orderby('v.idventa','desc')
 			->get();
 			$sumarray=DB::table('venta as v')
-						  ->select(DB::raw('sum(v.valorventa) as valorventa'),DB::raw('count(v.idventa) as numventas'),DB::raw('sum(v.subtotal) as subtotal'),DB::raw('sum(v.utilidades) as utilidades'),DB::raw('sum(v.importeventa) as importe'))
-						  ->whereBetween('v.fecha', array($ini,$end))
-						  ->first();
+			->select(DB::raw('sum(v.valorventa) as valorventa'),DB::raw('count(v.idventa) as numventas'),DB::raw('sum(v.subtotal) as subtotal'),DB::raw('sum(v.utilidades) as utilidades'),DB::raw('sum(v.importeventa) as importe'),DB::raw('sum(v.descuento) as descuentos'),DB::raw('sum(v.comision) as com'))
+			->whereBetween('v.fecha', array($ini,$end))
+			->first();
 		$ventausuarios=DB::table('venta as v')
 			                     ->join('usuarios as u','u.idusuario','=','v.idusuario')
 								 ->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
@@ -72,10 +72,19 @@ class Pdf_ReporteMesController extends Controller
 						  ->select('d.fecha','c.nombrecliente','c.apellidocliente','u.user','v.idtipoventa','v.idventa','d.valordevolucion','d.iddevolucioncliente','d.observacion')
 						  ->whereBetween('v.fecha', array($ini,$end))
 						  ->get();	
-		$sumadev=DB::table('devolucionescliente as d')
-						  ->select (DB::raw('sum(d.valordevolucion) as devolucion'),DB::raw('sum(d.utilidades) as utilidad'),DB::raw('sum(d.subtotal) as sub'))
+						  $sumadev=DB::table('devolucionescliente as d')
+						  ->join('clientes as c','c.idcliente','=','d.idcliente')
+						  ->join('usuarios as u','u.idusuario','=','d.idusuario')
+						  ->join('venta as v','v.idventa','=','d.idventa')
+						  ->select(DB::raw('sum(d.valordevolucion) as devolucion'), DB::raw('sum(d.utilidades) as utilidadsuma'),DB::raw('sum(d.subtotal) as subdev'),DB::raw('sum(d.comision) as com_dev'))
 						  ->whereBetween('d.fecha', array($ini,$end))
-						  ->first();	
+						  ->first();		
+
+						  $abonos=DB::table('detalle_abono as da')
+						  ->join('convenio as c','c.idconvenio','=','da.idconvenio')
+						  ->join('clientes as cl','cl.idcliente','=','da.idcliente')
+						  ->whereBetween('da.fecha_abono', array($ini,$end))
+						  ->get();
 		$gasto=DB::table('gasto')
 		                  ->whereBetween('fecha', array($ini,$end))
 						  ->get();
@@ -95,6 +104,7 @@ class Pdf_ReporteMesController extends Controller
 			              ->join('usuarios as u','u.idusuario','=','n.idusuario')
 						 ->whereBetween('n.fecha', array($ini,$end))
 						  ->get();
+						 
 		$sumanota=DB::table('notacredito as n')
 			              ->join('clientes as c','c.idcliente','=','n.idcliente')
 			              ->join('usuarios as u','u.idusuario','=','n.idusuario')
@@ -115,7 +125,20 @@ class Pdf_ReporteMesController extends Controller
 		                  ->whereBetween('c.fecha', array($ini,$end))
 						  ->where('c.estado','=','1')
 						  ->first();	
-        $view =  \View::make('peticion.pdf.reportemes', compact('infoempresa','ventas','sumarray','ventausuarios','tiposventa','devoluciones','sumadev','gasto','sumagasto','ingreso','sumaingreso','ini','end','notacredito','sumanota','compra','sumacompra'))->render();
+						  $convenios=DB::table('venta as v')
+						  ->join('usuarios as u','u.idusuario','=','v.idusuario')
+						   ->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
+						   ->select(DB::raw('sum(v.valorventa) as valorventa'),DB::raw('count(v.idventa) as numventas'),DB::raw('sum(v.subtotal) as subtotal'),DB::raw('sum(v.utilidades) as utilidades'),DB::raw('sum(v.importeventa) as importe'),'t.desctipoventa')
+						   ->whereBetween('v.fecha', array($ini,$end))
+						   ->where('v.idtipoventa','=',5)
+						   ->first();
+						   $devolucionescompras=DB::table('devolucioncompra as d')
+						   ->join('proveedor as p','p.idproveedor','=','d.idproveedor')
+						   ->join('compras as c','c.idcompra','=','d.idcompra')
+						   ->join('usuarios as u','u.idusuario','=','c.idusuario')
+						   ->whereBetween('c.fecha', array($ini,$end))
+						   ->get();	
+        $view =  \View::make('peticion.pdf.reportemes', compact('infoempresa','ventas','sumarray','ventausuarios','tiposventa','devoluciones','sumadev','gasto','sumagasto','ingreso','sumaingreso','ini','end','notacredito','sumanota','compra','sumacompra','abonos','convenios','devolucionescompras'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
         return $pdf->stream('invoice');

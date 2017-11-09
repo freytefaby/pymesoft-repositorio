@@ -52,7 +52,11 @@ class Pdf_CierreDiarioController extends Controller
 			->orderby('v.idventa','desc')
 			->get();
 			
-		 
+			$abonos=DB::table('detalle_abono as da')
+			->join('convenio as c','c.idconvenio','=','da.idconvenio')
+			->join('clientes as cl','cl.idcliente','=','da.idcliente')
+			->where('da.fecha_abono','LIKE','%'.$query.'%')
+			->get();
 			
 						  /*PRODUCTOS ASOCIADOS EN ESTA FACTURA*/
 		
@@ -120,7 +124,7 @@ class Pdf_CierreDiarioController extends Controller
 		                  ->where('c.fecha','LIKE','%'.$query.'%')
 						  ->where('c.estado','=','1')
 						  ->get();
-        $view =  \View::make('peticion.pdf.cierrediario', compact('infoempresa','exist','ventas','sumarray','tiposventa','ventausuarios','devoluciones','gasto','sumagasto','base','ingreso','sumaingreso','notacredito','sumanota','compra'))->render();
+        $view =  \View::make('peticion.pdf.cierrediario', compact('infoempresa','exist','ventas','sumarray','tiposventa','ventausuarios','devoluciones','gasto','sumagasto','base','ingreso','sumaingreso','notacredito','sumanota','compra','abonos'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
         return $pdf->stream('invoice');

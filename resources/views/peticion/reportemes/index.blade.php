@@ -205,7 +205,21 @@
 														</table>
 														</div>
 														
-
+														<?php $valnotacredito=0; $totaldevolucion=0; $valingreso=0; $utilingreso=0; ?>
+														@foreach($notacredito as $not )
+														<?php $valnotacredito=$valnotacredito + $not->valornotacredito; ?>
+														@endforeach
+														@foreach($devoluciones as $dev )
+                                                        <?php $totaldevolucion=$totaldevolucion + $dev->valordevolucion ?>
+														@endforeach
+														@foreach($ingreso as $g )
+														<?php $valingreso= $valingreso+$g->valoringreso;  $utilingreso=$utilingreso+$g->utilidadingreso; ?>
+														@endforeach
+														<?php $contabono=0; $totalabono=0; $utilidadabono=0; ?>
+														@foreach($abonos as $ab )
+														<?php $contabono=$contabono+1; $totalabono=$totalabono+$ab->valorabono; $utilidadabono=$utilidadabono+$ab->utilidad_abono ?>
+														@endforeach
+						
 														
 														
 
@@ -341,9 +355,9 @@
 														<th><i class="fa fa-money" aria-hidden="true"></i> Valor</th>
 														
 														</tr>
-														
+														<?php $notascredito=0; $utilidadesnot=0; ?>
 														@foreach($notacredito as $not )
-														
+														<?php $notascredito=$notascredito+$not->valornotacredito; $utilidadesnot=$utilidadesnot+$not->utilidades;  ?>
 														</tr>
 														
 														<td>{{$not->user}}</td>
@@ -390,9 +404,9 @@
 														<th><i class="fa fa-money" aria-hidden="true"></i> Valor</th>
 														
 														</tr>
-														
+														<?php $compras=0; ?>
 														@foreach($compra as $c )
-														
+														<?php $compras=$compras+$c->valorcompra; ?>
 														</tr>
 														
 														<td>{{$c->user}}</td>
@@ -465,6 +479,57 @@
 													</div>
 												</div>
 											</div>
+											<div class="widget-box">
+												<div class="widget-header">
+													<h4 class="widget-title">Devoluciones a compras</h4>
+
+													<div class="widget-toolbar">
+														<a href="#" data-action="collapse">
+															<i class="ace-icon fa fa-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="ace-icon fa fa-times"></i>
+														</a>
+													</div>
+												</div>
+
+												<div class="widget-body">
+													<div class="widget-main">
+														<div >
+														<table class="table table-bordered table-striped table-condensed">
+														<tr>
+														<th><i class="fa fa-user" aria-hidden="true"></i> Usuarios</th>
+														<th><i class="fa fa-check" aria-hidden="true"></i> No facturas</th>
+														<th><i class="fa fa-money" aria-hidden="true"></i> Ventas</th>
+													
+														
+														</tr>
+														<?php $compradev=0; ?>
+														@foreach($devolucionescompras as $devcomp )
+														<?php $compradev=$compradev+$devcomp->valordevolucion; ?>
+														</tr>
+														
+														<td>{{$devcomp->user}}</td>
+														<td>HHFCD-000{{$devcomp->iddevolucioncompra}}</td>
+														<td>{{number_format($devcomp->valordevolucion)}}</td>
+														
+														
+														
+														@endforeach
+														
+														
+														</table>
+														</div>
+														
+
+														
+														
+
+														
+													</div>
+												</div>
+											</div>
 											
 											
 											</div>
@@ -494,15 +559,17 @@
 														<th><i class="fa fa-money" aria-hidden="true"></i> Gasto</th>
 														
 														</tr>
-														
+														<?php $gasto1=0; ?>
 														@foreach($gasto as $g )
+														<?php $gasto1=$gasto1+$g->valorgasto; ?>
 														
-														</tr>
+														
+														<tr>
 														
 														<td>{{$g->proveedorgasto}}</td>
 														<td>{{$g->descripciongasto}}</td>
 														<td>{{number_format($g->valorgasto)}}</td>
-														
+														</tr>
 														
 														@endforeach
 														
@@ -562,6 +629,58 @@
 														@endforeach
 														
 														
+														</table>
+														</div>
+														
+
+														
+														
+
+														
+													</div>
+												</div>
+											</div>
+											<div class="widget-box">
+												<div class="widget-header">
+													<h4 class="widget-title">Abonos</h4>
+
+													<div class="widget-toolbar">
+														<a href="#" data-action="collapse">
+															<i class="ace-icon fa fa-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="ace-icon fa fa-times"></i>
+														</a>
+													</div>
+												</div>
+
+												<div class="widget-body">
+													<div class="widget-main">
+														<div >
+														<table class="table table-bordered table-striped table-condensed">
+														<tr>
+														<th>#</th>
+														<th><i class="fa fa-check" aria-hidden="true"></i>Cliente</th>
+														<th><i class="fa fa-money" aria-hidden="true"></i>Abono</th>
+														
+														</tr>
+											<?php $contabono1=0; $totalabono1=0; ?>
+														@foreach($abonos as $ab )
+														<?php $contabono1=$contabono1+1; $totalabono1=$totalabono1+$ab->valorabono ?>
+														</tr>
+														<td>{{$contabono1}}</td>
+														<td>{{$ab->nombrecliente}}</td>
+														<td>{{number_format($ab->valorabono)}}</td>
+													
+														
+														
+														@endforeach
+														<tr>
+														<td></td>
+														<td></td>
+														<td>Total ${{number_format($totalabono)}}</td>
+														</tr>
 														</table>
 														</div>
 														
@@ -643,7 +762,7 @@
 
 											<div class="infobox-data">
 												<span class="infobox-data-number"></span>
-												<div class="infobox-content">Utilidades<br>{{number_format($sumarray->utilidades - $sumanota->utilidad -  $sumagasto->gasto - $sumadev->utilidad + $sumaingreso->utilidad + $sumadev->com_dev - $sumarray->com)}}</div>
+												<div class="infobox-content">Utilidades<br>{{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma - $utilidadesnot - $gasto1 -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}</div>
 											</div>
 
 											
@@ -659,7 +778,7 @@
 
 											<div class="infobox-data">
 												<span class="infobox-data-number"></span>
-												<div class="infobox-content">Ventas <br> {{number_format($sumarray->valorventa - $sumanota->valnota  - $sumacompra->valcompra - $sumadev->devolucion - $sumagasto->gasto + $sumaingreso->ingreso + $sumadev->com_dev - $sumarray->com )}}</div>
+												<div class="infobox-content">Ventas <br> {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion   - $notascredito - $convenios->valorventa -$compras - $gasto1 + $valingreso + $compradev + $totalabono)}}</div>
 											</div>
 
 											
@@ -724,6 +843,7 @@
 										 <button class="btn btn-xs btn-success" title="Reporte mes" type="submit">
 																<i class="ace-icon fa fa-print bigger-110"></i> Reporte mes
 															</button>
+															<button type="button" class="btn btn-xs btn-danger" title="Detalles de la factura" data-toggle="modal" data-target="#myModal"> <i class="ace-icon fa fa-eye bigger-110"></i> Detalles </button>
 									
 										<input type="hidden" value="{{$ini}}" name="ini">
 										<input type="hidden" value="{{$end}}" name="end">
@@ -779,7 +899,7 @@
 					</div><!-- /.page-content -->
 				</div>
 			</div><!-- /.main-content -->
-
+			@include('peticion.reportemes.modal')
 @endsection
 
 @section('scripts')

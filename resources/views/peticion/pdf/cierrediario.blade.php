@@ -19,38 +19,34 @@ body {
 </head>
 <body>
 
- <div style="width:200px" align="center">
+ <div style="width:250px" align="center">
 {{$infoempresa->nombrecomercialempresa}}<br>
 	Dir: {{$infoempresa->direccionempresa}}<BR>
 	Tel: {{$infoempresa->telefonoempresa}}<br>
 	Nit: {{$infoempresa->nitempresa}}<br>
-	Ciudad: {{$infoempresa->ciudadempresa}}<br>
-		<p>===============================</p>
-	
-	   Comprobante cierre <br>{{fecha($exist->fechacierre)}}<br>
-	   Generado<br>{{$exist->fecha}}
-	   <p>===============================</p>
-	   </div>
-
-	===============================<br>
-No cierre: HHCD-00{{$exist->idusuario}}{{$exist->idcierrediario}}<br>
-===============================<br>
-</div>
-<div style="width:200px" align="left">
+	Ciudad: {{$infoempresa->ciudadempresa}}
+	<p style="padding: 0cm 0cm 0cm 0cm; margin: 0mm 0mm 0mm 0mm;">======================================= <br>
+	  Comprobante de cierre. <br>
+	  =======================================<br>
+	  {{fecha($exist->fechacierre)}}<br>
+	  Generado: <br>
+	  {{$exist->fecha}} <br>
+	  No cierre: HHCD-00{{$exist->idusuario}}{{$exist->idcierrediario}}<br>
+	  =======================================<br>
+	  Detalle de cierre.<br>
+	  =======================================
+</p>
+<p align="left" style="padding: 0cm 0cm 0cm 0cm; margin: 0mm 0mm 0mm 0mm;">
 Total ventas: {{number_format($exist->valorventa)}}<br>
 Subtotal: {{number_format($exist->subtotal)}}<br>
 Utilidad diaria: {{number_format($exist->utilidades)}}<br>
 Gastos: {{number_format($exist->gastos)}}<br>
 Base de caja: {{number_format($exist->base)}}<br>
-Recogida: {{$exist->recogida}}
-</div>
-
-<div style="width:200px" align="center">
-===============================<br>
-Detalle de venta vendedores<br>
-===============================
-</div>
-<div style="width:200px" align="left">
+Recogida: {{number_format($exist->recogida)}}
+</p>
+<p style="padding: 0cm 0cm 0cm 0cm; margin: 0mm 0mm 0mm 0mm;">=======================================<br>
+Detalle ventas vendedores<br>
+=======================================
 <table >
 <tr ><td>Usuario</td><td>Ventas</td><td>No.ventas</td></tr>
 @foreach($ventausuarios as $vent)
@@ -59,32 +55,20 @@ Detalle de venta vendedores<br>
 
 @endforeach
 </table>
-</div>
-<div style="width:200px" align="center">
-===============================<br>
-Tipos de venta<br>
-===============================
-</div>
-<div style="width:200px" align="left">
+=======================================<br>
+Tipos de venta <br>
+=======================================
 <table >
-<tr ><td>Tipo</td><td>Ventas</td><td>No.ventas</td></tr>
+<tr><td>Tipo</td><td>Ventas</td><td>No.ventas</td></tr>
 @foreach($tiposventa as $tp)
 
 <tr><td>{{$tp->desctipoventa}}</td><td>{{number_format($tp->valorventa)}}</td><td align="center">{{$tp->numventas}}</td></tr>
 
 @endforeach
 </table>
-
-
-
-
-</div>
-<div style="width:200px"  align="center">
-===============================<br>
-Devoluciones<br>
-===============================
-</div>
-<div style="width:200px" align="left">
+=======================================<br>
+Devoluciones <br>
+=======================================
 <table >
 <tr ><td>Usuario</td><td>Valor</td><td>No.dev</td></tr>
 @foreach($devoluciones as $dev)
@@ -93,17 +77,9 @@ Devoluciones<br>
 
 @endforeach
 </table>
-
-
-
-
-</div>
-<div style="width:200px"  align="center">
-===============================<br>
-Gastos<br>
-===============================
-</div>
-<div style="width:200px" align="left">
+=======================================<br>
+Gastos <br>
+=======================================
 <table >
 <tr ><td>Proveedor</td><td>Valor</td></tr>
 @foreach($gasto as $g)
@@ -112,17 +88,9 @@ Gastos<br>
 
 @endforeach
 </table>
-
-
-
-
-</div>
-<div style="width:200px"  align="center">
-===============================<br>
-Ingresos<br>
-===============================
-</div>
-<div style="width:200px" align="left">
+=======================================<br>
+Otros Ingresos <br>
+=======================================
 <table >
 <tr ><td>Proveedor</td><td>Valor</td></tr>
 @foreach($ingreso as $g)
@@ -131,17 +99,9 @@ Ingresos<br>
 
 @endforeach
 </table>
-
-
-
-
-</div>
-<div style="width:200px"  align="center">
-===============================<br>
+=======================================<br>
 Notas a credito<br>
-===============================
-</div>
-<div style="width:200px" align="left">
+=======================================
 <table >
 <tr ><td>usuario</td><td>nota</td><td>Valor</td></tr>
 @foreach($notacredito as $not)
@@ -150,17 +110,9 @@ Notas a credito<br>
 
 @endforeach
 </table>
-
-
-
-
-</div>
-<div style="width:200px"  align="center">
-===============================<br>
-Compras<br>
-===============================
-</div>
-<div style="width:200px" align="left">
+=======================================<br>
+Compras <br>
+=======================================
 <table >
 <tr ><td>Usuario</td><td>Compra</td><td>No.</td></tr>
 @foreach($compra as $c)
@@ -169,95 +121,40 @@ Compras<br>
 
 @endforeach
 </table>
+@if(count($abonos)>0)
+=======================================<br>
+Abonos <br>
+=======================================
+<table>
+<tr>
+	<td>Cliente</td>
+    <td>Abono</td>
+</tr>
+@foreach($abonos as $ab )
+<tr>
+      <td>Convenio</td>
+	  <td>{{number_format($ab->valorabono)}}</td>
+</tr>
+@endforeach
+</table>
+@endif
 
-
-
-
-</div>
-<div style="width:200px"  align="center">
-===============================</div>
-<div style="width:200px" align="left">
+=======================================<br>
+Recogida<br>
+=======================================</p>
+<p align="align-justify">
 @if($exist->recogida < $exist->valorventa)
 	Faltante de . {{number_format($exist->valorventa - $exist->recogida)}}
 @else
 	Sobrante de . {{number_format($exist->recogida - $exist->valorventa)}}
 @endif
 <br>
-Valor a retirar: {{number_format($exist->recogida - $exist->base - $exist->gastos)}}<br>
-<font color="red">Tenga por favor en cuenta que el numero a consignar no esta teniendo en cuenta el valor de los gastos
--Los gastos solo se sumaran al valor total de las ventas en finales de mes.</font>
-</div>
-
-</body>
-</html>
+Valor a retirar: {{number_format($exist->recogida)}}<br>
+<font color="red">El valor final de la recogida se ha tenidoe en cuenta los gastos y otros ingresos que se hayan generado.</font>
+</P>
+	
 
 
-
-
-
-
-
-
-
-<div style="width:200px" align="center">
-<!--<h3><img src="{{asset('public/images/logo/4_Grayscale_logo_on_transparent_127x74.png')}}" width="100px"></h3>-->
-  {{$infoempresa->nombrecomercialempresa}}<br>
-   Dir: {{$infoempresa->direccionempresa}}<BR>
-   Tel: {{$infoempresa->telefonoempresa}}<br>
-   Nit: {{$infoempresa->nitempresa}}<br>
-   Ciudad: {{$infoempresa->ciudadempresa}}<br>
-	  Factura simplificada<br>
-	  {{fecha($vent->fecha)}}
-	  @foreach($ventas as $vent)
-	  <p>============================================
-	  Fac: HHF-00{{$vent->idtipoventa}}{{$vent->idventa}}
-	  ============================================</p>
-	  </font>
-	  @endforeach
-	  </div>
-	  <div  style="width:240px; margin: 0mm 0mm 0mm 0mm;" align="left" >
-<p>
-@foreach($detalleventa as $detail)
-{{mb_strtolower(substr($detail->descripcionproducto,0,20))}} ({{$detail->cantidad}}) ${{number_format($detail->subtotal)}}<br>
-  
-@endforeach
-</p>
-</div>
-<div style="width:200px" align="center">
-<!--<h3><img src="{{asset('public/images/logo/4_Grayscale_logo_on_transparent_127x74.png')}}" width="100px"></h3>-->
-  
-	  <p>============================================</p>
-	  
-	  </div>
-<div style="width:200px" align="right">
-No. productos: {{$sumarray->detalle}}<br>
-@foreach($ventas as $vent)
-Recargo Iva:{{number_format($vent->valorventa-$vent->subtotal)}} <br>
-Subtotal: {{number_format($vent->subtotal)}}<br>
-Total a pagar: {{number_format($vent->valorventa)}}<br>
-Recibido: {{number_format($vent->importeventa)}}<br>
-Cambio: {{number_format($vent->importeventa-$vent->valorventa)}}
-@endforeach
-</div>
-
-<div style="width:200px" align="center">
-<!--<h3><img src="{{asset('public/images/logo/4_Grayscale_logo_on_transparent_127x74.png')}}" width="100px"></h3>-->
-  
-	  <p>============================================</p>
-	  
-	  </div>
-
-	  <div style="width:200px" align="center">
-@foreach($ventas as $vent)
-Vendedor:{{$vent->nombreusuario}} <br>
-Cliente:{{$vent->nombrecliente}}
-@endforeach
-============================================<br>
-MUCHAS GRACIAS POR TU COMPRA, TE ESPERAMOS NUEVAMENTE!!
-<br>
-============================================
-</font>
-</div>
 
 
 </body>

@@ -21,10 +21,16 @@
 														<td><font color="red">Devoluciones: {{number_format($totaldevolucion)}}</font></td>
 														</tr>
 														<tr>
-														<td><font color="red">Convenios: {{number_format($convenios->valorventa)}}</font></td>
+														<td><font color="red">Notas a credito: {{number_format($notascredito)}}</font></td>
 														</tr>
 														<tr>
-														<td><font color="red">Base de caja: {{number_format($base->valorbase)}}</font></td>
+														<td><font color="red">Gastos: {{number_format($gasto1)}}</font></td>
+														</tr>
+														<tr>
+														<td><font color="red">Compras: {{number_format($compras)}}</font></td>
+														</tr>
+														<tr>
+														<td><font color="red">Convenios: {{number_format($convenios->valorventa)}}</font></td>
 														</tr>
 														<tr>
 														<td><font color="#298A08"><b>Ingresos: {{number_format($valingreso)}}<b></font></td>
@@ -33,7 +39,10 @@
 														<td><font color="#298A08"><b>Abonos: {{number_format($totalabono)}}<b></font></td>
 														</tr>
 														<tr>
-														<td><b><H4>GRAN TOTAL:</H4> {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion  - $base->valorbase - $convenios->valorventa + $valingreso + $totalabono)}}<b></font></td>
+														<td><font color="#298A08"><b>Devoluciones por compra: {{number_format($compradev)}}<b></font></td>
+														</tr>
+														<tr>
+														<td><b><H4>GRAN TOTAL:</H4> {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion   - $notascredito - $convenios->valorventa -$compras - $gasto1 + $valingreso + $compradev + $totalabono)}}<b></font></td>
 														</tr>
 														
 
@@ -66,6 +75,10 @@
 														<td><font color="red">Descuentos: {{number_format($sumarray->descuentos)}}</font></td>
 														</tr>
 														<tr>
+														<td><font color="red">Gastos: {{number_format($gasto1)}}</font></td>
+														</tr>
+														
+														<tr>
 														<td><font color="red">Comisiones de venta: {{number_format($sumarray->com)}}</font></td>
 														</tr>
 														<tr>
@@ -73,6 +86,9 @@
 														</tr>
 														<tr>
 														<td><font color="red">Convenios (*Utilidad por Convenios generados): {{number_format($convenios->utilidades)}}</font></td>
+														</tr>
+														<tr>
+														<td><font color="red">Notas a credito (*Utilidad por notas a credito generados): {{number_format($utilidadesnot)}}</font></td>
 														</tr>
 														<tr>
 														<td><font color="#298A08"><b>Comisiones de las devoluciones generadas: {{number_format($sumadev->com_dev)}}<b></font></td>
@@ -84,7 +100,7 @@
 														<td><font color="#298A08"><b>Utilidad por abonos: {{number_format($utilidadabono)}}<b></font></td>
 														</tr>
 														<tr>
-														<td><b><H4>GRAN TOTAL EN UTILIDADES:</H4>{{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}<b></font></td>
+														<td><b><H4>GRAN TOTAL EN UTILIDADES:</H4>{{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma - $utilidadesnot - $gasto1 -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}<b></font></td>
 														</tr>
 								
 														

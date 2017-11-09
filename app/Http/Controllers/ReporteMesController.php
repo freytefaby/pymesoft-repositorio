@@ -77,10 +77,18 @@ class ReporteMesController extends Controller
 						  ->select('d.fecha','c.nombrecliente','c.apellidocliente','u.user','v.idtipoventa','v.idventa','d.valordevolucion','d.iddevolucioncliente','d.observacion')
 						  ->whereBetween('d.fecha', array($ini,$end))
 						  ->get();	
-		$sumadev=DB::table('devolucionescliente as d')
-						  ->select (DB::raw('sum(d.valordevolucion) as devolucion'),DB::raw('sum(d.utilidades) as utilidad'),DB::raw('sum(d.subtotal) as subtotal'),DB::raw('sum(d.comision) as com_dev'))
-						  ->whereBetween('d.fecha', array($ini,$end))
-						  ->first();	
+		$devolucionescompras=DB::table('devolucioncompra as d')
+						  ->join('proveedor as p','p.idproveedor','=','d.idproveedor')
+						  ->join('compras as c','c.idcompra','=','d.idcompra')
+						  ->join('usuarios as u','u.idusuario','=','c.idusuario')
+						  ->whereBetween('c.fecha', array($ini,$end))
+						  ->get();	
+		 $abonos=DB::table('detalle_abono as da')
+						  ->join('convenio as c','c.idconvenio','=','da.idconvenio')
+						  ->join('clientes as cl','cl.idcliente','=','da.idcliente')
+						  ->whereBetween('da.fecha_abono', array($ini,$end))
+						  ->get();
+		
 		$gasto=DB::table('gasto')
 		                  ->whereBetween('fecha', array($ini,$end))
 						  ->get();
@@ -108,8 +116,23 @@ class ReporteMesController extends Controller
 			              ->join('usuarios as u','u.idusuario','=','c.idusuario')
 		                  ->whereBetween('c.fecha', array($ini,$end))
 						  ->where('c.estado','=','1')
-						  ->first();				  
-	return view('peticion.reportemes.index',["ini"=>$request->get('fecha_ini'),"end"=>$request->get('fecha_end'),"ventas"=>$ventas,"sumarray"=>$sumarray,"ventausuarios"=>$ventausuarios,"tiposventa"=>$tiposventa,"devoluciones"=>$devoluciones,"gasto"=>$gasto,"sumagasto"=>$sumagasto,"sumaingreso"=>$sumaingreso,"ingreso"=>$ingreso,"sumadev"=>$sumadev,"notacredito"=>$notacredito,"sumanota"=>$sumanota,"compra"=>$compra,"sumacompra"=>$sumacompra]);
+						  ->first();
+						  $convenios=DB::table('venta as v')
+						  ->join('usuarios as u','u.idusuario','=','v.idusuario')
+						   ->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
+						   ->select(DB::raw('sum(v.valorventa) as valorventa'),DB::raw('count(v.idventa) as numventas'),DB::raw('sum(v.subtotal) as subtotal'),DB::raw('sum(v.utilidades) as utilidades'),DB::raw('sum(v.importeventa) as importe'),'t.desctipoventa')
+						   ->whereBetween('v.fecha', array($ini,$end))
+						   ->where('v.idtipoventa','=',5)
+						   ->first();	
+						   $sumadev=DB::table('devolucionescliente as d')
+						   ->join('clientes as c','c.idcliente','=','d.idcliente')
+						   ->join('usuarios as u','u.idusuario','=','d.idusuario')
+						   ->join('venta as v','v.idventa','=','d.idventa')
+						   ->select(DB::raw('sum(d.valordevolucion) as devolucion'), DB::raw('sum(d.utilidades) as utilidadsuma'),DB::raw('sum(d.subtotal) as subdev'),DB::raw('sum(d.comision) as com_dev'))
+						   ->whereBetween('d.fecha', array($ini,$end))
+						   ->first();
+					  
+	return view('peticion.reportemes.index',["ini"=>$request->get('fecha_ini'),"end"=>$request->get('fecha_end'),"ventas"=>$ventas,"sumarray"=>$sumarray,"ventausuarios"=>$ventausuarios,"tiposventa"=>$tiposventa,"devoluciones"=>$devoluciones,"gasto"=>$gasto,"sumagasto"=>$sumagasto,"sumaingreso"=>$sumaingreso,"ingreso"=>$ingreso,"sumadev"=>$sumadev,"notacredito"=>$notacredito,"sumanota"=>$sumanota,"compra"=>$compra,"sumacompra"=>$sumacompra,"devolucionescompras"=>$devolucionescompras,"abonos"=>$abonos,"convenios"=>$convenios,"sumadev"=>$sumadev]);
 		
 							 
 	

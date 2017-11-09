@@ -92,11 +92,15 @@ if($request->get('tipoproducto')==2)
 		
 			$combiva=$valorventa;
 			$utlidaduni=$request->get('und')*$request->get('utilidad');
-			$utilidadtotal=$subtotal-$utlidaduni;
+			$utilidadtotal=$utlidaduni-$subtotal;
 			$codigo=$request->get('codigo');
+
+			
 			echo "Utilidades".$utilidadtotal; 
+		
 			   
 		   }
+		 
 		   $detalledevolucion=DB::table('detalledevolucioncompra as d')
 						  ->join('producto as p','d.idproducto','=','p.idproducto')
 						  ->join('proveedor as pr','pr.idproveedor','=','p.idproveedor')

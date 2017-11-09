@@ -162,7 +162,7 @@
 														{{$art->stock}}
 														</td>
 														<td>
-														<input type="hidden" name="preciosugerido" value="{{$art->preciosugerido}}">
+														<input type="hidden" name="preciosugerido" value="{{$art->preciocompra}}">
 														{{number_format($art->preciosugerido)}}
 														</td>
 														<td>
@@ -191,7 +191,7 @@
 														<input type="hidden" name="tipoproducto" value="{{$art->idtipoproducto}}">
 														<input type="hidden" name="cantidadempaque" value="{{$art->cantidadempaque}}">
 														<input type="hidden" name="validarcantidad">
-														<input type="hidden" name="utilidad" value="{{$art->preciocompra}}">
+														<input type="hidden" name="utilidad" value="{{$art->preciosugerido}}">
 														<input type="hidden" name="iddevolucion" value="{{$id}}">
 														@endforeach
 														</table>

@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('content')
- 
+
 <div class="main-content">
 				<div class="main-content-inner">
 					
@@ -213,22 +213,7 @@
 														<?php $contabono=$contabono+1; $totalabono=$totalabono+$ab->valorabono; $utilidadabono=$utilidadabono+$ab->utilidad_abono ?>
 														@endforeach
 						
-														<h3>Detalles de ventas</h3>
-														<table class="table">
-														<thead>
-														<tr>
-														<td>General ventas: {{number_format($sumarray->valorventa)}} - {{$sumarray->descuentos}} <b>(Descuentos)</b> - {{number_format($totaldevolucion)}} <b>(Devoluciones)</b> - {{number_format($convenios->valorventa)}} <b>(Convenios)</b> - {{number_format($base->valorbase)}} <b>(Base)</b> + {{number_format($valingreso)}} <b>(Ingresos)</b> + {{number_format($totalabono)}} <b>(Abonos)</b> = {{number_format($sumarray->valorventa - $sumarray->descuentos - $totaldevolucion  - $base->valorbase - $convenios->valorventa + $valingreso + $totalabono)}}  </td>
 														
-														</tr>
-														<tr>
-														<td>Sub total ventas {{number_format($sumarray->subtotal)}} - {{number_format($sumadev->subdev)}} <b>(Devoluciones)</b> - {{number_format($convenios->subtotal)}} <b>(Convenios)</b> = {{number_format($sumarray->subtotal - $sumadev->subdev - $convenios->subtotal)}}</td>
-														</tr>
-														<tr>
-														<td>Utilidad por ventas: {{number_format($sumarray->utilidades)}} - {{number_format($sumarray->descuentos)}}<b>(Descuentos)</b> - {{number_format($sumarray->com)}}<b>(Comisiones)</b> - {{number_format($sumadev->utilidadsuma)}} <b>(Devoluciones)</b> - {{number_format($convenios->utilidades)}} <b>(Convenios)</b> + {{number_format($sumadev->com_dev)}} <b>(comisiones devolucion)</b> + {{number_format($utilingreso)}} <b>(Otros ingresos)</b> {{number_format($utilidadabono)}} <b>(Utilidad convenio)</b> = {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}} </td>
-														</tr>
-														</thead>
-
-														</table>
 														</div>
 														
 
@@ -820,6 +805,8 @@
                                             <button class="btn btn-xs btn-success" title="Facturar" type="submit">
 																<i class="ace-icon fa fa-check bigger-110"></i> Generar cierre
 															</button>
+										
+															<button type="button" class="btn btn-xs btn-danger" title="Detalles de la factura" data-toggle="modal" data-target="#myModal"> <i class="ace-icon fa fa-eye bigger-110"></i> Detalles </button>
 															<!--IMPUTS-->
 															
 															
@@ -955,6 +942,7 @@
 					</div><!-- /.page-content -->
 				</div>
 			</div><!-- /.main-content -->
+			@include('peticion.cierre.modal')
 
 @endsection
 
