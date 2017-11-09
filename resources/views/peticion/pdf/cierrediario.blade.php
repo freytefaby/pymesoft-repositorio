@@ -44,7 +44,9 @@ Gastos: {{number_format($exist->gastos)}}<br>
 Base de caja: {{number_format($exist->base)}}<br>
 Recogida: {{number_format($exist->recogida)}}
 </p>
-<p style="padding: 0cm 0cm 0cm 0cm; margin: 0mm 0mm 0mm 0mm;">=======================================<br>
+<p style="padding: 0cm 0cm 0cm 0cm; margin: 0mm 0mm 0mm 0mm;">
+@if(count($ventausuarios)>0)
+=======================================<br>
 Detalle ventas vendedores<br>
 =======================================
 <table >
@@ -55,6 +57,9 @@ Detalle ventas vendedores<br>
 
 @endforeach
 </table>
+@endif
+
+@if(count($tiposventa)>0)
 =======================================<br>
 Tipos de venta <br>
 =======================================
@@ -66,6 +71,9 @@ Tipos de venta <br>
 
 @endforeach
 </table>
+@endif
+
+@if(count($devoluciones)>0)
 =======================================<br>
 Devoluciones <br>
 =======================================
@@ -77,6 +85,9 @@ Devoluciones <br>
 
 @endforeach
 </table>
+@endif
+
+@if(count($gasto)>0)
 =======================================<br>
 Gastos <br>
 =======================================
@@ -88,6 +99,9 @@ Gastos <br>
 
 @endforeach
 </table>
+@endif
+
+@if(count($ingreso)>0)
 =======================================<br>
 Otros Ingresos <br>
 =======================================
@@ -99,6 +113,9 @@ Otros Ingresos <br>
 
 @endforeach
 </table>
+@endif
+
+@if(count($notacredito)>0)
 =======================================<br>
 Notas a credito<br>
 =======================================
@@ -110,6 +127,9 @@ Notas a credito<br>
 
 @endforeach
 </table>
+@endif
+
+@if(count($compra)>0)
 =======================================<br>
 Compras <br>
 =======================================
@@ -121,6 +141,8 @@ Compras <br>
 
 @endforeach
 </table>
+@endif
+
 @if(count($abonos)>0)
 =======================================<br>
 Abonos <br>
