@@ -227,9 +227,9 @@
 												<i class="ace-icon fa fa-times"></i>
 											</button>
 											<strong>Total valor inventario general (Precio costo): <br></strong>
-                                        {{number_format($totalvaloresinventariocantidad->totalcosto + $totalvaloresinventariounidad->totalcosto)}}<br>
+                                        {{number_format($inv_costo->totalcosto)}}<br>
 											<strong>Total valor inventario general (Precio venta): <br></strong>
-                                        {{number_format($totalvaloresinventariocantidad->totalventas + $totalvaloresinventariounidad->totalventas)}}
+                                        {{number_format($inv_venta->totalventas)}}
 											<br />
 										</div>
 										</div>

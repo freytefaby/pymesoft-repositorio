@@ -113,30 +113,6 @@ if($request)
 
 if($request->get('tipoproducto')==1)
 	   {
-		   if($request->get('cantidadempaque')>0)
-		   {
-			    return Redirect::to('peticion/productos/create')->with('mensaje','La cantidad de empaque para un tipo de producto por unidad no debe ser mayor a cero')
-				                                                 ->with('producto',$request->get('producto'))
-																 ->with('codigobarra1',$request->get('codigobarra1'))
-																 ->with('codigobarra2',$request->get('codigobarra2'))
-																 ->with('codigobarra3',$request->get('codigobarra3'))
-																 ->with('codigobarra4',$request->get('codigobarra4'))
-																 ->with('cantidadempaque',$request->get('cantidadempaque'))
-																 ->with('stock',$request->get('stock'))
-																 ->with('stockminimo',$request->get('stockminimo'))
-																 ->with('preciocompra',$request->get('preciocompra'))
-																 ->with('precioventa',$request->get('precioventa'))
-																 ->with('preciosugerido',$request->get('preciosugerido'))
-																 ->with('iva',$request->get('iva'))
-																 ->with('tipoproducto',$request->get('tipoproducto'))
-																 ->with('categoria',$request->get('categoria'))
-																 ->with('proveedor',$request->get('proveedor'))
-																 ->with('comision',$request->get('comision'))
-																 ->with('estante',$request->get('estante'))
-																 ->with('entrepano',$request->get('entrepano'))
-																 ->with('principio',$request->get('principio'));
-			   
-		   }
 		   
 			   
        $producto=new Productos;
@@ -145,7 +121,7 @@ if($request->get('tipoproducto')==1)
 	   $producto->codigobarra2=$request->get('codigobarra2');
 	   $producto->codigobarra3=$request->get('codigobarra3');
 	   $producto->codigobarra4=$request->get('codigobarra4');
-	   $producto->cantidadempaque=$request->get('cantidadempaque');
+	   $producto->cantidadempaque='1';
 	   $producto->stock=$request->get('stock');
 	   $producto->stockminimo=$request->get('stockminimo');
 	   $producto->preciocompra=$request->get('preciocompra');
@@ -275,43 +251,14 @@ if($request->get('tipoproducto')==1)
 
 if($request->get('tipoproducto')==1)
 	   {
-		   if($request->get('cantidadempaque')>0)
-		   {
-			    return Redirect::to('peticion/productos/'.$id.'/edit')->with('mensaje','La cantidad de empaque para un tipo de producto por unidad no debe ser mayor a cero')
-				                                                 ->with('producto',$request->get('producto'))
-																 ->with('codigobarra1',$request->get('codigobarra1'))
-																 ->with('codigobarra2',$request->get('codigobarra2'))
-																 ->with('codigobarra3',$request->get('codigobarra3'))
-																 ->with('codigobarra4',$request->get('codigobarra4'))
-																 ->with('cantidadempaque',$request->get('cantidadempaque'))
-																 ->with('stock',$request->get('stock'))
-																 ->with('stockminimo',$request->get('stockminimo'))
-																 ->with('preciocompra',$request->get('preciocompra'))
-																 ->with('precioventa',$request->get('precioventa'))
-																 ->with('preciosugerido',$request->get('preciosugerido'))
-																 ->with('iva',$request->get('iva'))
-																 ->with('tipoproducto',$request->get('tipoproducto'))
-																 ->with('categoria',$request->get('categoria'))
-																 ->with('proveedor',$request->get('proveedor'))
-																 ->with('comision',$request->get('comision'))
-																 ->with('estante',$request->get('estante'))
-																 ->with('entrepano',$request->get('entrepano'))
-																 ->with('principio',$request->get('principio'));
-			   
-			   }
-			   
-				   
-				   
-				   else
-				   {
-				   
-	   $producto=Productos::findOrFail($id);
+		  
+ $producto=Productos::findOrFail($id);
 	   $producto->descripcionproducto=$request->get('producto');
 	   $producto->codigobarra1=$request->get('codigobarra1');
 	   $producto->codigobarra2=$request->get('codigobarra2');
 	   $producto->codigobarra3=$request->get('codigobarra3');
 	   $producto->codigobarra4=$request->get('codigobarra4');
-	   $producto->cantidadempaque=$request->get('cantidadempaque');
+	   $producto->cantidadempaque='1';
 	   $producto->stock=$request->get('stock');
 	   $producto->stockminimo=$request->get('stockminimo');
 	   $producto->preciocompra=$request->get('preciocompra');
@@ -321,15 +268,13 @@ if($request->get('tipoproducto')==1)
 	   $producto->idtipoproducto=$request->get('tipoproducto');
 	   $producto->idcategoria=$request->get('categoria');
 	   $producto->idproveedor=$request->get('proveedor');
-	   $producto->estado=$request->get('estado');;
+	   $producto->estado=$request->get('estado');
 	   $producto->comision=$request->get('comision');
 	   $producto->estante=$request->get('estante');
 	   $producto->entrepano=$request->get('entrepano');
 	   $producto->activo_principio=$request->get('principio');
 	   $producto->update();
-	   return Redirect::to('peticion/productos')->with('mensaje','Producto fue actualizado correctamente');
-	   }
-
+	   return Redirect::to('peticion/productos')->with('mensaje','Producto'.$request->get('producto').' '.'Cod'.' '.$request->get('codigobarra1').' '.'fue actualizado correctamente con'.' '.$request->get('stock').' '.'Cantidades');
 	   
 	   }
 	   else{

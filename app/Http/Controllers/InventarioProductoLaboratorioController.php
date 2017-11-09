@@ -61,19 +61,18 @@ class InventarioProductoLaboratorioController extends Controller
 	 ->where('p.descripcionproducto','LIKE','%'.$productoq.'%')
 	 ->orwhere('p.codigobarra1','=',$codigobarraq)
 	 ->first();
-	 $totalvaloresinventariounidad=DB::table('producto as p')
-	 ->select(DB::raw('sum(p.stock) as numstock'), DB::raw('sum(p.preciocompra  * p.stock) as totalcosto'),DB::raw('sum(p.preciosugerido  * p.stock) as totalventas'))
-	 ->where('p.idtipoproducto','=','1')
-	 ->first();
-	  $totalvaloresinventariocantidad=DB::table('producto as p')
-	 ->select(DB::raw('sum(p.stock) as numstock'), DB::raw('sum(p.preciocompra / p.cantidadempaque * p.stock) as totalcosto'),DB::raw('sum(p.preciosugerido / p.cantidadempaque * p.stock) as totalventas'))
-	 ->where('p.idtipoproducto','=','2')
-	 ->first();
 	
+	$inv_venta=DB::table('producto as p')
+	 ->select(DB::raw('sum(p.preciosugerido / p.cantidadempaque * p.stock) as totalventas'))
+	 ->first();
+	 
+	 	$inv_costo=DB::table('producto as p')
+	 ->select(DB::raw('sum(p.preciocompra / p.cantidadempaque * p.stock) as totalcosto'))
+	 ->first();
        //$pro=Productos::producto($productoq)->codigo($codigobarraq)->proveedor($proveedorq)
 	  // ->join('proveedor as p','p.idproveedor','=','1')
 	   //->orderby('idproducto','DESC')->get();
-	return view('peticion.inventarioproducto.index',["categoria"=>$categoria,"productoq"=>$productoq,"tipo"=>$tipo,"proveedor"=>$proveedor,"proveedorq"=>$proveedorq,"pro"=>$pro,"sumarray"=>$sumarray,"codigobarraq"=>$codigobarraq,"sumarray2"=>$sumarray2,"totalvaloresinventariounidad"=>$totalvaloresinventariounidad,"totalvaloresinventariocantidad"=>$totalvaloresinventariocantidad]);
+	return view('peticion.inventarioproducto.index',["categoria"=>$categoria,"productoq"=>$productoq,"tipo"=>$tipo,"proveedor"=>$proveedor,"proveedorq"=>$proveedorq,"pro"=>$pro,"sumarray"=>$sumarray,"codigobarraq"=>$codigobarraq,"sumarray2"=>$sumarray2,"inv_venta"=>$inv_venta,"inv_costo"=>$inv_costo]);
 		
 							 
 	
