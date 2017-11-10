@@ -5,7 +5,7 @@
 <title>HHCD-00{{$exist->idusuario}}{{$exist->idcierrediario}} </title>
 <link rel="shortcut icon" href="/favicon.ico" />
 <style>
-   <?php include(public_path().'/css/bootstrap.min.css');?>
+  
    html {
  margin: 0;
 }

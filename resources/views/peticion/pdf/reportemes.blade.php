@@ -11,7 +11,7 @@
 }
 body {
  font-family: "sans-serif", serif;
- margin: 0mm 0mm 0mm 4mm;
+ margin: 0mm 0mm 0mm 8mm;
 }
 </style>
 
@@ -99,7 +99,10 @@ Utilidades: {{number_format($sumarray->utilidades)}} <br>
 + Utilidad por abonos: {{number_format($utilidadabono)}}<br>
 UTILIDADES: {{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma - $utilidadesnot - $gasto1 -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}
 </p>
-<p style="padding: 0cm 0cm 0cm 0cm; margin: 0mm 0mm 0mm 0mm;">======================================= <br>
+
+<p style="padding: 0cm 0cm 0cm 0cm; margin: 0mm 0mm 0mm 0mm;">
+@if(count($ventausuarios)>0)
+======================================= <br>
 Detalle de venta <br>
 =======================================
 <table >
@@ -110,6 +113,10 @@ Detalle de venta <br>
 
 @endforeach
 </table>
+@endif
+
+
+@if(count($tiposventa)>0)
 =======================================<br>
 Tipos de venta<br>
 =======================================
@@ -124,6 +131,10 @@ Tipos de venta<br>
 
 @endforeach
 </table>
+@endif
+
+
+@if(count($devoluciones)>0)
 =======================================<br>
 Devoluciones <br>
 =======================================
@@ -140,6 +151,11 @@ Devoluciones <br>
 														
 @endforeach
 </table>
+@endif
+
+
+
+@if(count($gasto)>0)
 =======================================<br>
 Gastos <br>
 =======================================
@@ -151,6 +167,13 @@ Gastos <br>
 
 @endforeach
 </table>
+@endif
+
+
+
+
+
+@if(count($ingreso)>0)
 =======================================<br>
 Ingresos <br>
 =======================================
@@ -162,6 +185,10 @@ Ingresos <br>
 
 @endforeach
 </table>
+@endif
+
+
+@if(count($notacredito)>0)
 =======================================<br>
 Notas a credito <br>
 =======================================
@@ -173,6 +200,12 @@ Notas a credito <br>
 
 @endforeach
 </table>
+@endif
+
+
+
+
+@if(count($abonos)>0)
 =======================================<br>
 Abonos <br>
 =======================================
@@ -188,6 +221,12 @@ Abonos <br>
 </tr>
 @endforeach
 </table>
+@endif
+
+
+
+
+@if(count($devolucionescompras)>0)
 =======================================<br>
 Devoluciones compras <br>
 =======================================
@@ -214,6 +253,7 @@ Devoluciones compras <br>
 														
 														
 														</table>
+														@endif
 
 
 
