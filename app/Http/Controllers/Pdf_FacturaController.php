@@ -43,6 +43,14 @@ class Pdf_FacturaController extends Controller
 			->where('v.idventa','=',$id)
 			->where('v.estado','=','1')
 			->get();
+			$ventas2=DB::table('venta as v')
+			->join('clientes as c','c.idcliente','=','v.idcliente')
+			->join('usuarios as u','u.idusuario','=','v.idusuario')
+			->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
+			->select('v.fecha','c.nombrecliente','c.apellidocliente','u.user','v.idventa','v.valorventa','v.importeventa','v.estado','v.subtotal','v.idtipoventa','t.desctipoventa','u.nombreusuario','u.apellidousuario')
+			->where('v.idventa','=',$id)
+			->where('v.estado','=','1')
+			->first();
 			
 		$detalleventa=DB::table('detalleventa as d')
 		                  ->join('venta as v','d.idventa','=','v.idventa')
@@ -60,10 +68,53 @@ class Pdf_FacturaController extends Controller
 		                  ->where('d.idventa','=',$id)
 						  ->where('v.estado','=','1')
 						  ->first();
-        $view =  \View::make('peticion.pdf.factura_venta', compact('infoempresa','ventas','detalleventa','sumarray'))->render();
+						  $nombre="HHCD-00".$ventas2->idtipoventa.$ventas2->idventa; 
+						  Header("Content-Type: text/plain"); 
+						  Header("Content-Disposition: attachment; filename=$nombre.txt"); 
+						  echo "        ".$infoempresa->nombrecomercialempresa."\r\n"; 
+						  echo "          Dirección:"." ".$infoempresa->telefonoempresa."\r\n"; 
+						  echo "             Tel:"." ".$infoempresa->telefonoempresa."\r\n"; 
+						  echo "          Nit:"." ".$infoempresa->nitempresa."\r\n"; 
+						  echo "       Ciudad:"." ".$infoempresa->ciudadempresa."\r\n";
+						  
+						  
+						  echo "=======================================\r\n"; 
+						  echo "           Fac HHCD-00".$ventas2->idtipoventa.$ventas2->idventa."\r\n"; 
+						  echo "=======================================\r\n"; 
+						  echo "Producto      Cantidad Valor\r\n"; 
+						  foreach($detalleventa as $detail)
+						  {
+						  echo$detail->descripcionproducto."\r\n";
+						  echo "              ".$detail->cantidad."        ".number_format($detail->subtotal)."\r\n";
+  
+						  }
+						 
+						  echo "=======================================\r\n";
+						  echo "No. productos:".$sumarray->detalle."\r\n"; 
+						  foreach($ventas as $vent)
+						  {
+							echo "Recargo Iva: ".number_format($vent->valorventa-$vent->subtotal)."\r\n";
+							echo "Subtotal: ".number_format($vent->subtotal)."\r\n";
+							echo "Total a pagar: ".number_format($vent->valorventa)."\r\n";
+							echo "Recibido: ".number_format($vent->importeventa)."\r\n";
+							echo "Cambio: ".number_format($vent->importeventa-$vent->valorventa)."\r\n";
+						  }
+						  echo "=======================================\r\n";
+						  foreach($ventas as $vent)
+						  {
+							echo "Vendedor: ".$vent->nombreusuario."\r\n";
+							echo "Cliente: ".$vent->nombrecliente."\r\n";
+						  }
+						  echo "=======================================\r\n";
+						  echo "MUCHAS GRACIAS POR TU COMPRA\r\n";
+						  echo "TE ESPERAMOS NUEVAMENTE!!\r\n";
+						  
+						 
+					
+       /* $view =  \View::make('peticion.pdf.factura_venta', compact('infoempresa','ventas','detalleventa','sumarray'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
-        return $pdf->stream('invoice');
+        return $pdf->stream('invoice');*/
 
                                      }   
 			   Else
@@ -120,6 +171,9 @@ class Pdf_FacturaController extends Controller
 		                  ->where('d.idventa','=',$id)
 						  ->where('v.estado','=','1')
 						  ->first();
+
+						  
+
         $view =  \View::make('peticion.pdf.factura_ventacarta', compact('infoempresa','ventas','detalleventa','sumarray'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);

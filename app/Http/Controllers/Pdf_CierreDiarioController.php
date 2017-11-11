@@ -235,14 +235,22 @@ class Pdf_CierreDiarioController extends Controller
 
 				 }
    
-
+				 echo "=======================================\r\n";
+				 echo "               Recogidas\r\n";
+				 echo "=======================================\r\n";
 				 if($exist->recogida < $exist->valorventa)
 				 {   
-				 Faltante de . {{number_format($exist->valorventa - $exist->recogida)}}
-				 
-			 @else
-				 Sobrante de . {{number_format($exist->recogida - $exist->valorventa)}}
-			 @endif
+				 echo "Faltante de: ".number_format($exist->valorventa - $exist->recogida)."\r\n";
+				       }
+			 else
+			 {
+				echo "Sobrante de: ".number_format($exist->recogida - $exist->valorventa)."\r\n";
+			 }
+			 echo  "Valor a retirar: ".number_format($exist->recogida)."\r\n";
+			 echo "El valor final de la recogida se ha \r\n"; 
+			 echo "tenido en cuenta los gastos y otros \r\n"; 
+			 echo  "ingresos que se hayan generado.";
+		
 
 						 
 						
