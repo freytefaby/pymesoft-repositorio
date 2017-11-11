@@ -71,25 +71,25 @@ class Pdf_FacturaController extends Controller
 						  $nombre="HHCD-00".$ventas2->idtipoventa.$ventas2->idventa; 
 						  Header("Content-Type: text/plain"); 
 						  Header("Content-Disposition: attachment; filename=$nombre.txt"); 
-						  echo "        ".$infoempresa->nombrecomercialempresa."\r\n"; 
-						  echo "          Dirección:"." ".$infoempresa->telefonoempresa."\r\n"; 
-						  echo "             Tel:"." ".$infoempresa->telefonoempresa."\r\n"; 
-						  echo "          Nit:"." ".$infoempresa->nitempresa."\r\n"; 
-						  echo "       Ciudad:"." ".$infoempresa->ciudadempresa."\r\n";
+						  echo "      ".$infoempresa->nombrecomercialempresa."\r\n"; 
+						  echo "        Dirección:"." ".$infoempresa->telefonoempresa."\r\n"; 
+						  echo "           Tel:"." ".$infoempresa->telefonoempresa."\r\n"; 
+						  echo "        Nit:"." ".$infoempresa->nitempresa."\r\n"; 
+						  echo "     Ciudad:"." ".$infoempresa->ciudadempresa."\r\n";
 						  
 						  
-						  echo "=======================================\r\n"; 
-						  echo "           Fac HHCD-00".$ventas2->idtipoventa.$ventas2->idventa."\r\n"; 
-						  echo "=======================================\r\n"; 
-						  echo "Producto      Cantidad Valor\r\n"; 
+						  echo "================================\r\n"; 
+						  echo "         Fac HHCD-00".$ventas2->idtipoventa.$ventas2->idventa."\r\n"; 
+						  echo "================================\r\n"; 
+						  echo "Producto    Cantidad    Valor\r\n"; 
 						  foreach($detalleventa as $detail)
 						  {
-						  echo$detail->descripcionproducto."\r\n";
-						  echo "              ".$detail->cantidad."        ".number_format($detail->subtotal)."\r\n";
+						  echo$detail->descripcionproducto."__".$detail->cantidad."__".number_format($detail->subtotal)."\r\n";
+						         
   
 						  }
 						 
-						  echo "=======================================\r\n";
+						  echo "================================\r\n"; 
 						  echo "No. productos:".$sumarray->detalle."\r\n"; 
 						  foreach($ventas as $vent)
 						  {
@@ -99,13 +99,13 @@ class Pdf_FacturaController extends Controller
 							echo "Recibido: ".number_format($vent->importeventa)."\r\n";
 							echo "Cambio: ".number_format($vent->importeventa-$vent->valorventa)."\r\n";
 						  }
-						  echo "=======================================\r\n";
+						  echo "================================\r\n";  
 						  foreach($ventas as $vent)
 						  {
 							echo "Vendedor: ".$vent->nombreusuario."\r\n";
 							echo "Cliente: ".$vent->nombrecliente."\r\n";
 						  }
-						  echo "=======================================\r\n";
+						  echo "================================\r\n"; 
 						  echo "MUCHAS GRACIAS POR TU COMPRA\r\n";
 						  echo "TE ESPERAMOS NUEVAMENTE!!\r\n";
 						  

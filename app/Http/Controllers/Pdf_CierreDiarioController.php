@@ -130,21 +130,22 @@ class Pdf_CierreDiarioController extends Controller
 						 $nombre="HHCD-00".$exist->idusuario.$exist->idcierrediario; 
 						 Header("Content-Type: text/plain"); 
 						 Header("Content-Disposition: attachment; filename=$nombre.txt"); 
-						 echo "        ".$infoempresa->nombrecomercialempresa."\r\n"; 
-						 echo "          Dirección:"." ".$infoempresa->telefonoempresa."\r\n"; 
-						 echo "             Tel:"." ".$infoempresa->telefonoempresa."\r\n"; 
-						 echo "          Nit:"." ".$infoempresa->nitempresa."\r\n"; 
-						 echo "       Ciudad:"." ".$infoempresa->ciudadempresa."\r\n"; 
-						 echo "=======================================\r\n"; 
-						 echo "          Comprobante Cierre\r\n"; 
-						 echo "=======================================\r\n"; 
-						 echo "           ".fecha($exist->fechacierre)."\r\n"; 
-						 echo "              Generado\r\n"; 
-						 echo "           ".fecha($exist->fecha)."\r\n"; 
-						 echo "         No Cierre: HHCD-00".$exist->idusuario.$exist->idcierrediario."\r\n";
-						 echo "=======================================\r\n"; 
-						 echo "          Detalle de cierre\r\n"; 
-						 echo "=======================================\r\n"; 
+						 echo "      ".$infoempresa->nombrecomercialempresa."\r\n"; 
+						 echo "        Dirección:"." ".$infoempresa->telefonoempresa."\r\n"; 
+						 echo "           Tel:"." ".$infoempresa->telefonoempresa."\r\n"; 
+						 echo "        Nit:"." ".$infoempresa->nitempresa."\r\n"; 
+						 echo "     Ciudad:"." ".$infoempresa->ciudadempresa."\r\n";
+						 
+						 echo "================================\r\n"; 
+						 echo "        Comprobante Cierre\r\n"; 
+						 echo "================================\r\n"; 
+						 echo "         ".fecha($exist->fechacierre)."\r\n"; 
+						 echo "            Generado\r\n"; 
+						 echo "         ".fecha($exist->fecha)."\r\n"; 
+						 echo "       No Cierre: HHCD-00".$exist->idusuario.$exist->idcierrediario."\r\n";
+						 echo "================================\r\n"; 
+						 echo "        Detalle de cierre\r\n"; 
+						 echo "================================\r\n"; 
 						 echo "Total ventas: ".number_format($exist->valorventa)."\r\n"; 
 						 echo "Subtotal: ".number_format($exist->subtotal)."\r\n";
 						 echo "Utilidad diaria: ".number_format($exist->utilidades)."\r\n";
@@ -153,39 +154,39 @@ class Pdf_CierreDiarioController extends Controller
 						 echo "Recogida: ".number_format($exist->recogida)."\r\n";
 
 
-						 echo "=======================================\r\n";
-						 echo "          Detalle vendedores\r\n";
-						 echo "=======================================\r\n";
-						 echo "Usuarios        Ventas        No.ventas\r\n";
+						 echo "================================\r\n"; 
+						 echo "        Detalle vendedores\r\n";
+						 echo "================================\r\n"; 
+						 echo "Usuarios      Ventas      No.ventas\r\n";
 						foreach($ventausuarios as $vent)
 						{
 						echo $vent->user."__".number_format($vent->valorventa)."__".$vent->numventas."\r\n";
 
 						}
-						echo "=======================================\r\n";
-						echo "           Tipos de venta\r\n";
-						echo "=======================================\r\n";
-						echo "Tipo            Ventas        No.ventas\r\n";
+						echo "================================\r\n"; 
+						echo "         Tipos de venta\r\n";
+						echo "================================\r\n"; 
+						echo "Tipo          Ventas      No.ventas\r\n";
 					   foreach($tiposventa as $tp)
 					   {
 					   echo $tp->desctipoventa."__".number_format($tp->valorventa)."__".$tp->numventas."\r\n";
 
 					   }
 
-					   echo "=======================================\r\n";
-					   echo "           Devoluciones\r\n";
-					   echo "=======================================\r\n";
-					   echo "Usuarios        Valor         No.dev\r\n";
+					   echo "================================\r\n"; 
+					   echo "          Devoluciones\r\n";
+					   echo "================================\r\n"; 
+					   echo "Usuarios      Valor       No.dev\r\n";
 					  foreach($devoluciones as $dev)
 					  {
 					  echo $dev->user."__".number_format($dev->valordevolucion)."__"."HHFD00".$dev->idventa.$dev->iddevolucioncliente."\r\n";
 
 					  }
 
-					  echo "=======================================\r\n";
-					  echo "              Gastos\r\n";
-					  echo "=======================================\r\n";
-					  echo "Proveedor       Valor        \r\n";
+					  echo "================================\r\n"; 
+					  echo "            Gastos\r\n";
+					  echo "================================\r\n"; 
+					  echo "Proveedor     Valor        \r\n";
 					 foreach($gasto as $g)
 					 {
 					 echo $g->proveedorgasto."__".number_format($g->valorgasto)."\r\n";
@@ -193,20 +194,20 @@ class Pdf_CierreDiarioController extends Controller
 					 }
 
 
-					 echo "=======================================\r\n";
-					 echo "            Otros ingresos\r\n";
-					 echo "=======================================\r\n";
-					 echo "Proveedor       Valor        \r\n";
+					 echo "================================\r\n"; 
+					 echo "          Otros ingresos\r\n";
+					 echo "================================\r\n"; 
+					 echo "Proveedor     Valor        \r\n";
 					foreach($ingreso as $i)
 					{
 					echo $i->proveedoringreso."__".number_format($i->valoringreso)."\r\n";
 
 					}
 
-					echo "=======================================\r\n";
-					echo "            Notas a credito\r\n";
-					echo "=======================================\r\n";
-					echo "usuarios        nota          Valor       \r\n";
+					echo "================================\r\n"; 
+					echo "          Notas a credito\r\n";
+					echo "================================\r\n"; 
+					echo "usuarios      nota          Valor       \r\n";
 				   foreach($notacredito as $not)
 				   {
 				   echo $not->user."__HHFNC-000".$not->idnotacredito."__".number_format($not->valornotacredito)."\r\n";
@@ -214,30 +215,28 @@ class Pdf_CierreDiarioController extends Controller
 				   }
 
 
-				   echo "=======================================\r\n";
-				   echo "               Compras\r\n";
-				   echo "=======================================\r\n";
-				   echo "Usuarios        Compra        No.Compra       \r\n";
+				   echo "================================\r\n"; 
+				   echo "             Compras\r\n";
+				   echo "================================\r\n"; 
+				   echo "Usuarios    Compra    No.Compra       \r\n";
 				  foreach($compra as $c)
 				  {
 				  echo$c->user."__".number_format($c->valorcompra)."__HHFC-000".$c->idcompra."\r\n";
 
 				  }
-
-
-				  echo "=======================================\r\n";
-				  echo "               Abonos\r\n";
-				  echo "=======================================\r\n";
-				  echo "Cliente         Abono    \r\n";
+                  echo "================================\r\n"; 
+				  echo "             Abonos\r\n";
+				  echo "================================\r\n"; 
+				  echo "Cliente       Abono    \r\n";
 				  foreach($abonos as $ab )
 				 {
 				 echo $ab->nombrecliente." ".$ab->apellidocliente."__".number_format($ab->valorabono)."\r\n";
 
 				 }
    
-				 echo "=======================================\r\n";
-				 echo "               Recogidas\r\n";
-				 echo "=======================================\r\n";
+				 echo "================================\r\n"; 
+				 echo "             Recogidas\r\n";
+				 echo "================================\r\n"; 
 				 if($exist->recogida < $exist->valorventa)
 				 {   
 				 echo "Faltante de: ".number_format($exist->valorventa - $exist->recogida)."\r\n";

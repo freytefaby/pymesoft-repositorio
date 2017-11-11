@@ -107,9 +107,9 @@ Otros Ingresos <br>
 =======================================
 <table >
 <tr ><td>Proveedor</td><td>Valor</td></tr>
-@foreach($ingreso as $g)
+@foreach($ingreso as $i)
 
-<tr><td>{{$g->proveedoringreso}}</td><td>{{number_format($g->valoringreso)}}</td></tr>
+<tr><td>{{$i->proveedoringreso}}</td><td>{{number_format($i->valoringreso)}}</td></tr>
 
 @endforeach
 </table>
