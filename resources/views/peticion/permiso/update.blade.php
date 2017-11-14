@@ -1,13 +1,11 @@
 @extends('layouts.template')
 
 @section('content')
-
 <div class="main-content">
 				<div class="main-content-inner">
-					
 
 					<div class="page-content">
-						<div class="ace-settings-container" id="ace-settings-container">
+					<div class="ace-settings-container" id="ace-settings-container">
 							<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
 								<i class="ace-icon fa fa-cog bigger-130"></i>
 							</div>
@@ -73,67 +71,198 @@
 								</div><!-- /.pull-left -->
 							</div><!-- /.ace-settings-box -->
 						</div><!-- /.ace-settings-container -->
-
-						<div class="row">
+					<div class="page-header">
+							<h1>
+								Formulario Productos
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									Agregar nuevo producto.
+								</small>
+							</h1>
+						</div><!-- /.page-header -->
+					
+					<div class="row">
 							<div class="col-xs-12">
-								<!-- PAGE CONTENT BEGINS -->
-
-								<div class="error-container">
-									<div class="well">
-										<h1 class="grey lighter smaller">
-											<span class="blue bigger-125">
-												<i class="ace-icon fa fa-random"></i>
-												500
-											</span>
-											Pagina no disponible consulte con administrador
-										</h1>
-
-										<hr />
-										
-
-										<div class="space"></div>
-
-										<div>
-											<h4 class="lighter smaller"> @if(Session::has('mensaje'))
-                                           
+							
+							 @if(Session::has('mensaje'))
+                                           <div class="alert alert-success">
+                               <button type="button" class="close" data-dismiss="success">x</button>
                         {{Session::get('mensaje')}}
-                                           
-                                     @endif</h4>
-
-											
-										</div>
-
-										<hr />
-										<div class="space"></div>
-
-										
-									</div>
+                                             </div>
+                                     @endif
+								<!-- PAGE CONTENT BEGINS -->
+								@if (count($errors)>0)
+								<div class="row">
+								<div class="col-md-12" >
+								<div class="alert alert-danger">
+								<ul>
+								@foreach ($errors->all() as $error)
+								<li >{{$error}}</li>
+								@endforeach
+								</ul>
 								</div>
+								</div>
+								</div>
+								@endif
+				
+								{!!Form::model($permiso,['method'=>'PATCH','route'=>['peticion.permisos.update',$id]])!!}
+								{{Form::token()}}
+				
+   <div class="row">
+  
+  
+   <div class="col-md-12">
 
-								<!-- PAGE CONTENT ENDS -->
-							</div><!-- /.col -->
-						</div><!-- /.row -->
-					</div><!-- /.page-content -->
+   <table class="table">
+<tr>
+<td>Recursos</td>
+<td>Perfil</td>
+<td>Leer</td>
+<td>Crear</td>
+<td>Modificar</td>
+<td>Eliminar</td>
+
+</tr>
+@foreach($permiso as $p)
+<tr>
+<td>{{$p->descrecurso}}</td>
+<td>{{$p->perfildesc}}</td>
+<input type="hidden" name="recurso[]" value="{{$p->idrecurso}}">
+<td> 
+<select name="leer[]">
+@if ($p->leer==1)
+<option value="1" selected>Activo </option>
+<option value="0">Desactivado </option>
+@else
+<option value="0" selected>Desactivado </option>
+<option value="1">Activo </option>
+@endif
+</select>
+ </td>
+ <td> 
+ <select name="crear[]">
+@if ($p->crear==1)
+<option value="1" selected>Activo </option>
+<option value="0">Desactivado </option>
+@else
+<option value="0" selected>Desactivado </option>
+<option value="1">Activo </option>
+@endif
+</select>
+ </td>
+ <td> 
+ <select name="modificar[]">
+@if ($p->modificar==1)
+<option value="1" selected>Activo </option>
+<option value="0">Desactivado </option>
+@else
+<option value="0" selected>Desactivado </option>
+<option value="1">Activo </option>
+@endif
+</select>
+ </td>
+ <td> 
+ <select name="eliminar[]">
+@if ($p->eliminar==1)
+<option value="1" selected>Activo </option>
+<option value="0">Desactivado </option>
+@else
+<option value="0" selected>Desactivado </option>
+<option value="1">Activo </option>
+@endif
+</select>
+ </td>
+
+</tr>
+@endforeach
+
+   </table>
+   
+   </div>
+ 
+ 
+  
+  </div>
+  
+  
+  
+									
+										<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button class="btn btn-info" type="submit">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												Guardar
+											</button>
+
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												Borrar
+											</button>
+										</div>
+									</div>
+				
+				
+				
+				
+				{!!Form::close()!!}
+				
 				</div>
-			</div><!-- /.main-content -->
+				</div>
+				<div class="row">	
+				<div class="page-header">
+							<h1>
+								Formulario Recursos
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									Agregar un nuevo recurso.
+								</small>
+							</h1>
+						</div><!-- /.page-header -->
+				<div class="col-md-3">
+				{!!Form::open(array('url'=>'peticion/permisos','method'=>'POST','autocomplete'=>'off','role'=>'form'))!!}
+					{{Form::token()}}
+  <div class="form-group">
+    <label for="inputPassword3">Recursos:</label>
+   <select name="recursos" class="form-control">
+<option value="0" selected>Seleccione </option>
+@foreach($recursos as $r)
+<option value="{{$r->idrecurso}}">{{$r->descrecurso}}</option>
+@endforeach
+</select>
+   <input type="hidden" name="perfil" value="{{$id}}">
+  </div>
+  
+  </div>	
+  </div>
+  
+  	<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button class="btn btn-info" type="submit">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												Guardar
+											</button>
 
-
-
-
-
-
-
-
-
-
-
-
-
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												Borrar
+											</button>
+										</div>
+									</div>
+									
+										{!!Form::close()!!}
+					</div>
+					</div>
+					</div>
+					
 
 @endsection
 
+
 @section('scripts')
 
+		
 		<script src="{{asset('public/js/jquery-2.1.4.min.js')}}"></script>
 
 		<!-- <![endif]-->
@@ -609,6 +738,5 @@
 			
 			});
 		</script>
-
 
 @endsection

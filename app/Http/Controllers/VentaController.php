@@ -29,40 +29,64 @@ class VentaController extends Controller
 		
 		if($request->session()->has('id'))
 	 {
-	   
-  if($request->session()->get('perfil')==1 or $request->session()->get('perfil')==2  )
-			   {
 
-if($request)
+		$permiso=DB::table('permiso as p')
+			->where('p.idrol','=',$request->session()->get('perfil'))
+			->where('p.idrecurso','=',1)
+			->first();
+	if(count($permiso)==0)
+	{
+		return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	}else
+
+	{
+          
+
+		if($permiso->leer==1)
 		{
-			$clientes=DB::table('clientes')->get();
-			$ultimaventa=DB::table('venta as v')
-			              ->where('v.idusuario','=',$request->session()->get('id'))
-						  ->orderby('v.idventa','desc')
-						  ->select('v.idventa','v.estado')
-						  ->first();
-           // $date = Carbon::now();
-            //$date = $date->format('Y-m-d');						  
-			$query=trim($request->get('searchText'));
-			$ventas=DB::table('venta as v')
-			->join('clientes as c','c.idcliente','=','v.idcliente')
-			->join('usuarios as u','u.idusuario','=','v.idusuario')
-			->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
-			->select('v.fecha','c.nombrecliente','c.apellidocliente','u.user','v.idventa','v.valorventa','v.importeventa','v.estado','v.subtotal','v.idtipoventa','t.desctipoventa','c.cedulacliente','v.descuento','t.idtipoventa')
-			->where('v.idusuario','=',$request->session()->get('id'))
-		    ->orderby('v.idventa','desc')
-			->limit(1000)
-			->get();
-			return view('peticion.ventas.index',["ventas"=>$ventas,"searchText"=>$query,"ultimaventa"=>$ultimaventa,"clientes"=>$clientes]);
+
+
+			if($request)
+			{
+				$clientes=DB::table('clientes')->get();
+				$ultimaventa=DB::table('venta as v')
+							  ->where('v.idusuario','=',$request->session()->get('id'))
+							  ->orderby('v.idventa','desc')
+							  ->select('v.idventa','v.estado')
+							  ->first();
+			   // $date = Carbon::now();
+				//$date = $date->format('Y-m-d');						  
+				$query=trim($request->get('searchText'));
+				$ventas=DB::table('venta as v')
+				->join('clientes as c','c.idcliente','=','v.idcliente')
+				->join('usuarios as u','u.idusuario','=','v.idusuario')
+				->join('tipoventa as t','t.idtipoventa','=','v.idtipoventa')
+				->select('v.fecha','c.nombrecliente','c.apellidocliente','u.user','v.idventa','v.valorventa','v.importeventa','v.estado','v.subtotal','v.idtipoventa','t.desctipoventa','c.cedulacliente','v.descuento','t.idtipoventa')
+				->where('v.idusuario','=',$request->session()->get('id'))
+				->orderby('v.idventa','desc')
+				->limit(1000)
+				->get();
+				return view('peticion.ventas.index',["ventas"=>$ventas,"searchText"=>$query,"ultimaventa"=>$ultimaventa,"clientes"=>$clientes]);
+				
+			}
+
+
+
+							  }   
+		else
+{
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, Comunicarse con sistemas');
 			
 		}
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+
+
+
+		
+	}
+
+	   
+  
 		   
 		   
 		   }
