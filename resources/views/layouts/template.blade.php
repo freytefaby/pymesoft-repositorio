@@ -337,10 +337,28 @@
 								<b class="arrow"></b>
 							</li>
 							<li class="">
-									<a href="{{URL('peticion/usuarios')}}">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Usuarios
+							<a href="" class="dropdown-toggle">
+							<i class="menu-icon fa fa-caret-right"></i>
+							Usuarios
+							<b class="arrow fa fa-angle-down"></b>
+							</a>
+							<b class="arrow"></b>
+                            <ul class="submenu">
+							<li class="">
+							<a href="{{URL('peticion/usuarios')}}">
+									
+									Usuarios del sistema
 								</a>
+								<b class="arrow"></b>
+							</li>
+							<li class="">
+										<a href="{{URL('peticion/permisos')}}">
+											
+									Permisos
+										</a>
+							</ul>
+
+									
 
 								<b class="arrow"></b>
 							</li>

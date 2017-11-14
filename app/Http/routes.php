@@ -304,6 +304,16 @@ route::get('peticion/cupo/clientes/{id}','VentaController@clientesbusqueda');
 | FIN CUPOS
 */
 
+/*
+|--------------------------------------------------------------------------
+|Ruta PERMISOS
+|--------------------------------------------------------------------------
+*/
+route::resource('peticion/permisos','PermisoController');
+/*
+| FIN PERMISOS
+*/
+
 
 
 
