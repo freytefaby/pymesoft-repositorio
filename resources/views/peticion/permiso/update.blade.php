@@ -156,7 +156,7 @@
  </td>
  <td> 
  <select name="modificar[]">
- @if($p->idrecurso==1 or $p->idrecurso==4 )
+ @if($p->idrecurso==1 or $p->idrecurso==4 or  $p->idrecurso==6 or  $p->idrecurso==7)
  <option value="0" selected>No disponible </option>
  @else
 @if ($p->modificar==1)
@@ -171,7 +171,7 @@
  </td>
  <td> 
  <select name="eliminar[]">
- @if($p->idrecurso==2 or $p->idrecurso==4)
+ @if($p->idrecurso==2 or $p->idrecurso==4 or $p->idrecurso==5 or  $p->idrecurso==6 or  $p->idrecurso==7 or  $p->idrecurso==8)
  <option value="0" selected>No disponible </option>
  @else
  @if($p->idrecurso==1)
