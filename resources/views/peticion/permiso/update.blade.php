@@ -141,6 +141,9 @@
  </td>
  <td> 
  <select name="crear[]">
+@if($p->idrecurso==2)
+<option value="0">No disponible </option>
+@else
 @if ($p->crear==1)
 <option value="1" selected>Activo </option>
 <option value="0">Desactivado </option>
@@ -148,10 +151,14 @@
 <option value="0" selected>Desactivado </option>
 <option value="1">Activo </option>
 @endif
+@endif
 </select>
  </td>
  <td> 
  <select name="modificar[]">
+ @if($p->idrecurso==1 or $p->idrecurso==4 )
+ <option value="0" selected>No disponible </option>
+ @else
 @if ($p->modificar==1)
 <option value="1" selected>Activo </option>
 <option value="0">Desactivado </option>
@@ -159,16 +166,25 @@
 <option value="0" selected>Desactivado </option>
 <option value="1">Activo </option>
 @endif
+@endif
 </select>
  </td>
  <td> 
  <select name="eliminar[]">
+ @if($p->idrecurso==2 or $p->idrecurso==4)
+ <option value="0" selected>No disponible </option>
+ @else
+ @if($p->idrecurso==1)
+ <option value="0" selected>No disponible </option>
+ @else
 @if ($p->eliminar==1)
 <option value="1" selected>Activo </option>
 <option value="0">Desactivado </option>
 @else
 <option value="0" selected>Desactivado </option>
 <option value="1">Activo </option>
+@endif
+@endif
 @endif
 </select>
  </td>

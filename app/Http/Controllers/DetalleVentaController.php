@@ -31,8 +31,7 @@ class DetalleVentaController extends Controller
 		if($request->session()->has('id'))
 	 {
 	   
-  if($request->session()->get('perfil')==1 OR $request->session()->get('perfil')==2  )
-			   {
+  
              if ($request->ajax()){
 				
 				 if($request->get('tipoproducto')==2)
@@ -160,12 +159,7 @@ class DetalleVentaController extends Controller
 		   //print_r($_POST); EXIT;
 		   
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+      
 		   
 		   
 		   }
@@ -186,19 +180,12 @@ class DetalleVentaController extends Controller
 	   if($request->session()->has('id'))
 	 {
 	   
-  if($request->session()->get('perfil')==1 OR $request->session()->get('perfil')==2  )
-			   {
+  
 
      $detalle=DetalleVentas::findOrFail($id);
 	 $detalle->delete();
 	 return Redirect::to('peticion/ventas/create?p='.$detalle->codigobarra1);
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
 		   
 		   
 		   }

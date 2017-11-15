@@ -101,124 +101,178 @@ return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesar
 	public function create(Request $request)
 	
 	{
+		
 		if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1 or $request->session()->get('perfil')==2  )
-			   {
-
-
-		$ultimaventa=DB::table('venta as v')
-			              ->where('v.idusuario','=',$request->session()->get('id'))
-						  ->orderby('v.idventa','desc')
-						  ->select('v.idventa','v.estado')
-						  ->first();
-						  if($ultimaventa->estado=="1")
-						  {
-							  return Redirect::to('peticion/ventas');
-							  
-						  }
-						  else{
-						  
-						  /*PRODUCTOS ASOCIADOS EN ESTA FACTURA*/
-		
-		
-		
-						  
-						  
-						  
-		$query=trim($request->get('p'));
-		
-		
-			$pro= DB::table('producto as a')
-		                    ->join('iva as i','a.idiva','=','i.idiva')
-							->join('tipoproducto as t','a.idtipoproducto','=','t.idtipoproducto')
-							->join('categoria as c','a.idcategoria','=','c.idcategoria')
-							->join('proveedor as p','a.idproveedor','=','p.idproveedor')
-							->select('a.idproducto','a.descripcionproducto','p.nombreproveedor','a.codigobarra1','a.stock','a.precioventa','a.preciosugerido','a.cantidadempaque','a.idtipoproducto','i.valoriva','a.preciocompra','a.activo_principio')
-							->where('a.estado','=','1')
-							->get();
-					return view("peticion.ventas.create",["ultimaventa"=>$ultimaventa,"pro"=>$pro,"query"=>$query]);
-							
-		            
-					}
-
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
+		{
+   
+		   $permiso=DB::table('permiso as p')
+			   ->where('p.idrol','=',$request->session()->get('perfil'))
+			   ->where('p.idrecurso','=',1)
+			   ->first();
+	   if(count($permiso)==0)
+	   {
+		   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	   }else
+   
+	   {
+   
+   
+		   if($permiso->crear==1  )
 		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+   
+			$ultimaventa=DB::table('venta as v')
+			->where('v.idusuario','=',$request->session()->get('id'))
+			->orderby('v.idventa','desc')
+			->select('v.idventa','v.estado')
+			->first();
+			if($ultimaventa->estado=="1")
+			{
+				return Redirect::to('peticion/ventas');
+				
+			}
+			else{
+			
+			/*PRODUCTOS ASOCIADOS EN ESTA FACTURA*/
+
+
+
+			
+			
+			
+$query=trim($request->get('p'));
+
+
+$pro= DB::table('producto as a')
+			  ->join('iva as i','a.idiva','=','i.idiva')
+			  ->join('tipoproducto as t','a.idtipoproducto','=','t.idtipoproducto')
+			  ->join('categoria as c','a.idcategoria','=','c.idcategoria')
+			  ->join('proveedor as p','a.idproveedor','=','p.idproveedor')
+			  ->select('a.idproducto','a.descripcionproducto','p.nombreproveedor','a.codigobarra1','a.stock','a.precioventa','a.preciosugerido','a.cantidadempaque','a.idtipoproducto','i.valoriva','a.preciocompra','a.activo_principio')
+			  ->where('a.estado','=','1')
+			  ->get();
+	  return view("peticion.ventas.create",["ultimaventa"=>$ultimaventa,"pro"=>$pro,"query"=>$query]);
+			  
+	  
+	  }
+   
+								 }   
+		   else
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+			   
 		   }
-
-
-		
-		
+   
+   
+   
+   
+		   
+	   }
+   
+		  
+	 
+			  
+			  
+			  }
+			  else
+			  {
+	return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+			  }
+   
 		
 	}
 	public function store(Request $request)
 	{
+		
 		if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1 or $request->session()->get('perfil')==2  )
-			   {
-
-if($request->get('ultimaventa')==0)
-  {
-	  return Redirect::to('peticion/ventas');
-  }
-  else
-  {
-	   $venta=new Ventas;
-	   $venta->valorventa='0';
-	   $venta->idusuario=$request->get('usuario');
-	   $venta->idcliente='1';
-	   $venta->subtotal='0';
-	   $venta->comisionventa='0';
-	   $venta->utilidades='0';
-	   $mytime= Carbon::now('America/Bogota');
-	   $venta->fecha=$mytime->toDateTimeString();
-	   $venta->importeventa='0';
-	   $venta->idtipoventa='1';
-	   $venta->comision='0';
-	   $venta->save();
-	return Redirect::to('peticion/ventas/create');
-	
-	}
-
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
+		{
+   
+		   $permiso=DB::table('permiso as p')
+			   ->where('p.idrol','=',$request->session()->get('perfil'))
+			   ->where('p.idrecurso','=',1)
+			   ->first();
+	   if(count($permiso)==0)
+	   {
+		   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	   }else
+   
+	   {
+   
+   
+		   if($permiso->crear==1 )
 		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+   
+			if($request->get('ultimaventa')==0)
+			{
+				return Redirect::to('peticion/ventas');
+			}
+			else
+			{
+				 $venta=new Ventas;
+				 $venta->valorventa='0';
+				 $venta->idusuario=$request->get('usuario');
+				 $venta->idcliente='1';
+				 $venta->subtotal='0';
+				 $venta->comisionventa='0';
+				 $venta->utilidades='0';
+				 $mytime= Carbon::now('America/Bogota');
+				 $venta->fecha=$mytime->toDateTimeString();
+				 $venta->importeventa='0';
+				 $venta->idtipoventa='1';
+				 $venta->comision='0';
+				 $venta->save();
+			  return Redirect::to('peticion/ventas/create');
+			  
+			  }
+   
+								 }   
+		   else
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+			   
 		   }
+   
+   
+   
+   
+		   
+	   }
+   
+		  
+	 
+			  
+			  
+			  }
+			  else
+			  {
+	return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+			  }
+   
 
 
   
 	}
 	public function show(Request $request,$id)
 	{
+		
 		if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1 or $request->session()->get('perfil')==2  )
-			   {
-
-$infoempresa=DB::table('infoempresa')
+		{
+   
+		   $permiso=DB::table('permiso as p')
+			   ->where('p.idrol','=',$request->session()->get('perfil'))
+			   ->where('p.idrecurso','=',1)
+			   ->first();
+	   if(count($permiso)==0)
+	   {
+		   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	   }else
+   
+	   {
+   
+   
+		   if($permiso->leer==1 )
+		   {
+   
+			$infoempresa=DB::table('infoempresa')
 			->select('nombrecomercialempresa','direccionempresa','telefonoempresa','nitempresa','ciudadempresa')
 			->first();
 		$ventas=DB::table('venta as v')
@@ -248,20 +302,34 @@ $infoempresa=DB::table('infoempresa')
 						  ->first();
 			return view("peticion.ventas.show",["ventas"=>$ventas,"sumarray"=>$sumarray,"detalleventa"=>$detalleventa]);
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
 
+
+
+
+   
+								 }   
+		   else
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+			   
+		   }
+   
+   
+   
+   
+		   
+	   }
+   
+		  
+	 
+			  
+			  
+			  }
+			  else
+			  {
+	return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+			  }
+   
 
 		
 			
@@ -273,8 +341,7 @@ $infoempresa=DB::table('infoempresa')
 	   if($request->session()->has('id'))
 	 {
 	   
-  if($request->session()->get('perfil')==1 or $request->session()->get('perfil')==2  )
-			   {
+ 
 
  $ventas=DB::table('venta as v')
 			->join('detalleventa as d','d.idventa','=','v.idventa')
@@ -447,12 +514,7 @@ $infoempresa=DB::table('infoempresa')
 	
 	}
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+                              
 		   
 		   
 		   }

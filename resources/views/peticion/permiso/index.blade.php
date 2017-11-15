@@ -140,7 +140,7 @@
                                                 <td>{{$p->perfildesc}}</td>
                                                 <td>
                                                 <div class=" btn-group hidden-xs hidden-sm">
-									<a href="{{URL::action('PermisoController@edit',$p->idperfil)}}" target="_blank"><button class="btn btn-xs btn-info" title="Modificar permisos a este perfil">
+									<a href="{{URL::action('PermisoController@edit',$p->idperfil)}}" ><button class="btn btn-xs btn-info" title="Modificar permisos a este perfil">
                                     <i class="ace-icon fa fa-pencil bigger-120"></i>
 										
 															</button></a>
