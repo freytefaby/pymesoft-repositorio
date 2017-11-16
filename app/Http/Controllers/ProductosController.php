@@ -19,13 +19,26 @@ class ProductosController extends Controller
    }
    public function index(Request $request)
    {
-	   if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1 or $request->session()->get('perfil')==2  )
-			   {
+	 
+	if($request->session()->has('id'))
+	{
 
-if($request)
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',22)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
+
+   {
+
+
+	   if($permiso->leer==1)
+	   {
+
+		if($request)
 		{				  
 			$query=trim($request->get('searchText'));
 			$productos=DB::table('producto as p')
@@ -45,354 +58,427 @@ if($request)
 			
 		}
 
-                                     }   
-			   Else
+
+							 }   
+	   else
 {
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+	   }
+
+
+
 
 	   
-	 
-	 
+   }
+
+	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
    }
      public function create(Request $request)
    {
-	   if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
-
-     $tipo=DB::table('tipoproducto')->get();
-	 $categoria=DB::table('categoria')->get();
-	 $proveedor=DB::table('proveedor')->get();
-	 $iva=DB::table('iva')->get();
-			
-	  	   
-	 return view('peticion.productos.create',["tipo"=>$tipo,"categoria"=>$categoria,"proveedor"=>$proveedor,"iva"=>$iva]);
-
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
-
-	
-		
-                  
-                           
-                    
-
-	   
 	  
-	   
+	
+		if($request->session()->has('id'))
+		{
+   
+		   $permiso=DB::table('permiso as p')
+			   ->where('p.idrol','=',$request->session()->get('perfil'))
+			   ->where('p.idrecurso','=',22)
+			   ->first();
+	   if(count($permiso)==0)
+	   {
+		   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	   }else
+   
+	   {
+   
+   
+		   if($permiso->crear==1 )
+		   {
+   
+			$tipo=DB::table('tipoproducto')->get();
+			$categoria=DB::table('categoria')->get();
+			$proveedor=DB::table('proveedor')->get();
+			$iva=DB::table('iva')->get();
+				   
+					
+			return view('peticion.productos.create',["tipo"=>$tipo,"categoria"=>$categoria,"proveedor"=>$proveedor,"iva"=>$iva]);
+   
+								 }   
+		   else
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+			   
+		   }
+   
+   
+   
+   
+		   
+	   }
+   
+		  
+	 
+			  
+			  
+			  }
+			  else
+			  {
+	return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+			  }
+   
    }
      public function store(ProductosFormRequest $request)
    {
+	
 	if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
+	{
 
-if($request->get('tipoproducto')==1)
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',22)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
+
+   {
+
+
+	   if($permiso->crear==1)
 	   {
-		   
-			   
-       $producto=new Productos;
-	   $producto->descripcionproducto=$request->get('producto');
-	   $producto->codigobarra1=$request->get('codigobarra1');
-	   $producto->codigobarra2=$request->get('codigobarra2');
-	   $producto->codigobarra3=$request->get('codigobarra3');
-	   $producto->codigobarra4=$request->get('codigobarra4');
-	   $producto->cantidadempaque='1';
-	   $producto->stock=$request->get('stock');
-	   $producto->stockminimo=$request->get('stockminimo');
-	   $producto->preciocompra=$request->get('preciocompra');
-	   $producto->precioventa=$request->get('precioventa');
-	   $producto->preciosugerido=$request->get('preciosugerido');
-	   $producto->idiva=$request->get('iva');
-	   $producto->idtipoproducto=$request->get('tipoproducto');
-	   $producto->idcategoria=$request->get('categoria');
-	   $producto->idproveedor=$request->get('proveedor');
-	   $producto->estado='1';
-	   $producto->comision=$request->get('comision');
-	   $producto->estante=$request->get('estante');
-	   $producto->entrepano=$request->get('entrepano');
-	   $producto->activo_principio=$request->get('principio');
-	   $producto->save();
-	   return Redirect::to('peticion/productos');
-			   
-		   
-		   
-		   
-	   }else{
-		   
-		   		   
-       $producto=new Productos;
-	   $producto->descripcionproducto=$request->get('producto');
-	   $producto->codigobarra1=$request->get('codigobarra1');
-	   $producto->codigobarra2=$request->get('codigobarra2');
-	   $producto->codigobarra3=$request->get('codigobarra3');
-	   $producto->codigobarra4=$request->get('codigobarra4');
-	   $producto->cantidadempaque=$request->get('cantidadempaque');
-	   $producto->stock=$request->get('stock');
-	   $producto->stockminimo=$request->get('stockminimo');
-	   $producto->preciocompra=$request->get('preciocompra');
-	   $producto->precioventa=$request->get('precioventa');
-	   $producto->preciosugerido=$request->get('preciosugerido');
-	   $producto->idiva=$request->get('iva');
-	   $producto->idtipoproducto=$request->get('tipoproducto');
-	   $producto->idcategoria=$request->get('categoria');
-	   $producto->idproveedor=$request->get('proveedor');
-	   $producto->estado='1';
-	   $producto->comision=$request->get('comision');
-	   $producto->estante=$request->get('estante');
-	   $producto->entrepano=$request->get('entrepano');
-	   $producto->activo_principio=$request->get('principio');
-	   $producto->save();
-	   return Redirect::to('peticion/productos');
 
+		if($request->get('tipoproducto')==1)
+		{
+			
+				
+		$producto=new Productos;
+		$producto->descripcionproducto=$request->get('producto');
+		$producto->codigobarra1=$request->get('codigobarra1');
+		$producto->codigobarra2=$request->get('codigobarra2');
+		$producto->codigobarra3=$request->get('codigobarra3');
+		$producto->codigobarra4=$request->get('codigobarra4');
+		$producto->cantidadempaque='1';
+		$producto->stock=$request->get('stock');
+		$producto->stockminimo=$request->get('stockminimo');
+		$producto->preciocompra=$request->get('preciocompra');
+		$producto->precioventa=$request->get('precioventa');
+		$producto->preciosugerido=$request->get('preciosugerido');
+		$producto->idiva=$request->get('iva');
+		$producto->idtipoproducto=$request->get('tipoproducto');
+		$producto->idcategoria=$request->get('categoria');
+		$producto->idproveedor=$request->get('proveedor');
+		$producto->estado='1';
+		$producto->comision=$request->get('comision');
+		$producto->estante=$request->get('estante');
+		$producto->entrepano=$request->get('entrepano');
+		$producto->activo_principio=$request->get('principio');
+		$producto->save();
+		return Redirect::to('peticion/productos');
+				
+			
+			
+			
+		}else{
+			
+					   
+		$producto=new Productos;
+		$producto->descripcionproducto=$request->get('producto');
+		$producto->codigobarra1=$request->get('codigobarra1');
+		$producto->codigobarra2=$request->get('codigobarra2');
+		$producto->codigobarra3=$request->get('codigobarra3');
+		$producto->codigobarra4=$request->get('codigobarra4');
+		$producto->cantidadempaque=$request->get('cantidadempaque');
+		$producto->stock=$request->get('stock');
+		$producto->stockminimo=$request->get('stockminimo');
+		$producto->preciocompra=$request->get('preciocompra');
+		$producto->precioventa=$request->get('precioventa');
+		$producto->preciosugerido=$request->get('preciosugerido');
+		$producto->idiva=$request->get('iva');
+		$producto->idtipoproducto=$request->get('tipoproducto');
+		$producto->idcategoria=$request->get('categoria');
+		$producto->idproveedor=$request->get('proveedor');
+		$producto->estado='1';
+		$producto->comision=$request->get('comision');
+		$producto->estante=$request->get('estante');
+		$producto->entrepano=$request->get('entrepano');
+		$producto->activo_principio=$request->get('principio');
+		$producto->save();
+		return Redirect::to('peticion/productos');
+ 
+		}
+
+							 }   
+	   else
+{
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+		   
 	   }
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
 
-       
-	                
-	
-		   
-		   
-		
+
 
 	   
+   }
+
+	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
    }
    
     
    
      public function edit(Request $request,$id)
    {
-	   if($request->session()->has('id'))
-	 {
 	   
-  if($request->session()->get('perfil')==1  )
-			   {
-
-     $tipo=DB::table('tipoproducto')->get();
-	 $categoria=DB::table('categoria')->get();
-	 $proveedor=DB::table('proveedor')->get();
-	 $iva=DB::table('iva')->get();
-
-
- return view("peticion.productos.edit",["productos"=>Productos::findOrFail($id),"tipo"=>$tipo,"categoria"=>$categoria,"proveedor"=>$proveedor,"iva"=>$iva]); 
-
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
+	
+		if($request->session()->has('id'))
+		{
+   
+		   $permiso=DB::table('permiso as p')
+			   ->where('p.idrol','=',$request->session()->get('perfil'))
+			   ->where('p.idrecurso','=',22)
+			   ->first();
+	   if(count($permiso)==0)
+	   {
+		   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	   }else
+   
+	   {
+   
+   
+		   if($permiso->modificar==1  )
 		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
-
-	 
-	 
-
-                                       
-			  
-		   
-		   
-		   
-		  
-
+   
+			$tipo=DB::table('tipoproducto')->get();
+			$categoria=DB::table('categoria')->get();
+			$proveedor=DB::table('proveedor')->get();
+			$iva=DB::table('iva')->get();
 	   
+	   
+		return view("peticion.productos.edit",["productos"=>Productos::findOrFail($id),"tipo"=>$tipo,"categoria"=>$categoria,"proveedor"=>$proveedor,"iva"=>$iva]); 
+   
+								 }   
+		   else
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+			   
+		   }
+   
+   
+   
+   
+		   
+	   }
+   
+		  
+	 
+			  
+			  
+			  }
+			  else
+			  {
+	return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+			  }
+   
    }
    
      public function update(ProductosFormRequestUpdate $request,$id)
 	 
    {
-	  if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
+	 
+	
+	if($request->session()->has('id'))
+	{
 
-if($request->get('tipoproducto')==1)
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',22)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
+
+   {
+
+
+	   if($permiso->modificar==1  )
 	   {
-		  
- $producto=Productos::findOrFail($id);
-	   $producto->descripcionproducto=$request->get('producto');
-	   $producto->codigobarra1=$request->get('codigobarra1');
-	   $producto->codigobarra2=$request->get('codigobarra2');
-	   $producto->codigobarra3=$request->get('codigobarra3');
-	   $producto->codigobarra4=$request->get('codigobarra4');
-	   $producto->cantidadempaque='1';
-	   $producto->stock=$request->get('stock');
-	   $producto->stockminimo=$request->get('stockminimo');
-	   $producto->preciocompra=$request->get('preciocompra');
-	   $producto->precioventa=$request->get('precioventa');
-	   $producto->preciosugerido=$request->get('preciosugerido');
-	   $producto->idiva=$request->get('iva');
-	   $producto->idtipoproducto=$request->get('tipoproducto');
-	   $producto->idcategoria=$request->get('categoria');
-	   $producto->idproveedor=$request->get('proveedor');
-	   $producto->estado=$request->get('estado');
-	   $producto->comision=$request->get('comision');
-	   $producto->estante=$request->get('estante');
-	   $producto->entrepano=$request->get('entrepano');
-	   $producto->activo_principio=$request->get('principio');
-	   $producto->update();
-	   return Redirect::to('peticion/productos')->with('mensaje','Producto'.$request->get('producto').' '.'Cod'.' '.$request->get('codigobarra1').' '.'fue actualizado correctamente con'.' '.$request->get('stock').' '.'Cantidades');
-	   
-	   }
-	   else{
-		   
-		   if($request->get('cantidadempaque')<=0)
-		   {
-			    return Redirect::to('peticion/productos/'.$id.'/edit')->with('mensaje','La cantidad de empaque para un tipo de producto por cantidad no debe ser menor o igual a cero')
-				                                                 ->with('producto',$request->get('producto'))
-																 ->with('codigobarra1',$request->get('codigobarra1'))
-																 ->with('codigobarra2',$request->get('codigobarra2'))
-																 ->with('codigobarra3',$request->get('codigobarra3'))
-																 ->with('codigobarra4',$request->get('codigobarra4'))
-																 ->with('cantidadempaque',$request->get('cantidadempaque'))
-																 ->with('stock',$request->get('stock'))
-																 ->with('stockminimo',$request->get('stockminimo'))
-																 ->with('preciocompra',$request->get('preciocompra'))
-																 ->with('precioventa',$request->get('precioventa'))
-																 ->with('preciosugerido',$request->get('preciosugerido'))
-																 ->with('iva',$request->get('iva'))
-																 ->with('tipoproducto',$request->get('tipoproducto'))
-																 ->with('categoria',$request->get('categoria'))
-																 ->with('proveedor',$request->get('proveedor'))
-																 ->with('comision',$request->get('comision'))
-																 ->with('estante',$request->get('estante'))
-																 ->with('entrepano',$request->get('entrepano'))
-																 ->with('principio',$request->get('principio'));;
-		   }
-		   else{
-		   $producto=Productos::findOrFail($id);
-	   $producto->descripcionproducto=$request->get('producto');
-	   $producto->codigobarra1=$request->get('codigobarra1');
-	   $producto->codigobarra2=$request->get('codigobarra2');
-	   $producto->codigobarra3=$request->get('codigobarra3');
-	   $producto->codigobarra4=$request->get('codigobarra4');
-	   $producto->cantidadempaque=$request->get('cantidadempaque');
-	   $producto->stock=$request->get('stock');
-	   $producto->stockminimo=$request->get('stockminimo');
-	   $producto->preciocompra=$request->get('preciocompra');
-	   $producto->precioventa=$request->get('precioventa');
-	   $producto->preciosugerido=$request->get('preciosugerido');
-	   $producto->idiva=$request->get('iva');
-	   $producto->idtipoproducto=$request->get('tipoproducto');
-	   $producto->idcategoria=$request->get('categoria');
-	   $producto->idproveedor=$request->get('proveedor');
-	   $producto->estado=$request->get('estado');
-	   $producto->comision=$request->get('comision');
-	   $producto->estante=$request->get('estante');
-	   $producto->entrepano=$request->get('entrepano');
-	   $producto->activo_principio=$request->get('principio');
-	   $producto->update();
-	   return Redirect::to('peticion/productos')->with('mensaje','Producto fue actualizado correctamente');
-		   
-		   
-	   }
 
-	   } 
-
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+		if($request->get('tipoproducto')==1)
+		{
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
-
-	   
-	                             
-
-		   
-		   
-		   
+  $producto=Productos::findOrFail($id);
+		$producto->descripcionproducto=$request->get('producto');
+		$producto->codigobarra1=$request->get('codigobarra1');
+		$producto->codigobarra2=$request->get('codigobarra2');
+		$producto->codigobarra3=$request->get('codigobarra3');
+		$producto->codigobarra4=$request->get('codigobarra4');
+		$producto->cantidadempaque='1';
+		$producto->stock=$request->get('stock');
+		$producto->stockminimo=$request->get('stockminimo');
+		$producto->preciocompra=$request->get('preciocompra');
+		$producto->precioventa=$request->get('precioventa');
+		$producto->preciosugerido=$request->get('preciosugerido');
+		$producto->idiva=$request->get('iva');
+		$producto->idtipoproducto=$request->get('tipoproducto');
+		$producto->idcategoria=$request->get('categoria');
+		$producto->idproveedor=$request->get('proveedor');
+		$producto->estado=$request->get('estado');
+		$producto->comision=$request->get('comision');
+		$producto->estante=$request->get('estante');
+		$producto->entrepano=$request->get('entrepano');
+		$producto->activo_principio=$request->get('principio');
+		$producto->update();
+		return Redirect::to('peticion/productos')->with('mensaje','Producto'.$request->get('producto').' '.'Cod'.' '.$request->get('codigobarra1').' '.'fue actualizado correctamente con'.' '.$request->get('stock').' '.'Cantidades');
 		
+		}
+		else{
+			
+			if($request->get('cantidadempaque')<=0)
+			{
+				 return Redirect::to('peticion/productos/'.$id.'/edit')->with('mensaje','La cantidad de empaque para un tipo de producto por cantidad no debe ser menor o igual a cero')
+																  ->with('producto',$request->get('producto'))
+																  ->with('codigobarra1',$request->get('codigobarra1'))
+																  ->with('codigobarra2',$request->get('codigobarra2'))
+																  ->with('codigobarra3',$request->get('codigobarra3'))
+																  ->with('codigobarra4',$request->get('codigobarra4'))
+																  ->with('cantidadempaque',$request->get('cantidadempaque'))
+																  ->with('stock',$request->get('stock'))
+																  ->with('stockminimo',$request->get('stockminimo'))
+																  ->with('preciocompra',$request->get('preciocompra'))
+																  ->with('precioventa',$request->get('precioventa'))
+																  ->with('preciosugerido',$request->get('preciosugerido'))
+																  ->with('iva',$request->get('iva'))
+																  ->with('tipoproducto',$request->get('tipoproducto'))
+																  ->with('categoria',$request->get('categoria'))
+																  ->with('proveedor',$request->get('proveedor'))
+																  ->with('comision',$request->get('comision'))
+																  ->with('estante',$request->get('estante'))
+																  ->with('entrepano',$request->get('entrepano'))
+																  ->with('principio',$request->get('principio'));;
+			}
+			else{
+			$producto=Productos::findOrFail($id);
+		$producto->descripcionproducto=$request->get('producto');
+		$producto->codigobarra1=$request->get('codigobarra1');
+		$producto->codigobarra2=$request->get('codigobarra2');
+		$producto->codigobarra3=$request->get('codigobarra3');
+		$producto->codigobarra4=$request->get('codigobarra4');
+		$producto->cantidadempaque=$request->get('cantidadempaque');
+		$producto->stock=$request->get('stock');
+		$producto->stockminimo=$request->get('stockminimo');
+		$producto->preciocompra=$request->get('preciocompra');
+		$producto->precioventa=$request->get('precioventa');
+		$producto->preciosugerido=$request->get('preciosugerido');
+		$producto->idiva=$request->get('iva');
+		$producto->idtipoproducto=$request->get('tipoproducto');
+		$producto->idcategoria=$request->get('categoria');
+		$producto->idproveedor=$request->get('proveedor');
+		$producto->estado=$request->get('estado');
+		$producto->comision=$request->get('comision');
+		$producto->estante=$request->get('estante');
+		$producto->entrepano=$request->get('entrepano');
+		$producto->activo_principio=$request->get('principio');
+		$producto->update();
+		return Redirect::to('peticion/productos')->with('mensaje','Producto fue actualizado correctamente');
+			
+			
+		}
+ 
+		} 
+
+							 }   
+	   else
+{
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+		   
+	   }
+
+
+
+
+	   
+   }
 
 	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
    }
    public function destroy(Request $request,$id)
    {
-	  if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
- $producto=Productos::findOrFail($id);
-     $producto->estado='0';
-	 $producto->update();
-	 return Redirect::to('peticion/productos');
+	 
+	if($request->session()->has('id'))
+	{
 
-                                     }   
-			   Else
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',22)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
+
+   {
+
+
+	   if($permiso->eliminar==1  )
+	   {
+
+		$producto=Productos::findOrFail($id);
+		$producto->estado='0';
+		$producto->update();
+		return Redirect::to('peticion/productos');
+
+							 }   
+	   else
 {
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+	   }
+
+
+
 
 	   
+   }
+
+	  
  
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
 
-    
-
-                                     
-	
-		   
-	
-
-	
    }
    public function productosurl(Request $request,$id)
    {

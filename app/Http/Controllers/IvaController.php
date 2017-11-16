@@ -19,115 +19,150 @@ class IvaController extends Controller
    public function index(Request $request)
    {
 	
-		   if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
+	if($request->session()->has('id'))
+	{
 
-   
-			 if($request)
-	 {
-		$iva=DB::table('iva')->get();
-return view('peticion.iva.index',["iva"=>$iva]);
-		 
-	 }		 
-			   
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',17)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
 
-                                     }   
-			   Else
+   {
+
+
+	   if($permiso->leer==1  )
+	   {
+
+
+		if($request)
+		{
+		   $iva=DB::table('iva')->get();
+   return view('peticion.iva.index',["iva"=>$iva]);
+			
+		}	
+							 }   
+	   else
 {
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+	   }
 
-			  
-			   
-			
-			   
-			   
-			      
-			
-		   
-		   
-		   
-		 
-	 
+
+
+
+	   
+   }
+
+	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
    }
      public function create(Request $request)
    {
-	 if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
+	 
+	if($request->session()->has('id'))
+	{
 
- return view("peticion.iva.create");
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',17)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
 
-                                     }   
-			   Else
+   {
+
+
+	   if($validar->crear==1  )
+	   {
+
+		return view("peticion.iva.create");
+
+							 }   
+	   else
 {
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+	   }
 
-	   	   
-	
-		 
-                   
+
+
+
+	   
+   }
+
+	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }    
     }
      public function store(IvaFormRequest $request)
    {
-	 if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
+	
+	if($request->session()->has('id'))
+	{
 
-       $iva=new Iva;
-	   $iva->valoriva=$request->get('iva');
-	   $iva->save();
-	   return Redirect::to('peticion/iva');
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',17)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
 
-                                     }   
-			   Else
+   {
+
+
+	   if($permiso->crear==1  )
+	   {
+
+		$iva=new Iva;
+		$iva->valoriva=$request->get('iva');
+		$iva->save();
+		return Redirect::to('peticion/iva'); 
+
+							 }   
+	   else
 {
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+	   }
 
-  
 
-     
 
-                                        
-		
-		   
-		   
-		 
+
+	   
+   }
 
 	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
    }
    
     

@@ -21,91 +21,112 @@ class UsuariosController extends Controller
    }
    public function index(Request $request)
    {
+	
 	if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
+	{
 
-   
-			 if($request)
-	 {
-		$query=trim($request->get('searchText'));
-		                                $usuarios=DB::table('usuarios as u')
-		                                ->join('perfil as p','p.idperfil','=','u.idperfil')
-		                                ->where('nombreusuario','LIKE','%'.$query.'%')
-		                                ->orwhere('apellidousuario','LIKE','%'.$query.'%')
-										->orwhere('cedulausuario','LIKE','%'.$query.'%')
-										->orwhere('user','LIKE','%'.$query.'%')
-		                                 ->where('estado','=','1')
-										 ->orderby('idusuario','asc')
-										 ->paginate(7);
-										 
-										 return view('peticion.usuarios.index',["usuarios"=>$usuarios,"searchText"=>$query]);
-		 
-	 }		 
-			   
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',24)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+   {
 
-	   
-		   
-			  
-			   
+
+	   if($permiso->leer==1 )
+	   {
+
+		if($request)
+		{
+		   $query=trim($request->get('searchText'));
+										   $usuarios=DB::table('usuarios as u')
+										   ->join('perfil as p','p.idperfil','=','u.idperfil')
+										   ->where('nombreusuario','LIKE','%'.$query.'%')
+										   ->orwhere('apellidousuario','LIKE','%'.$query.'%')
+										   ->orwhere('cedulausuario','LIKE','%'.$query.'%')
+										   ->orwhere('user','LIKE','%'.$query.'%')
+											->where('estado','=','1')
+											->orderby('idusuario','asc')
+											->paginate(7);
+											
+											return view('peticion.usuarios.index',["usuarios"=>$usuarios,"searchText"=>$query]);
 			
-			   
-			   
-			      
-			  
+		}		 
+
+							 }   
+	   else
+{
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   
+	   }
+
+
+
+
+	   
+   }
+
+	  
+ 
 		  
-	 
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
    }
      public function create(Request $request)
    {
-	   if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
+	if($request->session()->has('id'))
+	{
 
-  $perfiles=DB::table('perfil')->get();
-		                                
-	 return view("peticion.usuarios.create",["perfiles"=>$perfiles]);
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',24)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
 
-                                     }   
-			   Else
+   {
+
+
+	   if($permiso->crear==1  )
+	   {
+
+		$perfiles=DB::table('perfil')->get();
+		
+return view("peticion.usuarios.create",["perfiles"=>$perfiles]);
+
+							 }   
+	   else
 {
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+	   }
+
+
+
+
+	   
+   }
 
 	  
-	   		  
-		
-                     
-                       
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
 
 	   
 	  
@@ -113,67 +134,82 @@ class UsuariosController extends Controller
    }
      public function store(UsuariosFormRequest $request)
    {
-	  if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
-
- if($request->get('contrasena2')<>$request->get('contrasena') or $request->get('contrasena')<>$request->get('contrasena2') )
-	   {
-		   
-		   return Redirect::to('peticion/usuarios/create')->with('mensaje','Contraseñas son incorrectas')
-		                                                    ->with('nombre',$request->get('nombre'))
-		                                                    ->with('apellido',$request->get('apellido'))
-															->with('perfiles',$request->get('perfiles'))
-															->with('telefono',$request->get('telefono'))
-															->with('cedula',$request->get('cedula'))
-															->with('usuario',$request->get('usuario'));
-															
-	   }
-       $usuario=new Usuarios;
-	   $usuario->idperfil=$request->get('perfiles');
-	   $usuario->nombreusuario=$request->get('nombre');
-	   $usuario->apellidousuario=$request->get('apellido');
-	   $usuario->telefonousuario=$request->get('telefono');
-	   $usuario->cedulausuario=$request->get('cedula');
-	   $usuario->cuotausuario='0';
-	   $usuario->contrasena=sha1($request->get('contrasena'));
-	   $usuario->user=$request->get('usuario');
-	   $usuario->estado='1';
-	   if(Input::hasfile('foto'))
-	   {
-		   $file=Input::file('foto');
-		   $file->move(public_path().'/images/usuarios/',$file->getClientOriginalName() );
-		    $usuario->imagen=$file->getClientOriginalName();
-	   }
 	  
-	  
-	   $usuario->save();
-	   return Redirect::to('peticion/usuarios');
-
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
+	
+		if($request->session()->has('id'))
+		{
+   
+		   $permiso=DB::table('permiso as p')
+			   ->where('p.idrol','=',$request->session()->get('perfil'))
+			   ->where('p.idrecurso','=',24)
+			   ->first();
+	   if(count($permiso)==0)
+	   {
+		   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	   }else
+   
+	   {
+   
+   
+		   if($permiso->crear==1 )
 		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+   
+			if($request->get('contrasena2')<>$request->get('contrasena') or $request->get('contrasena')<>$request->get('contrasena2') )
+			{
+				
+				return Redirect::to('peticion/usuarios/create')->with('mensaje','Contraseñas son incorrectas')
+																 ->with('nombre',$request->get('nombre'))
+																 ->with('apellido',$request->get('apellido'))
+																 ->with('perfiles',$request->get('perfiles'))
+																 ->with('telefono',$request->get('telefono'))
+																 ->with('cedula',$request->get('cedula'))
+																 ->with('usuario',$request->get('usuario'));
+																 
+			}
+			$usuario=new Usuarios;
+			$usuario->idperfil=$request->get('perfiles');
+			$usuario->nombreusuario=$request->get('nombre');
+			$usuario->apellidousuario=$request->get('apellido');
+			$usuario->telefonousuario=$request->get('telefono');
+			$usuario->cedulausuario=$request->get('cedula');
+			$usuario->cuotausuario='0';
+			$usuario->contrasena=sha1($request->get('contrasena'));
+			$usuario->user=$request->get('usuario');
+			$usuario->estado='1';
+			if(Input::hasfile('foto'))
+			{
+				$file=Input::file('foto');
+				$file->move(public_path().'/images/usuarios/',$file->getClientOriginalName() );
+				 $usuario->imagen=$file->getClientOriginalName();
+			}
+		   
+		   
+			$usuario->save();
+			return Redirect::to('peticion/usuarios');
+   
+								 }   
+		   else
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+			   
 		   }
-
-      
-
-            
+   
+   
+   
+   
 		   
-		   
-		
-
-	  
+	   }
+   
+		  
+	 
+			  
+			  
+			  }
+			  else
+			  {
+	return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+			  }
+   
    }
    
     
@@ -183,14 +219,26 @@ class UsuariosController extends Controller
 if($request->session()->has('id'))
 	 {
 	   
-  if($request->session()->get('perfil')==1  )
+		$permiso=DB::table('permiso as p')
+		->where('p.idrol','=',$request->session()->get('perfil'))
+		->where('p.idrecurso','=',24)
+		->first();
+if(count($permiso)==0)
+{
+	return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+}
+else
+{
+	  if($permiso->modificar==1)
 			   {
 
 $perfiles=DB::table('perfil')->get();
  return view("peticion.usuarios.edit",["usuarios"=>Usuarios::findOrFail($id),"perfiles"=>$perfiles]);  
 
                                      }   
-			   Else
+
+									 
+			   else
 {
 	if($request->session()->get('id')==$id)
 	{
@@ -202,6 +250,10 @@ $perfiles=DB::table('perfil')->get();
  return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 				   
 			   }
+			   }
+			   
+
+
 			   }
 		   
 		   
@@ -228,8 +280,17 @@ $perfiles=DB::table('perfil')->get();
 	 
  if($request->session()->has('id'))
 	 {
-	   
-  if($request->session()->get('perfil')==1  )
+		$permiso=DB::table('permiso as p')
+		->where('p.idrol','=',$request->session()->get('perfil'))
+		->where('p.idrecurso','=',24)
+		->first();
+if(count($permiso)==0)
+{
+	return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+}else
+
+{
+  if($permiso->modificar==1  )
 			   {
 
        $usuario=Usuarios::findOrFail($id);
@@ -256,8 +317,8 @@ $perfiles=DB::table('perfil')->get();
 	   $usuario->update();
 	   return Redirect::to('peticion/usuarios')->with('mensaje','Usuario actualizado correctamente');
 
-                                     }   
-			   Else
+                                     }    
+			   else
 {
 	if($request->session()->get('id')==$id)
 	{
@@ -295,7 +356,7 @@ $perfiles=DB::table('perfil')->get();
 				   
 			   }
 			   }
-		   
+		     }
 		   
 		   }
 		   else
@@ -321,30 +382,52 @@ $perfiles=DB::table('perfil')->get();
    
      public function destroy(Request $request,$id)
    {
-	   if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
-   
-     $usuario=Usuarios::findOrFail($id);
-     $usuario->estado='0';
-	 $usuario->update();
-	 return Redirect::to('peticion/usuarios');
+	if($request->session()->has('id'))
+	{
 
-                                     }   
-			   Else
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',24)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
+
+   {
+
+
+	   if($permiso->eliminar==1  )
+	   {
+
+		$usuario=Usuarios::findOrFail($id);
+		$usuario->estado='0';
+		$usuario->update();
+		return Redirect::to('peticion/usuarios');
+
+							 }   
+	   else
 {
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
+return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
+	   }
+
+
+
+
+	   
+   }
+
+	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
 
 	
    }
@@ -352,14 +435,28 @@ $perfiles=DB::table('perfil')->get();
    public function restablecer(Request $request,$id)
    {
 	
-	   
- if($request->session()->get('perfil')==1)
- {
-	
-return view("peticion.usuarios.contrasena",["usuarios"=>Usuarios::findOrFail($id)]);  
+	if($request->session()->has('id'))
+	{
 
-}
-else
+	   $permiso=DB::table('permiso as p')
+		   ->where('p.idrol','=',$request->session()->get('perfil'))
+		   ->where('p.idrecurso','=',24)
+		   ->first();
+   if(count($permiso)==0)
+   {
+	   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+   }else
+
+   {
+
+
+	   if($permiso->modificar==1)
+	   {
+
+		return view("peticion.usuarios.contrasena",["usuarios"=>Usuarios::findOrFail($id)]);  
+
+							 }   
+	   else
 {
 	if($request->session()->get('id')==$id)
 	{
@@ -367,12 +464,35 @@ else
 		
 	}else
 	{
-		
-	 return Redirect::to('peticion/error');
+		return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido perfiles, ingresa como administrador');
+	
 	}
-	
-	
-}
+
+		   
+	   }
+
+	  
+
+
+
+
+
+
+	   
+   }
+
+	  
+ 
+		  
+		  
+		  }
+		  else
+		  {
+return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+		  }
+
+	   
+
 	
 
 		   
@@ -385,25 +505,35 @@ else
     
     public function updatecontrasena(ContrasenaUpdateFormRequest $request,$id)
    {
+
 	   if($request->session()->has('id'))
 	 {
-	   
-  if($request->session()->get('perfil')==1  )
+		$permiso=DB::table('permiso as p')
+		->where('p.idrol','=',$request->session()->get('perfil'))
+		->where('p.idrecurso','=',24)
+		->first();
+if(count($permiso)==0)
+{
+	return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+}else
+
+{
+  if($permiso->modificar==1 )
 			   {
 
- if($request->get('confirmar')<>$request->get('contrasena') or $request->get('contrasena')<>$request->get('confirmar') )
-	   {
-		   
-		  return Redirect::to('peticion/restablecer/'.$id)->with('mensaje','Las credenciales son incorrectas');
-															
-	   }
-	   $usuario=Usuarios::findOrFail($id);
-	   $usuario->contrasena=sha1($request->get('contrasena'));
-	   $usuario->update();
-	   return Redirect::to('peticion/usuarios')->with('mensaje','Usuario actualizado correctamente, debes cerrar sesion para que los cambios puedan efectuarse');
+				if($request->get('confirmar')<>$request->get('contrasena') or $request->get('contrasena')<>$request->get('confirmar') )
+				{
+					
+				   return Redirect::to('peticion/restablecer/'.$id)->with('mensaje','Las credenciales son incorrectas');
+																	 
+				}
+				$usuario=Usuarios::findOrFail($id);
+				$usuario->contrasena=sha1($request->get('contrasena'));
+				$usuario->update();
+				return Redirect::to('peticion/usuarios')->with('mensaje','Usuario actualizado correctamente, debes cerrar sesion para que los cambios puedan efectuarse');
 
                                      }   
-			   Else
+			  else
 {
 	
 	if($request->session()->get('id')==$id)
@@ -426,6 +556,9 @@ else
  return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
 				   
 			   }
+			   }
+			   
+
 			   }
 		   
 		   

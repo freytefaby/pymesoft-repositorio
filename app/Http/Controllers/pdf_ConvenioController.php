@@ -26,13 +26,27 @@ class Pdf_ConvenioController extends Controller
 	
 	 public function show(Request $request,$id)
    {
-	   if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
-
-$infoempresa=DB::table('infoempresa')
+	  
+	
+		if($request->session()->has('id'))
+        {
+   
+           $permiso=DB::table('permiso as p')
+               ->where('p.idrol','=',$request->session()->get('perfil'))
+               ->where('p.idrecurso','=',7)
+               ->first();
+       if(count($permiso)==0)
+       {
+           return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+       }else
+   
+       {
+   
+   
+           if($permiso->leer==1 )
+           {
+   
+            $infoempresa=DB::table('infoempresa')
 			->select('nombrecomercialempresa','direccionempresa','telefonoempresa','nitempresa','ciudadempresa')
 			->first();
 	 
@@ -59,30 +73,30 @@ $consulta=DB::table('detalle_convenio as dc')
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
         return $pdf->stream('invoice');
-
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
-		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
-		   }
-
-	    
-
-       
-		   
-		   
-		
-
-
-	  
+   
+                                 }   
+           else
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+               
+           }
+   
+   
+   
+   
+           
+       }
+   
+          
+     
+              
+              
+              }
+              else
+              {
+    return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+              }
+   
    }
    
 }

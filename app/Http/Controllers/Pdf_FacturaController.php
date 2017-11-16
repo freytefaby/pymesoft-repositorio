@@ -66,7 +66,7 @@ class Pdf_FacturaController extends Controller
 			->where('v.estado','=','1')
 			->first();
 			
-		$detalleventa=DB::table('detalleventa as d')
+		/*$detalleventa=DB::table('detalleventa as d')
 		                  ->join('venta as v','d.idventa','=','v.idventa')
 						  ->join('producto as p','d.idproducto','=','p.idproducto')
 						  ->join('proveedor as pr','pr.idproveedor','=','p.idproveedor')
@@ -121,14 +121,14 @@ class Pdf_FacturaController extends Controller
 						  }
 						  echo "================================\r\n"; 
 						  echo "MUCHAS GRACIAS POR TU COMPRA\r\n";
-						  echo "TE ESPERAMOS NUEVAMENTE!!\r\n";
+						  echo "TE ESPERAMOS NUEVAMENTE!!\r\n";*/
 						  
 						 
 					
-       /* $view =  \View::make('peticion.pdf.factura_venta', compact('infoempresa','ventas','detalleventa','sumarray'))->render();
+        $view =  \View::make('peticion.pdf.factura_venta', compact('infoempresa','ventas','detalleventa','sumarray'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
-        return $pdf->stream('invoice');*/
+        return $pdf->stream('invoice');
    
 								 }   
 		   else

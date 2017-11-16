@@ -26,13 +26,26 @@ class Pdf_CierreDiarioController extends Controller
 	
 	 public function show(Request $request,$id)
    {
-	   if($request->session()->has('id'))
-	 {
-	   
-  if($request->session()->get('perfil')==1  )
-			   {
-
- $infoempresa=DB::table('infoempresa')
+	  
+		if($request->session()->has('id'))
+		{
+   
+		   $permiso=DB::table('permiso as p')
+			   ->where('p.idrol','=',$request->session()->get('perfil'))
+			   ->where('p.idrecurso','=',4)
+			   ->first();
+	   if(count($permiso)==0)
+	   {
+		   return Redirect::to('peticion/error')->with('mensaje','No existe ningun recurso disponible para este empleado');
+	   }else
+   
+	   {
+   
+   
+		   if($permiso->leer==1 )
+		   {
+   
+			$infoempresa=DB::table('infoempresa')
 			->select('nombrecomercialempresa','direccionempresa','telefonoempresa','nitempresa','ciudadempresa')
 			->first();
 		$exist=DB::table('cierre_diario')
@@ -127,7 +140,7 @@ class Pdf_CierreDiarioController extends Controller
 
 						
 
-						 $nombre="HHCD-00".$exist->idusuario.$exist->idcierrediario; 
+						/* $nombre="HHCD-00".$exist->idusuario.$exist->idcierrediario; 
 						 Header("Content-Type: text/plain"); 
 						 Header("Content-Disposition: attachment; filename=$nombre.txt"); 
 						 echo "      ".$infoempresa->nombrecomercialempresa."\r\n"; 
@@ -248,30 +261,41 @@ class Pdf_CierreDiarioController extends Controller
 			 echo  "Valor a retirar: ".number_format($exist->recogida)."\r\n";
 			 echo "El valor final de la recogida se ha \r\n"; 
 			 echo "tenido en cuenta los gastos y otros \r\n"; 
-			 echo  "ingresos que se hayan generado.";
+			 echo  "ingresos que se hayan generado.";*/
 		
 
 						 
 						
 
-        /*$view =  \View::make('peticion.pdf.cierrediario', compact('infoempresa','exist','ventas','sumarray','tiposventa','ventausuarios','devoluciones','gasto','sumagasto','base','ingreso','sumaingreso','notacredito','sumanota','compra','abonos'))->render();
+        $view =  \View::make('peticion.pdf.cierrediario', compact('infoempresa','exist','ventas','sumarray','tiposventa','ventausuarios','devoluciones','gasto','sumagasto','base','ingreso','sumaingreso','notacredito','sumanota','compra','abonos'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
-        return $pdf->stream('invoice');*/
+        return $pdf->stream('invoice');
 
-                                     }   
-			   Else
-{
- return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
-				   
-			   }
-		   
-		   
-		   }
+   
+								 }   
 		   else
-		   {
- return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+   {
+   return Redirect::to('peticion/error')->with('mensaje','No tiene permisos necesarios para acceder a este contenido, ingresa como administrador');
+			   
 		   }
+   
+   
+   
+   
+		   
+	   }
+   
+		  
+	 
+			  
+			  
+			  }
+			  else
+			  {
+	return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta para acceder');
+			  }
+   
 
 
 	  

@@ -115,6 +115,7 @@
 
    <table class="table">
 <tr>
+<td>#</td>
 <td>Recursos</td>
 <td>Perfil</td>
 <td>Leer</td>
@@ -123,8 +124,11 @@
 <td>Eliminar</td>
 
 </tr>
+<?php $cont=0; ?>
 @foreach($permiso as $p)
+<?php $cont=$cont+1; ?>
 <tr>
+<td>{{$p->idrecurso}}</td>
 <td>{{$p->descrecurso}}</td>
 <td>{{$p->perfildesc}}</td>
 <input type="hidden" name="recurso[]" value="{{$p->idrecurso}}">
@@ -141,7 +145,7 @@
  </td>
  <td> 
  <select name="crear[]">
-@if($p->idrecurso==2)
+@if($p->idrecurso==2 or $p->idrecurso==13 or $p->idrecurso==14 or $p->idrecurso==16 or $p->idrecurso==18 or $p->idrecurso==19 or $p->idrecurso==20 )
 <option value="0">No disponible </option>
 @else
 @if ($p->crear==1)
@@ -156,7 +160,7 @@
  </td>
  <td> 
  <select name="modificar[]">
- @if($p->idrecurso==1 or $p->idrecurso==4 or  $p->idrecurso==6 or  $p->idrecurso==7  or  $p->idrecurso==9 or  $p->idrecurso==10)
+ @if($p->idrecurso==1 or $p->idrecurso==4 or  $p->idrecurso==6 or  $p->idrecurso==7  or  $p->idrecurso==9 or  $p->idrecurso==10  or  $p->idrecurso==11 or $p->idrecurso==13 or $p->idrecurso==16 or $p->idrecurso==17 or $p->idrecurso==18 or $p->idrecurso==19 or $p->idrecurso==20)
  <option value="0" selected>No disponible </option>
  @else
 @if ($p->modificar==1)
@@ -171,7 +175,7 @@
  </td>
  <td> 
  <select name="eliminar[]">
- @if($p->idrecurso==2 or $p->idrecurso==4 or $p->idrecurso==5 or  $p->idrecurso==6 or  $p->idrecurso==7 or  $p->idrecurso==8 or  $p->idrecurso==9 or  $p->idrecurso==10)
+ @if($p->idrecurso==2 or $p->idrecurso==4 or $p->idrecurso==5 or  $p->idrecurso==6 or  $p->idrecurso==7 or  $p->idrecurso==8 or  $p->idrecurso==9 or  $p->idrecurso==10 or    $p->idrecurso==11  or $p->idrecurso==12 or $p->idrecurso==13 or $p->idrecurso==14 or $p->idrecurso==15 or $p->idrecurso==16 or $p->idrecurso==17 or $p->idrecurso==18 or $p->idrecurso==19 or $p->idrecurso==20 or $p->idrecurso==21 or $p->idrecurso==23)
  <option value="0" selected>No disponible </option>
  @else
  @if($p->idrecurso==1)
@@ -243,7 +247,7 @@
    <select name="recursos" class="form-control">
 <option value="0" selected>Seleccione </option>
 @foreach($recursos as $r)
-<option value="{{$r->idrecurso}}">{{$r->descrecurso}}</option>
+<option value="{{$r->idrecurso}}">({{$r->idrecurso}}) {{$r->descrecurso}}</option>
 @endforeach
 </select>
    <input type="hidden" name="perfil" value="{{$id}}">
