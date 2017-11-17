@@ -229,6 +229,7 @@
 							@endif
 						</ul>
 					</li>
+					@if(Session::get('compra')==1 or Session::get('sugerido')==1 or Session::get('proveedores')==1 or Session::get('iva')==1 or Session::get('devolucioncompra')==1 )
 					<li class="hover">
 						<a href="#" class="dropdown-toggle">
 							 <i class="menu-icon fa fa-cart-arrow-down"></i>
@@ -238,8 +239,12 @@
 						</a>
 
 						<b class="arrow"></b>
+						@endif
+
+
 
 						<ul class="submenu">
+						@if(Session::get('compra')==1)
 						<li class="">
 								<a href="{{URL('peticion/compras')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -248,6 +253,10 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+
+							@if(Session::get('sugerido')==1)
 							<li class="">
 								<a href="{{URL('peticion/sugeridos')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -256,6 +265,9 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+							@if(Session::get('proveedores')==1)
 							<li class="">
 								<a href="{{URL('peticion/proveedores')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -264,6 +276,10 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+
+							@if(Session::get('iva')==1)
 							<li class="">
 								<a href="{{URL('peticion/iva')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -272,7 +288,8 @@
 
 								<b class="arrow"></b>
 							</li>
-							
+							@endif
+							@if(Session::get('devolucioncompra')==1)
 							<li class="">
 								<a href="{{URL('peticion/devolucionescompras')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -281,6 +298,7 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
 							
 							
 						</ul>

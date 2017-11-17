@@ -79,7 +79,26 @@ class LoginController extends Controller
 		->where('p.idrecurso','=',13)
 		->where('p.idrol','=',$validar->idperfil)
 		->first();
-
+		$compras=DB::table('permiso as p')
+		->where('p.idrecurso','=',6)
+		->where('p.idrol','=',$validar->idperfil)
+		->first();
+		$sugerido=DB::table('permiso as p')
+		->where('p.idrecurso','=',20)
+		->where('p.idrol','=',$validar->idperfil)
+		->first();
+		$proveedores=DB::table('permiso as p')
+		->where('p.idrecurso','=',23)
+		->where('p.idrol','=',$validar->idperfil)
+		->first();
+		$iva=DB::table('permiso as p')
+		->where('p.idrecurso','=',17)
+		->where('p.idrol','=',$validar->idperfil)
+		->first();
+		$devolucioncompra=DB::table('permiso as p')
+		->where('p.idrecurso','=',9)
+		->where('p.idrol','=',$validar->idperfil)
+		->first();
 
 		  $request->session()->put('id',$validar->idusuario);
 		  $request->session()->put('perfil',$validar->idperfil);
@@ -92,6 +111,11 @@ class LoginController extends Controller
 		  $request->session()->put('convenio',$convenio->leer);
 		  $request->session()->put('cupo',$cupo->leer);
 		  $request->session()->put('grafico',$grafico->leer);
+		  $request->session()->put('compra',$compras->leer);
+		  $request->session()->put('sugerido',$sugerido->leer);
+		  $request->session()->put('proveedores',$proveedores->leer);
+		  $request->session()->put('iva',$iva->leer);
+		  $request->session()->put('devolucioncompra',$devolucioncompra->leer);
 		   return Redirect::to('peticion/ventas');
 	   }
 	   
