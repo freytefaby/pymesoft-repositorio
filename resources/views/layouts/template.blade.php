@@ -112,7 +112,7 @@
 				
 
 				<ul class="nav nav-list">
-				@if(Session::get('perfil')==1)
+				@if(Session::get('venta')==1 or Session::get('cliente')==1 or Session::get('nota')==1 or Session::get('devolucioncliente')==1 or Session::get('convenio')==1 or Session::get('cupo')==1 or Session::get('grafico')==1 )
 				<li class="hover">
 						<a href="#" class="dropdown-toggle">
 							 <i class="menu-icon fa fa-credit-card"></i>
@@ -123,7 +123,9 @@
 
 						<b class="arrow"></b>
 
+@endif
 						<ul class="submenu">
+						@if(Session::get('venta')==1)
 						<li class="">
 								<a href="{{URL('peticion/ventas')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -132,6 +134,9 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+							@if(Session::get('cliente')==1)
 							<li class="">
 								<a href="{{URL('peticion/clientes')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -140,6 +145,9 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+							@if(Session::get('nota')==1)
 							<li class="">
 								<a href="{{URL('peticion/notascredito')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -148,7 +156,10 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
 							
+
+							@if(Session::get('devolucioncliente')==1)
 							<li class="">
 								<a href="{{URL('peticion/devoluciones')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -157,6 +168,9 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+							@if(Session::get('convenio')==1 or Session::get('cupo')==1)
 							<li class="">
 								<a href="" class="dropdown-toggle">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -165,7 +179,10 @@
 								</a>
 
 								<b class="arrow"></b>
+								
+								@endif
 								<ul class="submenu">
+								@if(Session::get('convenio')==1)
 									<li class="">
 										<a href="{{URL('peticion/convenio')}}">
 											
@@ -184,9 +201,11 @@
 
 										<b class="arrow"></b>
 									</li>
+									@endif
 									</ul>
 
 									<ul class="submenu">
+									@if(Session::get('cupo')==1)
 									<li class="">
 										<a href="{{URL('peticion/cupo')}}">
 											
@@ -195,8 +214,10 @@
 
 										<b class="arrow"></b>
 									</li>
+									@endif
 									</ul>
 							</li>
+							@if(Session::get('grafico')==1)
 							<li class="">
 								<a href="{{URL('peticion/graficos')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -205,6 +226,7 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
 						</ul>
 					</li>
 					<li class="hover">
@@ -438,7 +460,7 @@
 							
 						</ul>
 					</li>
-					@endif
+				
 				</ul><!-- /.nav-list -->
 			</div>
 
