@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2017 a las 23:20:44
--- Versión del servidor: 10.1.25-MariaDB
--- Versión de PHP: 5.6.31
+-- Tiempo de generación: 18-11-2017 a las 04:55:42
+-- Versión del servidor: 10.1.13-MariaDB
+-- Versión de PHP: 5.6.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -53,7 +51,7 @@ INSERT INTO `recurso` (`idrecurso`, `descrecurso`) VALUES
 (13, 'Modulo de gráficos , permisos para leer la estructura de gráficos de la empresa. '),
 (14, 'Modulo de información de empresa, permisos para leer y modificar la información de la empresa.'),
 (15, 'Modulo ingresos, permisos para crear y leer y modificar otros ingresos del sistema.'),
-(16, 'Modulo inventario laboratorio, permisos para ver información de la empresa'),
+(16, 'Modulo inventario laboratorio, permisos para ver inventarios por laboratorio'),
 (17, 'Modulo iva , permisos para ver información del iva del sistema.'),
 (18, 'Modulo movimientos , permisos para ver información sobre movimientos del sistema.'),
 (19, 'Modulo reportes mensuales , permisos para ver reportes mensuales del sistema.'),
@@ -81,8 +79,7 @@ ALTER TABLE `recurso`
 -- AUTO_INCREMENT de la tabla `recurso`
 --
 ALTER TABLE `recurso`
-  MODIFY `idrecurso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;COMMIT;
-
+  MODIFY `idrecurso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

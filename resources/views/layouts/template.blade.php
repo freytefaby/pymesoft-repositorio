@@ -303,6 +303,7 @@
 							
 						</ul>
 					</li>
+					@if(Session::get('laboratorio')==1 or Session::get('producto')==1 or Session::get('categoria')==1 or Session::get('movimiento')==1 )
 					<li class="hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list-alt"></i>
@@ -312,8 +313,10 @@
 						</a>
 
 						<b class="arrow"></b>
+						@endif
 
 						<ul class="submenu">
+						@if(Session::get('laboratorio')==1)
 							<li >
 								<a href="{{URL('peticion/inventarioproductolaboratorio')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -322,6 +325,9 @@
 
 								<b class="arrow"></b>
 							</li>
+						@endif
+
+						@if(Session::get('producto')==1)
 							<li >
 								<a href="{{URL('peticion/productos')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -330,6 +336,9 @@
 
 								<b class="arrow"></b>
 							</li>
+						@endif
+
+						@if(Session::get('categoria')==1)
 							<li >
 								<a href="{{URL('peticion/categoria')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -338,6 +347,10 @@
 
 								<b class="arrow"></b>
 							</li>
+
+						@endif
+
+						@if(Session::get('movimiento')==1)
 							<li >
 								<a href="{{URL('peticion/movimientos')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -346,6 +359,10 @@
 
 								<b class="arrow"></b>
 							</li>
+						@endif
+
+						@if(Session::get('producto')==1)
+
 							<li >
 								<a href="http://hhfarm.biz/webservice/cliente/medicfar/index.php" target="_blank">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -354,9 +371,11 @@
 
 								<b class="arrow"></b>
 							</li>
-							
+							@endif
 							</ul>
 					</li>
+
+					@if(Session::get('empresa')==1 or Session::get('usuario')==1 or Session::get('permiso')==1  )
 					<li class="hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-cogs"></i>
@@ -366,8 +385,9 @@
 						</a>
 
 						<b class="arrow"></b>
-
+                    @endif
 						<ul class="submenu">
+						@if(Session::get('empresa')==1)
 							<li class="">
 								<a href="{{URL('peticion/infoempresa')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -376,6 +396,9 @@
 
 								<b class="arrow"></b>
 							</li>
+						@endif
+
+						@if( Session::get('usuario')==1 or Session::get('permiso')==1  )
 							<li class="">
 							<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-caret-right"></i>
@@ -383,7 +406,9 @@
 							<b class="arrow fa fa-angle-down"></b>
 							</a>
 							<b class="arrow"></b>
+							@endif
                             <ul class="submenu">
+							@if(Session::get('usuario')==1)
 							<li class="">
 							<a href="{{URL('peticion/usuarios')}}">
 									
@@ -391,19 +416,22 @@
 								</a>
 								<b class="arrow"></b>
 							</li>
+						@endif  
+
+						@if(Session::get('permiso')==1)
 							<li class="">
 										<a href="{{URL('peticion/permisos')}}">
 											
 									Permisos
 										</a>
-							</ul>
+							
 
 									
 
 								<b class="arrow"></b>
 							</li>
-
-							
+                         @endif
+							</ul>
 							
 							
 							
@@ -414,6 +442,7 @@
 							
 						</ul>
 					</li>
+					@if(Session::get('cierre')==1 or Session::get('mes')==1 or Session::get('base')==1  or Session::get('gasto')==1 or Session::get('ingreso')==1 )
 					<li class="hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-cc" aria-hidden="true"></i>
@@ -423,8 +452,9 @@
 						</a>
 
 						<b class="arrow"></b>
-
+@endif
 						<ul class="submenu">
+						@if(Session::get('cierre')==1)
 							<li class="">
 								<a href="{{URL('peticion/cierrediario')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -433,6 +463,9 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+							@if(Session::get('mes')==1)
 							<li class="">
 									<a href="{{URL('peticion/reportemes')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -441,10 +474,10 @@
 
 								<b class="arrow"></b>
 							</li>
-
+                            @endif
 							
 							
-							
+							@if(Session::get('base')==1)
 							<li class="">
 								<a href="{{URL('peticion/base')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -453,7 +486,9 @@
 
 								<b class="arrow"></b>
 							</li>
-							
+							@endif
+
+							@if(Session::get('gasto')==1)
 							<li class="">
 								<a href="{{URL('peticion/gasto')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -462,6 +497,9 @@
 
 								<b class="arrow"></b>
 							</li>
+							@endif
+
+							@if(Session::get('ingreso')==1)
 							<li class="">
 								<a href="{{URL('peticion/ingreso')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -471,7 +509,7 @@
 								<b class="arrow"></b>
 							</li>
 
-							
+							@endif
 
 							
 
