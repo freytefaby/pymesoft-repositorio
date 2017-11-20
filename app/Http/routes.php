@@ -310,9 +310,14 @@ route::get('peticion/cupo/clientes/{id}','VentaController@clientesbusqueda');
 |--------------------------------------------------------------------------
 */
 route::resource('peticion/permisos','PermisoController');
+route::resource('peticion/perfil','PerfilController');
+
 /*
 | FIN PERMISOS
 */
+
+
+
 
 
 

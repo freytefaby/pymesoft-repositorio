@@ -8,6 +8,7 @@ use hhfarm\Http\Requests;
 use hhfarm\Permiso;
 use Illuminate\Support\Facades\Redirect;
 use hhfarm\Http\Requests\RecursoFormRequest;
+
 use DB;
 use Session;
 class PermisoController extends Controller
@@ -267,6 +268,7 @@ return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta 
 
 	 
  }
-   
+
+ 
    
 }

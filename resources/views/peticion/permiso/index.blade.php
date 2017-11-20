@@ -84,6 +84,16 @@
 							</h1>
 							
 						</div><!-- /.page-header -->
+
+						@if(Session::has('mensaje'))
+								<div class="row">
+								<div class="col-md-12" >
+								<div class="alert alert-success">
+								 {{Session::get('mensaje')}}
+								</div>
+								</div>
+								</div>
+								@endif 
                           
 						<div class="row">
 						
@@ -91,16 +101,10 @@
 								<!-- PAGE CONTENT BEGINS -->
 								<div class="row">
 									<div class="col-xs-12">
-									{!!Form::open(array('url'=>'peticion/ventas','method'=>'POST','autocomplete'=>'off','class'=>'form-horizontal','role'=>'form'))!!}
-													{{Form::token()}}
+									
 													
-	
-									<button class="btn btn-primary" type="submit">
-												<i class="ace-icon glyphicon glyphicon-plus"></i>
-												Crear nuevo perfil
-											</button>
-											
-											{{Form::close()}}
+						<a href="{{URL('peticion/perfil')}}" class="btn btn-primary"> <i class="ace-icon glyphicon glyphicon-plus"></i> Crear nuevo perfil </a>
+									
 								
 							
 									

@@ -73,10 +73,10 @@
 						</div><!-- /.ace-settings-container -->
 					<div class="page-header">
 							<h1>
-								Formulario Productos
+								Formulario Recursos
 								<small>
 									<i class="ace-icon fa fa-angle-double-right"></i>
-									Agregar nuevo producto.
+									Agregar nuevo recurso.
 								</small>
 							</h1>
 						</div><!-- /.page-header -->

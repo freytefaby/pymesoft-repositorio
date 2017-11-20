@@ -31,7 +31,7 @@
 					<a href="{{URL('peticion/ventas')}}" class="navbar-brand">
 						<small>
 							
-							..::pymesoft LTE::.. version.51
+							..::pymesoft LTE::.. version.59
 						</small>
 					</a>
 
@@ -430,6 +430,8 @@
 
 								<b class="arrow"></b>
 							</li>
+
+							
                          @endif
 							</ul>
 							
