@@ -46,7 +46,7 @@ class DetalleCompraController extends Controller
 	   {
    
    
-		   if($permiso->crear==6 )
+		   if($permiso->crear==1 )
 		   {
    
 			if($request->get('tipoproducto')==2)
