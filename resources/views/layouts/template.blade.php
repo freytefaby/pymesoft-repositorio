@@ -303,7 +303,7 @@
 							
 						</ul>
 					</li>
-					@if(Session::get('laboratorio')==1 or Session::get('producto')==1 or Session::get('categoria')==1 or Session::get('movimiento')==1 )
+					@if(Session::get('laboratorio')==1 or Session::get('producto1')==1 or Session::get('categoria')==1 or Session::get('movimiento')==1 )
 					<li class="hover">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-list-alt"></i>
@@ -327,7 +327,7 @@
 							</li>
 						@endif
 
-						@if(Session::get('producto')==1)
+						@if(Session::get('producto1')==1)
 							<li >
 								<a href="{{URL('peticion/productos')}}">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -361,7 +361,7 @@
 							</li>
 						@endif
 
-						@if(Session::get('producto')==1)
+						@if(Session::get('producto1')==1)
 
 							<li >
 								<a href="http://hhfarm.biz/webservice/cliente/medicfar/index.php" target="_blank">

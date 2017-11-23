@@ -165,7 +165,7 @@ class LoginController extends Controller
 		  if(count($iva)==0){$request->session()->put('iva','0');}else{$request->session()->put('iva',$iva->leer);}
 		  if(count($devolucioncompra)==0){$request->session()->put('devolucioncompra','0');}else{$request->session()->put('devolucioncompra',$devolucioncompra->leer);} 
 		  if(count($laboratorio)==0){$request->session()->put('laboratorio','0');}else{$request->session()->put('laboratorio',$laboratorio->leer);} 
-		  if(count($producto)==0){$request->session()->put('producto','0');}else{$request->session()->put('producto',$producto->leer);} 
+		  if(count($producto)==0){$request->session()->put('producto1','0');}else{$request->session()->put('producto1',$producto->leer);} 
 		  if(count($categoria)==0){$request->session()->put('categoria','0');}else{$request->session()->put('categoria',$categoria->leer);} 
 		  if(count($movimiento)==0){$request->session()->put('movimiento','0');}else{$request->session()->put('movimiento',$movimiento->leer);}
 		  if(count($empresa)==0){$request->session()->put('empresa','0');}else{$request->session()->put('empresa',$empresa->leer);}  
