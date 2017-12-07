@@ -64,7 +64,7 @@ class VentaController extends Controller
 				->select('v.fecha','c.nombrecliente','c.apellidocliente','u.user','v.idventa','v.valorventa','v.importeventa','v.estado','v.subtotal','v.idtipoventa','t.desctipoventa','c.cedulacliente','v.descuento','t.idtipoventa')
 				->where('v.idusuario','=',$request->session()->get('id'))
 				->orderby('v.idventa','desc')
-				->limit(1000)
+				->limit(100)
 				->get();
 				return view('peticion.ventas.index',["ventas"=>$ventas,"searchText"=>$query,"ultimaventa"=>$ultimaventa,"clientes"=>$clientes]);
 				
