@@ -66,7 +66,7 @@ class Pdf_FacturaController extends Controller
 			->where('v.estado','=','1')
 			->first();
 			
-		/*$detalleventa=DB::table('detalleventa as d')
+		$detalleventa=DB::table('detalleventa as d')
 		                  ->join('venta as v','d.idventa','=','v.idventa')
 						  ->join('producto as p','d.idproducto','=','p.idproducto')
 						  ->join('proveedor as pr','pr.idproveedor','=','p.idproveedor')
@@ -82,6 +82,8 @@ class Pdf_FacturaController extends Controller
 		                  ->where('d.idventa','=',$id)
 						  ->where('v.estado','=','1')
 						  ->first();
+
+						  /*
 						  $nombre="HHCD-00".$ventas2->idtipoventa.$ventas2->idventa; 
 						  Header("Content-Type: text/plain"); 
 						  Header("Content-Disposition: attachment; filename=$nombre.txt"); 
