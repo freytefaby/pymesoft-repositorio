@@ -169,7 +169,7 @@ class LoginController extends Controller
 		  if(count($categoria)==0){$request->session()->put('categoria','0');}else{$request->session()->put('categoria',$categoria->leer);} 
 		  if(count($movimiento)==0){$request->session()->put('movimiento','0');}else{$request->session()->put('movimiento',$movimiento->leer);}
 		  if(count($empresa)==0){$request->session()->put('empresa','0');}else{$request->session()->put('empresa',$empresa->leer);}  
-		  if(count($usuario)==0){$request->session()->put('usuario','0');}else{$request->session()->put('usuario',$usuario->leer);}  
+		  if(count($usuario)==0){$request->session()->put('usuario1','0');}else{$request->session()->put('usuario1',$usuario->leer);}  
 		  if(count($permiso)==0){$request->session()->put('permiso','0');}else{$request->session()->put('permiso',$permiso->leer);} 
 		  if(count($cierre)==0){$request->session()->put('cierre','0');}else{$request->session()->put('cierre',$cierre->leer);}  
 		  if(count($mes)==0){$request->session()->put('mes','0');}else{$request->session()->put('mes',$mes->leer);}  

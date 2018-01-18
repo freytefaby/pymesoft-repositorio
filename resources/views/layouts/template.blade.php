@@ -398,7 +398,7 @@
 							</li>
 						@endif
 
-						@if( Session::get('usuario')==1 or Session::get('permiso')==1  )
+						@if( Session::get('usuario1')==1 or Session::get('permiso')==1  )
 							<li class="">
 							<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-caret-right"></i>
@@ -408,7 +408,7 @@
 							<b class="arrow"></b>
 							@endif
                             <ul class="submenu">
-							@if(Session::get('usuario')==1)
+							@if(Session::get('usuario1')==1)
 							<li class="">
 							<a href="{{URL('peticion/usuarios')}}">
 									
