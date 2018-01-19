@@ -115,87 +115,42 @@
                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{Session::get('mensaje')}}.
             </div>
         @endif
-													{!! Form::open(array('url'=>'peticion/compras/create/','method'=>'GET', 'autocomplete'=>'off', 'class'=>'form-inline'))!!}
-													<div class="col-md-3">
-														<input type="text" class="form-control" name="p"  placeholder="Seleccione producto">
-																
-														</div>
-														
+							 @include('peticion.compras.modalsearchproductos')
+														<div class="row">
+															<div class="col-xs-12 col-sm-5">
+																<div class="input-group">
+																	<span class="input-group-addon">
+																		<i class="ace-icon fa fa-check"></i>
+																	</span>
 
-														<a href="{{URL('peticion/productos')}}"class="btn btn-info btn-sm">
-															<i class="ace-icon fa fa-check bigger-110"></i>Buscar
-														</a>
+																	<input type="text" class="form-control search-query" placeholder="Codigo de producto"  name="p" id="buscar"  value="<?php if(isset($_GET["p"])) { echo $_GET["p"]; } ?>" autofocus />
+																	<span class="input-group-btn">
+																		<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg">
+																			<span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+																			Buscar
+																		</button>
+																	</span>
+																</div>
+
+																
+
+																
+															</div>
+														</div>						
+														{{ Form::open(array()) }}
+														<div id="resultado">
 														
-													{{Form::close()}}
+														</div>
+														<div style="display:none" id="loader">
+												<h3 class="header smaller lighter grey">
+													<i class="ace-icon fa fa-spinner fa-spin orange bigger-125"></i>
+													Cargando producto
 													
-													{!!Form::open(array('url'=>'peticion/compras/detalle_compra','method'=>'POST','autocomplete'=>'off','class'=>'form-horizontal','role'=>'form'))!!}
-													{{Form::token()}}
-														<table class="table">
-														<tr>
-														<th>Codigo</th>
-														<th>Desc</th>
-														<th>Stock</th>
-														<th>p.venta(S/I)</th>	
-														<th>p.compra</th>	
-														<th>Utilidad</th>	
-														<th>Iva</th>
-														<th>Cantidad</th>
-														<th>Unidad</th>
-														<th>Agregar</th>
-														</tr>
+												</h3>
+											</div>
 														
-														@foreach ($articulos as $art)
-														<tr>
-														<td>
-														{{$art->codigobarra1}}
-														</td>
-														<td>
-														{{$art->descripcionproducto}}
-														</td>
-														<td>
-														{{$art->stock}}
-														</td>
-														<td>
-														<input type="text" name="preciosugerido" value="{{$art->preciosugerido}}" style="width:60px;">
-														</td>
-														<td>
-														<input type="text" name="preciocompra" value="{{$art->preciocompra}}" style="width:60px;">
-														</td>
-														<td>
-														{{number_format($art->preciosugerido-$art->preciocompra)}}
-														</td>
-														<td>
-														<input type="hidden" name="iva" value="{{$art->valoriva}}">
-														{{$art->valoriva}}%
-														</td>
-														<td>
-			                                       @if($art->idtipoproducto==1)
-													   <input disabled type="text" name="cant" style="width:60px;" >
-												      @else
-														<input type="number" name="cant"  style="width:60px;" >
-													  @endif
-														</td>
-														<td>
-														<input type="number" name="und"  style="width:60px;" >
-														</td>
-														<td>
-														<button class="btn btn-xs btn-info" title="Editar">
-																<i class="ace-icon fa fa-check bigger-110"></i> Agregar
-															</button>
-														</td>
-														</tr>
-														<input type="hidden" name="idproducto" value="{{$art->idproducto}}">
-														<input type="hidden" name="idcompra" value="{{$ultimacompra->idcompra}}">
-														<input type="hidden" name="tipoproducto" value="{{$art->idtipoproducto}}">
-														<input type="hidden" name="cantidadempaque" value="{{$art->cantidadempaque}}">
-														<input type="hidden" name="codigoproducto" value="{{$art->codigobarra1}}">
-														<input type="hidden" name="validarcantidad">
-											
-														@endforeach
-														</table>
-														
-													{{Form::close()}}
-														
+													    <input type="hidden" name="_token" value="{{csrf_token()}}" id="token">
+													{!!form::close()!!}
 													</div>
 												</div>
 											</div>
@@ -448,7 +403,58 @@
 	
 		
 		<script src="{{asset('public/js/jquery-2.1.4.min.js')}}"></script>
-
+<script>
+		$("#buscar").keypress(function(e){
+			
+			if(e.which == 13){
+				$("#loader").css("display","block");
+				var busqueda = $("#buscar").val();
+				$.get("ajaxproductos/"+busqueda,function(datos){
+					
+					$("#resultado").html(datos);
+					 
+					$("#loader").css("display","none");
+					
+				});
+				
+				 $("#buscar").val('');
+				 $("#und").focus();
+			}
+			
+		
+         
+			
+		});
+		
+		</script>
+		
+          <script>
+		$("#search").keypress(function(e){
+			if(e.which == 13){
+			$("#cargador").css("display","block");
+				var search = $("#search").val();
+				if(search.length<=0)
+				{
+					
+					$("#cargador").css("display","none");
+					$("#error").css("display","block");
+					$("#response").html("");
+				}
+				else{
+				$.get("ajaxsearch/"+search,function(datos, status){
+					
+					$("#response").html(datos);
+					$("#error").css("display","none");
+					$("#cargador").css("display","none");
+					
+				});
+				 };
+				 };
+				 
+				
+			
+		})
+		</script>
 		<!-- <![endif]-->
 
 		<!--[if IE]>

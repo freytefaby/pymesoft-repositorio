@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\input;
 use hhfarm\Http\Requests\ComprasForRequest;
 
 use hhfarm\Compras;
-;
+
 use DB;
 
 use Carbon\Carbon;
@@ -440,4 +440,49 @@ return Redirect::to('peticion/login')->with('mensaje','Debes ingresar tu cuenta 
 
 	  
 	}
+	 public function  productosajax(Request $request,$id)
+ {
+	 
+	 sleep(1);
+	//return $id; exit;
+	
+	$medicamento = DB::table('producto as a')
+		                    ->join('iva as i','a.idiva','=','i.idiva')
+							->join('tipoproducto as t','a.idtipoproducto','=','t.idtipoproducto')
+							->join('categoria as c','a.idcategoria','=','c.idcategoria')
+							->join('proveedor as p','a.idproveedor','=','p.idproveedor')
+							->select('a.idproducto','a.descripcionproducto','p.nombreproveedor','a.codigobarra1','a.stock','a.precioventa','a.preciosugerido','a.cantidadempaque','a.idtipoproducto','i.valoriva','a.preciocompra','a.comision')
+							->where('a.descripcionproducto','LIKE','%'.$id.'%')
+							->orderby('a.stock','desc')
+							->get();
+							
+		return view("peticion.compras.busquedaproductos",["medicamento"=>$medicamento]);			
+	 
+	 
+	 
+ }
+ 
+ public function cargaproductosajax(Request $request,$id)
+ {
+	 
+	 sleep(1);
+	 $ultimaventa=DB::table('venta as v')
+			              ->where('v.idusuario','=',$request->session()->get('id'))
+						  ->orderby('v.idventa','desc')
+						  ->select('v.idventa','v.estado')
+						  ->first();
+	$articulos = DB::table('producto as a')
+		                    ->join('iva as i','a.idiva','=','i.idiva')
+							->join('tipoproducto as t','a.idtipoproducto','=','t.idtipoproducto')
+							->join('categoria as c','a.idcategoria','=','c.idcategoria')
+							->join('proveedor as p','a.idproveedor','=','p.idproveedor')
+							->select('a.idproducto','a.descripcionproducto','p.nombreproveedor','a.codigobarra1','a.stock','a.precioventa','a.preciosugerido','a.cantidadempaque','a.idtipoproducto','i.valoriva','a.preciocompra','a.comision')
+							->where('a.codigobarra1','=',$id)
+							->get();
+							
+						
+	 return view("peticion.compras.ajaxproductos",["articulos"=>$articulos,"id"=>$id,"ultimaventa"=>$ultimaventa]);
+	 
+	 
+ }
 }

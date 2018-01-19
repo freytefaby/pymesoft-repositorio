@@ -182,6 +182,8 @@ route::post('peticion/updatecontrasena/{id}','UsuariosController@updatecontrasen
 */
 route::resource('peticion/compras','ComprasController');
 route::resource('peticion/compras/detalle_compra','DetalleCompraController');
+route::get('peticion/compras/ajaxsearch/{id}','ComprasController@productosajax');
+route::get('peticion/compras/ajaxproductos/{id}','ComprasController@cargaproductosajax');
 /*
 | FIN COMPRAS
 */
