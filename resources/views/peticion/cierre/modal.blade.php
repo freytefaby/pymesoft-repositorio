@@ -60,7 +60,7 @@
 														<h3>Utilidades </h3>(*Todos los valores que aparecen en <font color="red">rojo</font> se restan, asi mismo todos los valores que aparecen en <font color="#298A08">verde</font> se suman)
 														<table class="table table-bordered">
 														<tr>
-														<td>Utilidades de ventas: {{number_format($sumarray->utilidades)}} (Gran total de utilidad de ventas) </td>
+														<td>Utilidades de ventas: {{number_format($sumarray->utilidades + $sumasutil)}} (Gran total de utilidad de ventas) </td>
 														</tr>
 														<tr>
 														<td><font color="red">Descuentos: {{number_format($sumarray->descuentos)}}</font></td>
@@ -84,7 +84,7 @@
 														<td><font color="#298A08"><b>Utilidad por abonos: {{number_format($utilidadabono)}}<b></font></td>
 														</tr>
 														<tr>
-														<td><b><H4>GRAN TOTAL EN UTILIDADES:</H4>{{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}<b></font></td>
+														<td><b><H4>GRAN TOTAL EN UTILIDADES:</H4>{{number_format($sumarray->utilidades - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}<b></font></td>
 														</tr>
 								
 														

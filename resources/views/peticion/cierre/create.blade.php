@@ -163,9 +163,9 @@
 														<th><i class="fa fa-money" aria-hidden="true"></i> Comisiones</th>
 														<th><i class="fa fa-trash" aria-hidden="true"></i> Tipo</th>
 														</tr>
-														
+														<?php $sumasutil=0; ?>
 														@foreach($ventas as $v )
-														
+														<?php  $sumasutil=$sumasutil+$v->descuento; ?>
 														<tr>
 														
 														<td>HHF-00{{$v->idtipoventa}}{{$v->idventa}}</td>
@@ -174,7 +174,7 @@
 														<td>{{$v->user}}</td>
 														<td>{{number_format($v->valorventa)}}</td>
 														<td>{{number_format($v->subtotal)}}</td>
-														<td>{{number_format($v->utilidades)}}</td>
+														<td>{{number_format($v->utilidades + $v->descuento)}}</td>
 														<td>{{number_format($v->descuento)}}</td>
 														<td>{{number_format($v->comision)}}</td>
 														<td>{{$v->desctipoventa}}</td>
@@ -190,7 +190,7 @@
 														<td></td>
 														<td>T: {{number_format($sumarray->valorventa)}} </td>
 														<td>T: {{number_format($sumarray->subtotal)}}</td>
-														<td>T: {{number_format($sumarray->utilidades)}}</td>
+														<td>T: {{number_format($sumarray->utilidades + $sumasutil)}}</td>
 														<td>T: {{number_format($sumarray->descuentos)}}</td>
 														<td>T: {{number_format($sumarray->com)}}</td>
 														<td></td>
@@ -712,7 +712,7 @@
 
 											<div class="infobox-data">
 												<span class="infobox-data-number"></span>
-												<div class="infobox-content">Utilidades<br>{{number_format($sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono)}}</div>
+												<div class="infobox-content">Utilidades<br>{{number_format($sumarray->utilidades  - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono )}}</div>
 											</div>
 
 											
@@ -816,7 +816,7 @@
 															<input type="hidden" name="ventas" value="{{$sumarray->valorventa - $sumarray->descuentos - $totaldevolucion  - $base->valorbase - $convenios->valorventa + $valingreso + $totalabono}}">
 															<input type="hidden" name="idusuario" value="{{Session::get('id')}}">
 															<input type="hidden" name="subtotal" value="{{$sumarray->subtotal - $sumadev->subdev - $convenios->subtotal}}">
-															<input type="hidden" name="utilidades" value="{{$sumarray->utilidades - $sumarray->descuentos - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono}}">
+															<input type="hidden" name="utilidades" value="{{$sumarray->utilidades  - $sumarray->com  - $sumadev->utilidadsuma -  $convenios->utilidades  + $sumadev->com_dev + $utilingreso +  $utilidadabono}}">
 															<input type="hidden" name="gastos" value="{{$sumagasto->gasto}}">
 															<input type="hidden" name="base" value="{{$base->valorbase}}">
 															@foreach($gasto as $g )
